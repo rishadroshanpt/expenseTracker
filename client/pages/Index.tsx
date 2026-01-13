@@ -44,7 +44,7 @@ export default function Index() {
                     onClick={() => navigate(tab.path)}
                     className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 px-2 rounded-lg transition ${
                       isActive
-                        ? "text-violet-400"
+                        ? "text-emerald-400"
                         : "text-gray-400 hover:text-gray-300"
                     }`}
                   >
@@ -79,7 +79,7 @@ export default function Index() {
                     onClick={() => navigate(tab.path)}
                     className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 px-2 rounded-lg transition ${
                       isActive
-                        ? "text-violet-400"
+                        ? "text-emerald-400"
                         : "text-gray-400 hover:text-gray-300"
                     }`}
                   >
