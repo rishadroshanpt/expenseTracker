@@ -156,10 +156,10 @@ export default function TransactionTypes() {
         )}
 
         {/* Charts Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
           {/* Income Chart */}
-          <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
-            <h3 className="text-lg font-semibold text-white mb-4">
+          <div className="bg-slate-800 rounded-lg p-4 sm:p-6 border border-slate-700">
+            <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">
               Income by Payment Method (This Month)
             </h3>
             {incomeChartData.length > 0 ? (
