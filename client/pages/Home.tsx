@@ -160,17 +160,17 @@ export default function Home() {
 
         {/* Month Selector for Monthly Tab */}
         {activeTab === "monthly" && (
-          <div className="bg-slate-800 rounded-lg p-4 border border-slate-700 mb-6 md:mb-8">
-            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-end justify-between">
+          <div className="bg-slate-800 rounded-lg p-3 sm:p-4 border border-slate-700 mb-4 sm:mb-6 md:mb-8">
+            <div className="flex flex-col gap-3 sm:gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                   Select Month
                 </label>
                 <div className="flex gap-2">
                   <select
                     value={selectedMonth}
                     onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
-                    className="px-3 py-2 bg-slate-700 border border-slate-600 rounded text-white text-sm focus:outline-none focus:border-blue-500"
+                    className="flex-1 px-2 sm:px-3 py-2 bg-slate-700 border border-slate-600 rounded text-white text-xs sm:text-sm focus:outline-none focus:border-blue-500"
                   >
                     {[
                       "January",
@@ -194,7 +194,7 @@ export default function Home() {
                   <select
                     value={selectedYear}
                     onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-                    className="px-3 py-2 bg-slate-700 border border-slate-600 rounded text-white text-sm focus:outline-none focus:border-blue-500"
+                    className="px-2 sm:px-3 py-2 bg-slate-700 border border-slate-600 rounded text-white text-xs sm:text-sm focus:outline-none focus:border-blue-500"
                   >
                     {[2024, 2025, 2026, 2027].map((year) => (
                       <option key={year} value={year}>
@@ -206,16 +206,16 @@ export default function Home() {
               </div>
 
               {/* Monthly Totals */}
-              <div className="w-full sm:w-auto grid grid-cols-2 gap-3">
-                <div className="bg-slate-700 rounded-lg p-3 border border-slate-600">
+              <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                <div className="bg-slate-700 rounded-lg p-2 sm:p-3 border border-slate-600">
                   <p className="text-xs text-gray-400 mb-1">Income</p>
-                  <p className="text-base font-bold text-green-400">
+                  <p className="text-sm sm:text-base font-bold text-green-400 truncate">
                     {formatCurrency(monthlyStats.totalCredit)}
                   </p>
                 </div>
-                <div className="bg-slate-700 rounded-lg p-3 border border-slate-600">
+                <div className="bg-slate-700 rounded-lg p-2 sm:p-3 border border-slate-600">
                   <p className="text-xs text-gray-400 mb-1">Expense</p>
-                  <p className="text-base font-bold text-red-400">
+                  <p className="text-sm sm:text-base font-bold text-red-400 truncate">
                     {formatCurrency(monthlyStats.totalDebit)}
                   </p>
                 </div>
