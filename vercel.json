@@ -10,9 +10,9 @@
       "destination": "/index.html"
     }
   ],
-  "env": [
-    "VITE_PUBLIC_SUPABASE_URL",
-    "VITE_PUBLIC_SUPABASE_ANON_KEY",
-    "VITE_PUBLIC_BUILDER_KEY"
-  ]
+  "env": {
+    "VITE_PUBLIC_SUPABASE_URL": "Supabase project URL",
+    "VITE_PUBLIC_SUPABASE_ANON_KEY": "Supabase anonymous key",
+    "VITE_PUBLIC_BUILDER_KEY": "Builder.io public API key"
+  }
 }
