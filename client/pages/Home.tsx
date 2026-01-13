@@ -264,16 +264,16 @@ export default function Home() {
                 </p>
               </div>
             ) : (
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 {displayedExpenses.map((expense) => (
                   <div
                     key={expense.id}
-                    className="flex items-center justify-between p-4 bg-slate-700 rounded-lg border border-slate-600 hover:bg-slate-600 transition gap-3"
+                    className="flex items-center justify-between p-3 sm:p-4 bg-slate-700 rounded-lg border border-slate-600 hover:bg-slate-600 transition gap-2 sm:gap-3"
                   >
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2 sm:gap-3">
                         <div
-                          className={`w-8 h-8 rounded flex items-center justify-center font-bold text-sm flex-shrink-0 ${
+                          className={`w-7 h-7 sm:w-8 sm:h-8 rounded flex items-center justify-center font-bold text-xs sm:text-sm flex-shrink-0 ${
                             expense.type === "credit"
                               ? "bg-green-600 text-white"
                               : "bg-red-600 text-white"
@@ -282,13 +282,13 @@ export default function Home() {
                           {expense.type === "credit" ? "+" : "−"}
                         </div>
                         <div className="min-w-0">
-                          <p className="font-semibold text-white text-sm truncate">
+                          <p className="font-semibold text-white text-xs sm:text-sm truncate">
                             {expense.description ||
                               (expense.type === "credit"
                                 ? "Income"
                                 : "Expense")}
                           </p>
-                          <p className="text-xs text-gray-400 mt-1">
+                          <p className="text-xs text-gray-400 mt-0.5">
                             {formatDate(expense.date, expense.time)}
                             {expense.transaction_type &&
                               ` • ${expense.transaction_type}`}
@@ -296,9 +296,9 @@ export default function Home() {
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-4 flex-shrink-0">
+                    <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
                       <p
-                        className={`text-base font-bold whitespace-nowrap ${
+                        className={`text-sm sm:text-base font-bold whitespace-nowrap ${
                           expense.type === "credit"
                             ? "text-green-400"
                             : "text-red-400"
@@ -309,10 +309,10 @@ export default function Home() {
                       </p>
                       <button
                         onClick={() => handleDelete(expense.id)}
-                        className="p-2 hover:bg-red-600/30 rounded text-red-400 hover:text-red-300 flex-shrink-0"
+                        className="p-1.5 sm:p-2 hover:bg-red-600/30 rounded text-red-400 hover:text-red-300 flex-shrink-0"
                         aria-label="Delete expense"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
                       </button>
                     </div>
                   </div>
