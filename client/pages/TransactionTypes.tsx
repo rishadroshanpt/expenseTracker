@@ -1,6 +1,13 @@
 import { useMemo, useState } from "react";
 import { useExpenses } from "@/hooks/useExpenses";
-import { PieChart, Pie, Cell, Legend, Tooltip, ResponsiveContainer } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 export default function TransactionTypes() {
   const { expenses } = useExpenses();
@@ -24,7 +31,7 @@ export default function TransactionTypes() {
     if (!selectedMethod) return null;
 
     const methodExpenses = expenses.filter(
-      (e) => e.transaction_type === selectedMethod
+      (e) => e.transaction_type === selectedMethod,
     );
     const income = methodExpenses
       .filter((e) => e.type === "credit")
@@ -97,9 +104,7 @@ export default function TransactionTypes() {
           <h1 className="text-4xl font-bold text-white mb-2">
             Payment Methods
           </h1>
-          <p className="text-base text-gray-400">
-            Track by payment method
-          </p>
+          <p className="text-base text-gray-400">Track by payment method</p>
         </div>
 
         {/* Payment Methods Selection */}
@@ -193,8 +198,7 @@ export default function TransactionTypes() {
                         <div
                           className="w-3 h-3 rounded"
                           style={{
-                            backgroundColor:
-                              COLORS[index % COLORS.length],
+                            backgroundColor: COLORS[index % COLORS.length],
                           }}
                         ></div>
                         <span className="text-gray-300">{data.name}</span>
@@ -260,8 +264,7 @@ export default function TransactionTypes() {
                         <div
                           className="w-3 h-3 rounded"
                           style={{
-                            backgroundColor:
-                              COLORS[index % COLORS.length],
+                            backgroundColor: COLORS[index % COLORS.length],
                           }}
                         ></div>
                         <span className="text-gray-300">{data.name}</span>

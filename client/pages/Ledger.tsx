@@ -40,7 +40,8 @@ export default function Ledger() {
     // Calculate running balance for each transaction
     let runningBalance = 0;
     return sorted.map((expense) => {
-      runningBalance += expense.type === "credit" ? expense.amount : -expense.amount;
+      runningBalance +=
+        expense.type === "credit" ? expense.amount : -expense.amount;
       return { ...expense, runningBalance };
     });
   }, [expenses, filterType, filterPaymentMethod]);
@@ -56,7 +57,6 @@ export default function Ledger() {
 
     return { credits, debits, balance: credits - debits };
   }, [filteredExpenses]);
-
 
   const formatDate = (date: string) => {
     return new Date(date).toLocaleDateString("en-US", {
@@ -76,7 +76,9 @@ export default function Ledger() {
         {/* Header */}
         <div className="mb-6 md:mb-8">
           <h1 className="text-4xl font-bold text-white mb-2">Ledger</h1>
-          <p className="text-base text-gray-400">Complete transaction history</p>
+          <p className="text-base text-gray-400">
+            Complete transaction history
+          </p>
         </div>
 
         {/* Filters */}
@@ -176,7 +178,9 @@ export default function Ledger() {
                         <div className="min-w-0">
                           <p className="font-semibold text-white text-sm">
                             {expense.description ||
-                              (expense.type === "credit" ? "Income" : "Expense")}
+                              (expense.type === "credit"
+                                ? "Income"
+                                : "Expense")}
                           </p>
                           <div className="flex items-center gap-2 text-xs text-gray-400 mt-1">
                             <span>{formatDate(expense.date)}</span>

@@ -109,7 +109,9 @@ export default function Home() {
       <div className="max-w-2xl mx-auto px-4 sm:px-6 md:px-8 py-6 md:py-8">
         {/* Header */}
         <div className="mb-6 md:mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">Expense Tracker</h1>
+          <h1 className="text-4xl font-bold text-white mb-2">
+            Expense Tracker
+          </h1>
           <p className="text-base text-gray-400">Welcome, {user?.email}</p>
         </div>
 
