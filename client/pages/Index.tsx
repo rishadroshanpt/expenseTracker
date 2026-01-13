@@ -1,9 +1,11 @@
 import { useLocation, useNavigate, Outlet } from "react-router-dom";
 import { Home, BarChart3, User, CreditCard, Plus } from "lucide-react";
+import { useAddTransactionModal } from "@/context/AddTransactionContext";
 
 export default function Index() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { openModal } = useAddTransactionModal();
 
   const getTabs = () => {
     return [
@@ -18,17 +20,8 @@ export default function Index() {
   const currentTab = tabs.find((tab) => tab.path === location.pathname);
 
   const handleAddClick = () => {
-    // Navigate to home if not already there, to show the add form
-    if (location.pathname !== "/") {
-      navigate("/");
-    }
-    // Scroll to the form (optional enhancement)
-    setTimeout(() => {
-      const formElement = document.querySelector('[data-form="add-transaction"]');
-      if (formElement) {
-        formElement.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-    }, 100);
+    // Open the modal
+    openModal();
   };
 
   return (
