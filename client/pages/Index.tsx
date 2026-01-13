@@ -245,9 +245,9 @@ export default function ExpenseTracker() {
           <div className="flex gap-3">
             <button
               onClick={() => handleAddTransaction("credit")}
-              disabled={!amount.trim() || loading}
+              disabled={!amount.trim() || isAddingTransaction}
               className={`flex-1 py-3 md:py-4 rounded-xl font-semibold transition flex items-center justify-center gap-2 text-base text-white ${
-                !amount.trim() || loading
+                !amount.trim() || isAddingTransaction
                   ? "bg-gray-300 cursor-not-allowed"
                   : "bg-green-500 hover:bg-green-600 active:bg-green-700"
               }`}
@@ -257,9 +257,9 @@ export default function ExpenseTracker() {
             </button>
             <button
               onClick={() => handleAddTransaction("debit")}
-              disabled={!amount.trim() || loading}
+              disabled={!amount.strip() || isAddingTransaction}
               className={`flex-1 py-3 md:py-4 rounded-xl font-semibold transition flex items-center justify-center gap-2 text-base text-white ${
-                !amount.trim() || loading
+                !amount.trim() || isAddingTransaction
                   ? "bg-gray-300 cursor-not-allowed"
                   : "bg-red-500 hover:bg-red-600 active:bg-red-700"
               }`}
