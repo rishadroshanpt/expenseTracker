@@ -20,6 +20,9 @@ export default function ExpenseTracker() {
   const [isAddingTransaction, setIsAddingTransaction] = useState(false);
 
   const today = new Date().toISOString().split("T")[0];
+  const now = new Date();
+  const [selectedMonth, setSelectedMonth] = useState(now.getMonth());
+  const [selectedYear, setSelectedYear] = useState(now.getFullYear());
 
   const handleAddTransaction = async (type: "credit" | "debit") => {
     if (!amount.trim()) return;
