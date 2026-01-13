@@ -123,19 +123,19 @@ export default function Ledger() {
 
         {/* Summary Cards */}
         <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4 mb-6">
-          <div className="bg-gradient-to-br from-green-900/40 to-green-800/20 rounded-2xl p-3 sm:p-4 shadow-lg border border-green-500/20">
+          <div className="bg-green-900/40 rounded-2xl p-3 sm:p-4 shadow-lg border border-green-700">
             <p className="text-xs sm:text-sm text-gray-400 mb-1">Income</p>
             <p className="text-lg sm:text-xl font-bold text-green-400">
               {formatCurrency(summary.credits)}
             </p>
           </div>
-          <div className="bg-gradient-to-br from-red-900/40 to-red-800/20 rounded-2xl p-3 sm:p-4 shadow-lg border border-red-500/20">
+          <div className="bg-red-900/40 rounded-2xl p-3 sm:p-4 shadow-lg border border-red-700">
             <p className="text-xs sm:text-sm text-gray-400 mb-1">Expenses</p>
             <p className="text-lg sm:text-xl font-bold text-red-400">
               {formatCurrency(summary.debits)}
             </p>
           </div>
-          <div className="bg-gradient-to-br from-violet-900/40 to-violet-800/20 rounded-2xl p-3 sm:p-4 shadow-lg border border-violet-500/20">
+          <div className="bg-gray-800/50 rounded-2xl p-3 sm:p-4 shadow-lg border border-gray-700">
             <p className="text-xs sm:text-sm text-gray-400 mb-1">Balance</p>
             <p
               className={`text-lg sm:text-xl font-bold ${
