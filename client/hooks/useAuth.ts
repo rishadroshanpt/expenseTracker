@@ -174,14 +174,18 @@ export function useAuth() {
     }));
 
     try {
+      console.log("Attempting login with email:", data.email);
       const { data: authData, error } = await supabase.auth.signInWithPassword({
         email: data.email,
         password: data.password,
       });
 
       if (error) {
+        console.error("Login error from Supabase:", error);
         throw new Error(error.message);
       }
+
+      console.log("Login successful:", authData.user?.email);
 
       if (authData.user) {
         setState({
@@ -198,6 +202,7 @@ export function useAuth() {
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Login failed";
+      console.error("Login catch error:", errorMessage);
       setState((prev) => ({
         ...prev,
         loading: false,
