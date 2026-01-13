@@ -33,17 +33,27 @@ export default function Ledger() {
       );
     }
 
-    const sorted = filtered.sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+    // Sort oldest to newest for balance calculation
+    const sortedForBalance = filtered.sort(
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
     );
 
     // Calculate running balance for each transaction
-    let runningBalance = 0;
-    return sorted.map((expense) => {
-      runningBalance +=
-        expense.type === "credit" ? expense.amount : -expense.amount;
-      return { ...expense, runningBalance };
+    const withBalance = sortedForBalance.map((expense) => {
+      return { ...expense, runningBalance: 0 };
     });
+
+    let runningBalance = 0;
+    withBalance.forEach((item) => {
+      runningBalance +=
+        item.type === "credit" ? item.amount : -item.amount;
+      item.runningBalance = runningBalance;
+    });
+
+    // Return sorted newest first for display, but with correct running balance
+    return withBalance.sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+    );
   }, [expenses, filterType, filterPaymentMethod]);
 
   // Calculate summary
