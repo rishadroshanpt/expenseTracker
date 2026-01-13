@@ -34,9 +34,15 @@ export default function Ledger() {
     }
 
     // Sort oldest to newest for balance calculation
-    const sortedForBalance = filtered.sort(
-      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
-    );
+    const sortedForBalance = filtered.sort((a, b) => {
+      const dateA = new Date(a.date).getTime();
+      const dateB = new Date(b.date).getTime();
+      if (dateA !== dateB) return dateA - dateB;
+      // If same date, sort by time ascending (older times first)
+      const timeA = a.time || "00:00";
+      const timeB = b.time || "00:00";
+      return timeA.localeCompare(timeB);
+    });
 
     // Calculate running balance for each transaction
     const withBalance = sortedForBalance.map((expense) => {
@@ -51,9 +57,15 @@ export default function Ledger() {
     });
 
     // Return sorted newest first for display, but with correct running balance
-    return withBalance.sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
-    );
+    return withBalance.sort((a, b) => {
+      const dateA = new Date(b.date).getTime();
+      const dateB = new Date(a.date).getTime();
+      if (dateA !== dateB) return dateA - dateB;
+      // If same date, sort by time descending (newer times first)
+      const timeA = b.time || "00:00";
+      const timeB = a.time || "00:00";
+      return timeA.localeCompare(timeB);
+    });
   }, [expenses, filterType, filterPaymentMethod]);
 
   // Calculate summary
