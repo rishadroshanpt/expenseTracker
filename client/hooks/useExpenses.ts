@@ -8,7 +8,7 @@ const SUPABASE_ANON_KEY = import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY;
 
 const supabase = createClient(
   SUPABASE_URL || "https://placeholder.supabase.co",
-  SUPABASE_ANON_KEY || "placeholder-key"
+  SUPABASE_ANON_KEY || "placeholder-key",
 );
 
 export function useExpenses() {
@@ -46,7 +46,7 @@ export function useExpenses() {
         data?.map((exp) => ({
           ...exp,
           date: new Date(exp.date),
-        })) || []
+        })) || [],
       );
     } catch (err) {
       const errorMessage =
@@ -77,7 +77,7 @@ export function useExpenses() {
         () => {
           // Refetch when changes occur
           fetchExpenses();
-        }
+        },
       )
       .subscribe();
 
@@ -92,7 +92,8 @@ export function useExpenses() {
       amount: number,
       type: "credit" | "debit",
       date: string,
-      description?: string
+      description?: string,
+      transaction_type?: string,
     ) => {
       if (!user) {
         throw new Error("Not authenticated");
@@ -107,6 +108,7 @@ export function useExpenses() {
           type,
           date,
           description,
+          transaction_type,
         });
 
         const { data, error: insertError } = await supabase
@@ -118,23 +120,29 @@ export function useExpenses() {
               type,
               date,
               description: description || null,
+              transaction_type: transaction_type || null,
             },
           ])
           .select()
           .single();
 
         if (insertError) {
-          console.error("Supabase insert error:", insertError);
-          throw new Error(insertError.message);
+          console.error("Supabase insert error details:", {
+            message: insertError.message,
+            code: insertError.code,
+            details: insertError.details,
+            hint: insertError.hint,
+          });
+          throw new Error(
+            insertError.message ||
+              "Failed to add expense. Please check if all required fields are valid.",
+          );
         }
 
         console.log("Expense added successfully:", data);
 
         if (data) {
-          setExpenses([
-            { ...data, date: new Date(data.date) },
-            ...expenses,
-          ]);
+          setExpenses([{ ...data, date: new Date(data.date) }, ...expenses]);
         }
 
         return data;
@@ -146,7 +154,7 @@ export function useExpenses() {
         throw err;
       }
     },
-    [user, expenses]
+    [user, expenses],
   );
 
   // Delete expense
@@ -177,7 +185,59 @@ export function useExpenses() {
         throw err;
       }
     },
-    [user, expenses]
+    [user, expenses],
+  );
+
+  // Edit expense
+  const editExpense = useCallback(
+    async (
+      id: string,
+      amount: number,
+      type: "credit" | "debit",
+      date: string,
+      description?: string,
+      transaction_type?: string,
+    ) => {
+      if (!user) {
+        throw new Error("Not authenticated");
+      }
+
+      setError(null);
+
+      try {
+        const { data, error: updateError } = await supabase
+          .from("expenses")
+          .update({
+            amount,
+            type,
+            date,
+            description: description || null,
+            transaction_type: transaction_type || null,
+          })
+          .eq("id", id)
+          .eq("user_id", user.id)
+          .select()
+          .single();
+
+        if (updateError) {
+          throw new Error(updateError.message);
+        }
+
+        setExpenses(
+          expenses.map((exp) =>
+            exp.id === id ? { ...data, date: new Date(data.date) } : exp,
+          ),
+        );
+
+        return data;
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : "Failed to update expense";
+        setError(errorMessage);
+        throw err;
+      }
+    },
+    [user, expenses],
   );
 
   return {
@@ -186,6 +246,7 @@ export function useExpenses() {
     error,
     addExpense,
     deleteExpense,
+    editExpense,
     fetchExpenses,
     setError,
   };
