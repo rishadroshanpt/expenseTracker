@@ -35,7 +35,7 @@ export default function ExpenseTracker() {
         parseFloat(amount),
         type,
         selectedDate,
-        description || undefined
+        description || undefined,
       );
       setAmount("");
       setDescription("");
@@ -72,16 +72,16 @@ export default function ExpenseTracker() {
   const getMonthExpenses = (month: number, year: number) => {
     return expenses.filter((exp) => {
       const expDate = new Date(exp.date);
-      return (
-        expDate.getMonth() === month &&
-        expDate.getFullYear() === year
-      );
+      return expDate.getMonth() === month && expDate.getFullYear() === year;
     });
   };
 
   // Calculate statistics for current month only
   const stats = useMemo(() => {
-    const currentMonthExpenses = getMonthExpenses(now.getMonth(), now.getFullYear());
+    const currentMonthExpenses = getMonthExpenses(
+      now.getMonth(),
+      now.getFullYear(),
+    );
     const totalCredit = currentMonthExpenses
       .filter((e) => e.type === "credit")
       .reduce((sum, e) => sum + e.amount, 0);
@@ -314,10 +314,22 @@ export default function ExpenseTracker() {
                     className="px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none transition bg-gray-50 text-sm font-medium"
                   >
                     {[
-                      "January", "February", "March", "April", "May", "June",
-                      "July", "August", "September", "October", "November", "December"
+                      "January",
+                      "February",
+                      "March",
+                      "April",
+                      "May",
+                      "June",
+                      "July",
+                      "August",
+                      "September",
+                      "October",
+                      "November",
+                      "December",
                     ].map((month, idx) => (
-                      <option key={idx} value={idx}>{month}</option>
+                      <option key={idx} value={idx}>
+                        {month}
+                      </option>
                     ))}
                   </select>
                   <select
@@ -326,7 +338,9 @@ export default function ExpenseTracker() {
                     className="px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none transition bg-gray-50 text-sm font-medium"
                   >
                     {[2024, 2025, 2026, 2027].map((year) => (
-                      <option key={year} value={year}>{year}</option>
+                      <option key={year} value={year}>
+                        {year}
+                      </option>
                     ))}
                   </select>
                 </div>
