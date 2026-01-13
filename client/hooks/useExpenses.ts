@@ -183,12 +183,65 @@ export function useExpenses() {
     [user, expenses]
   );
 
+  // Edit expense
+  const editExpense = useCallback(
+    async (
+      id: string,
+      amount: number,
+      type: "credit" | "debit",
+      date: string,
+      description?: string,
+      transaction_type?: string
+    ) => {
+      if (!user) {
+        throw new Error("Not authenticated");
+      }
+
+      setError(null);
+
+      try {
+        const { data, error: updateError } = await supabase
+          .from("expenses")
+          .update({
+            amount,
+            type,
+            date,
+            description: description || null,
+            transaction_type: transaction_type || null,
+          })
+          .eq("id", id)
+          .eq("user_id", user.id)
+          .select()
+          .single();
+
+        if (updateError) {
+          throw new Error(updateError.message);
+        }
+
+        setExpenses(
+          expenses.map((exp) =>
+            exp.id === id ? { ...data, date: new Date(data.date) } : exp
+          )
+        );
+
+        return data;
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : "Failed to update expense";
+        setError(errorMessage);
+        throw err;
+      }
+    },
+    [user, expenses]
+  );
+
   return {
     expenses,
     loading,
     error,
     addExpense,
     deleteExpense,
+    editExpense,
     fetchExpenses,
     setError,
   };
