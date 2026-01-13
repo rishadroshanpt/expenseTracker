@@ -200,35 +200,22 @@ export default function Ledger() {
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-                      <p
-                        className={`text-base sm:text-lg font-bold whitespace-nowrap ${
-                          expense.type === "credit"
-                            ? "text-green-400"
-                            : "text-red-400"
-                        }`}
-                      >
-                        {expense.type === "credit" ? "+" : "−"}
-                        {formatCurrency(expense.amount)}
-                      </p>
-                      <button
-                        onClick={() =>
-                          setEditingId(
-                            editingId === expense.id ? null : expense.id,
-                          )
-                        }
-                        className="p-1.5 sm:p-2 hover:bg-violet-600/40 rounded-lg transition text-violet-400 hover:text-violet-300 flex-shrink-0"
-                        aria-label="Edit transaction"
-                      >
-                        <Edit2 className="w-4 h-4 sm:w-5 sm:h-5" />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(expense.id)}
-                        className="p-1.5 sm:p-2 hover:bg-red-900/40 rounded-lg transition text-red-400 hover:text-red-300 flex-shrink-0"
-                        aria-label="Delete transaction"
-                      >
-                        <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
-                      </button>
+                    <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
+                      <div className="text-right">
+                        <p
+                          className={`text-base sm:text-lg font-bold whitespace-nowrap ${
+                            expense.type === "credit"
+                              ? "text-green-400"
+                              : "text-red-400"
+                          }`}
+                        >
+                          {expense.type === "credit" ? "+" : "−"}
+                          {formatCurrency(expense.amount)}
+                        </p>
+                        <p className="text-xs sm:text-sm text-gray-400 mt-1">
+                          Balance: {formatCurrency(expense.runningBalance)}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 ))}
