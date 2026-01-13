@@ -257,7 +257,7 @@ export default function ExpenseTracker() {
             </button>
             <button
               onClick={() => handleAddTransaction("debit")}
-              disabled={!amount.strip() || isAddingTransaction}
+              disabled={!amount.trim() || isAddingTransaction}
               className={`flex-1 py-3 md:py-4 rounded-xl font-semibold transition flex items-center justify-center gap-2 text-base text-white ${
                 !amount.trim() || isAddingTransaction
                   ? "bg-gray-300 cursor-not-allowed"
