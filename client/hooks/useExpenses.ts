@@ -200,6 +200,7 @@ export function useExpenses() {
       date: string,
       description?: string,
       transaction_type?: string,
+      time?: string,
     ) => {
       if (!user) {
         throw new Error("Not authenticated");
@@ -214,6 +215,7 @@ export function useExpenses() {
             amount,
             type,
             date,
+            time: time || null,
             description: description || null,
             transaction_type: transaction_type || null,
           })
