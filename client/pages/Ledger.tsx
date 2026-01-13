@@ -75,7 +75,7 @@ export default function Ledger() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8 py-6 md:py-8">
         {/* Header */}
         <div className="mb-6 md:mb-8">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-violet-600 mb-2">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-blue-400 mb-2">
             Ledger
           </h1>
           <p className="text-sm sm:text-base text-gray-400">
