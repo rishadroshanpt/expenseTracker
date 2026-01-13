@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Plus, Calendar } from "lucide-react";
+import { Plus, Calendar, Clock } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -13,6 +13,16 @@ interface AddTransactionModalProps {
   onClose: () => void;
 }
 
+// Helper function to get current Kolkata time
+function getKolkataDateTime() {
+  const now = new Date();
+  const kolkataTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
+  return {
+    date: kolkataTime.toISOString().split("T")[0],
+    time: kolkataTime.toTimeString().slice(0, 5),
+  };
+}
+
 export default function AddTransactionModal({
   isOpen,
   onClose,
@@ -20,13 +30,13 @@ export default function AddTransactionModal({
   const { addExpense, editExpense } = useExpenses();
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
-  const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString().split("T")[0],
-  );
+  const kolkataDateTime = getKolkataDateTime();
+  const [selectedDate, setSelectedDate] = useState(kolkataDateTime.date);
+  const [selectedTime, setSelectedTime] = useState(kolkataDateTime.time);
   const [transactionType, setTransactionType] = useState("");
   const [isAdding, setIsAdding] = useState(false);
 
-  const today = new Date().toISOString().split("T")[0];
+  const today = kolkataDateTime.date;
 
   const handleAddTransaction = async (type: "credit" | "debit") => {
     if (!amount.trim()) return;
