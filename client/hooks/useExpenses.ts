@@ -127,8 +127,16 @@ export function useExpenses() {
           .single();
 
         if (insertError) {
-          console.error("Supabase insert error:", insertError);
-          throw new Error(insertError.message);
+          console.error("Supabase insert error details:", {
+            message: insertError.message,
+            code: insertError.code,
+            details: insertError.details,
+            hint: insertError.hint,
+          });
+          throw new Error(
+            insertError.message ||
+            "Failed to add expense. Please check if all required fields are valid."
+          );
         }
 
         console.log("Expense added successfully:", data);
