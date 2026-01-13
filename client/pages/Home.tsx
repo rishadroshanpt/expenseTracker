@@ -91,13 +91,18 @@ export default function Home() {
     );
   }, [expenses, activeTab]);
 
-  const formatDate = (date: Date | string) => {
+  const formatDate = (date: Date | string, time?: string) => {
     const dateObj = typeof date === "string" ? new Date(date) : date;
-    return dateObj.toLocaleDateString("en-US", {
+    const dateStr = dateObj.toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
       day: "numeric",
     });
+
+    if (time) {
+      return `${dateStr} • ${time}`;
+    }
+    return dateStr;
   };
 
   const formatCurrency = (amount: number) => {
