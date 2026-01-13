@@ -99,7 +99,7 @@ export default function Ledger() {
 
   return (
     <div className="pb-32">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8 py-6 md:py-8">
+      <div className="max-w-4xl mx-auto px-3 sm:px-6 md:px-8 py-4 sm:py-6 md:py-8">
         {/* Header */}
         <div className="mb-6 md:mb-8">
           <h1 className="text-4xl font-bold text-white mb-2">Ledger</h1>
