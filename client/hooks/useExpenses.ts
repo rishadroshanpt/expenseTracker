@@ -92,7 +92,8 @@ export function useExpenses() {
       amount: number,
       type: "credit" | "debit",
       date: string,
-      description?: string
+      description?: string,
+      transaction_type?: string
     ) => {
       if (!user) {
         throw new Error("Not authenticated");
@@ -107,6 +108,7 @@ export function useExpenses() {
           type,
           date,
           description,
+          transaction_type,
         });
 
         const { data, error: insertError } = await supabase
@@ -118,6 +120,7 @@ export function useExpenses() {
               type,
               date,
               description: description || null,
+              transaction_type: transaction_type || null,
             },
           ])
           .select()
