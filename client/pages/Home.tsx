@@ -226,8 +226,8 @@ export default function Home() {
         )}
 
         {/* Tabs */}
-        <div className="bg-gradient-to-br from-violet-900/30 to-violet-800/10 rounded-3xl shadow-lg border border-violet-500/20 overflow-hidden">
-          <div className="flex border-b border-violet-500/20 overflow-x-auto">
+        <div className="bg-gray-800/50 rounded-3xl shadow-lg border border-gray-700 overflow-hidden">
+          <div className="flex border-b border-gray-700 overflow-x-auto">
             {[
               { id: "monthly", label: "Monthly" },
               { id: "credits", label: "Income" },
@@ -238,7 +238,7 @@ export default function Home() {
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`flex-1 px-3 sm:px-4 md:px-6 py-3 md:py-4 font-semibold transition text-xs sm:text-sm md:text-base whitespace-nowrap ${
                   activeTab === tab.id
-                    ? "text-violet-400 border-b-2 border-violet-400"
+                    ? "text-blue-400 border-b-2 border-blue-400"
                     : "text-gray-400 hover:text-gray-300"
                 }`}
               >
