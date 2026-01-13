@@ -1,7 +1,9 @@
 import { useState, useMemo } from "react";
-import { Plus, Trash2, Calendar, Edit2 } from "lucide-react";
+import { Plus, Trash2, Edit2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useExpenses } from "@/hooks/useExpenses";
+import { useAddTransactionModal } from "@/context/AddTransactionContext";
+import AddTransactionModal from "@/components/AddTransactionModal";
 
 interface EditingExpense {
   id: string;
@@ -14,18 +16,12 @@ interface EditingExpense {
 
 export default function Home() {
   const { user } = useAuth();
-  const { expenses, loading, error, addExpense, deleteExpense, editExpense, setError } =
+  const { expenses, loading, error, deleteExpense, editExpense, setError } =
     useExpenses();
-  const [amount, setAmount] = useState("");
-  const [description, setDescription] = useState("");
-  const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString().split("T")[0],
-  );
-  const [transactionType, setTransactionType] = useState("");
+  const { isOpen, closeModal } = useAddTransactionModal();
   const [activeTab, setActiveTab] = useState<"monthly" | "credits" | "debits">(
     "monthly",
   );
-  const [isAddingTransaction, setIsAddingTransaction] = useState(false);
   const [editingExpense, setEditingExpense] = useState<EditingExpense | null>(null);
 
   const today = new Date().toISOString().split("T")[0];
