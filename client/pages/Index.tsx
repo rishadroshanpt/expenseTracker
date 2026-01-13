@@ -68,30 +68,56 @@ export default function ExpenseTracker() {
     navigate("/login");
   };
 
-  // Calculate statistics
-  const stats = useMemo(() => {
-    const totalCredit = expenses
-      .filter((e) => e.type === "credit")
-      .reduce((sum, e) => sum + e.amount, 0);
-    const totalDebit = expenses
-      .filter((e) => e.type === "debit")
-      .reduce((sum, e) => sum + e.amount, 0);
-    const balance = totalCredit - totalDebit;
-
-    return { totalCredit, totalDebit, balance };
-  }, [expenses]);
-
-  // Get current month's expenses
-  const getCurrentMonthExpenses = () => {
-    const now = new Date();
+  // Get expenses for a specific month
+  const getMonthExpenses = (month: number, year: number) => {
     return expenses.filter((exp) => {
       const expDate = new Date(exp.date);
       return (
-        expDate.getMonth() === now.getMonth() &&
-        expDate.getFullYear() === now.getFullYear()
+        expDate.getMonth() === month &&
+        expDate.getFullYear() === year
       );
     });
   };
+
+  // Calculate statistics for current month only
+  const stats = useMemo(() => {
+    const currentMonthExpenses = getMonthExpenses(now.getMonth(), now.getFullYear());
+    const totalCredit = currentMonthExpenses
+      .filter((e) => e.type === "credit")
+      .reduce((sum, e) => sum + e.amount, 0);
+    const totalDebit = currentMonthExpenses
+      .filter((e) => e.type === "debit")
+      .reduce((sum, e) => sum + e.amount, 0);
+
+    // Balance is still overall (all months)
+    const allTimeCredit = expenses
+      .filter((e) => e.type === "credit")
+      .reduce((sum, e) => sum + e.amount, 0);
+    const allTimeDebit = expenses
+      .filter((e) => e.type === "debit")
+      .reduce((sum, e) => sum + e.amount, 0);
+    const balance = allTimeCredit - allTimeDebit;
+
+    return { totalCredit, totalDebit, balance };
+  }, [expenses, now]);
+
+  // Get selected month's expenses
+  const getCurrentMonthExpenses = () => {
+    return getMonthExpenses(selectedMonth, selectedYear);
+  };
+
+  // Calculate selected month's totals for the monthly tab
+  const monthlyStats = useMemo(() => {
+    const monthExpenses = getMonthExpenses(selectedMonth, selectedYear);
+    const totalCredit = monthExpenses
+      .filter((e) => e.type === "credit")
+      .reduce((sum, e) => sum + e.amount, 0);
+    const totalDebit = monthExpenses
+      .filter((e) => e.type === "debit")
+      .reduce((sum, e) => sum + e.amount, 0);
+
+    return { totalCredit, totalDebit };
+  }, [expenses, selectedMonth, selectedYear]);
 
   // Filter data based on active tab
   const displayedExpenses = useMemo(() => {
