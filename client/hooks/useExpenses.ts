@@ -101,6 +101,14 @@ export function useExpenses() {
       setError(null);
 
       try {
+        console.log("Adding expense:", {
+          user_id: user.id,
+          amount,
+          type,
+          date,
+          description,
+        });
+
         const { data, error: insertError } = await supabase
           .from("expenses")
           .insert([
@@ -116,8 +124,11 @@ export function useExpenses() {
           .single();
 
         if (insertError) {
+          console.error("Supabase insert error:", insertError);
           throw new Error(insertError.message);
         }
+
+        console.log("Expense added successfully:", data);
 
         if (data) {
           setExpenses([
@@ -131,6 +142,7 @@ export function useExpenses() {
         const errorMessage =
           err instanceof Error ? err.message : "Failed to create expense";
         setError(errorMessage);
+        console.error("Add expense error:", err);
         throw err;
       }
     },
