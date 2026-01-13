@@ -19,7 +19,7 @@ export default function Ledger() {
     return Array.from(methods).sort();
   }, [expenses]);
 
-  // Filter and sort expenses
+  // Filter and sort expenses with running balance
   const filteredExpenses = useMemo(() => {
     let filtered = expenses;
 
@@ -33,9 +33,16 @@ export default function Ledger() {
       );
     }
 
-    return filtered.sort(
+    const sorted = filtered.sort(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
     );
+
+    // Calculate running balance for each transaction
+    let runningBalance = 0;
+    return sorted.map((expense) => {
+      runningBalance += expense.type === "credit" ? expense.amount : -expense.amount;
+      return { ...expense, runningBalance };
+    });
   }, [expenses, filterType, filterPaymentMethod]);
 
   // Calculate summary
