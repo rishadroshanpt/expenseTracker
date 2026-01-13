@@ -68,12 +68,17 @@ export default function Ledger() {
     return { credits, debits, balance: credits - debits };
   }, [filteredExpenses]);
 
-  const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString("en-US", {
+  const formatDate = (date: string, time?: string) => {
+    const dateStr = new Date(date).toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
       day: "numeric",
     });
+
+    if (time) {
+      return `${dateStr} • ${time}`;
+    }
+    return dateStr;
   };
 
   const formatCurrency = (amount: number) => {
