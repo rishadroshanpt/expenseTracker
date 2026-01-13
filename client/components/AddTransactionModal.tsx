@@ -184,29 +184,29 @@ export default function AddTransactionModal({
         </div>
 
         {/* Action Buttons */}
-        <div className="flex gap-3 mt-6">
+        <div className="flex gap-2 sm:gap-3 mt-4 sm:mt-6">
           <button
             onClick={() => handleAddTransaction("credit")}
             disabled={!amount.trim() || isAdding}
-            className={`flex-1 py-2 rounded font-semibold transition flex items-center justify-center gap-2 text-base text-white ${
+            className={`flex-1 py-2 px-3 rounded font-semibold transition flex items-center justify-center gap-1.5 sm:gap-2 text-xs sm:text-base text-white ${
               !amount.trim() || isAdding
                 ? "bg-gray-600 cursor-not-allowed"
                 : "bg-green-600 hover:bg-green-500"
             }`}
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             Income
           </button>
           <button
             onClick={() => handleAddTransaction("debit")}
             disabled={!amount.trim() || isAdding}
-            className={`flex-1 py-2 rounded font-semibold transition flex items-center justify-center gap-2 text-base text-white ${
+            className={`flex-1 py-2 px-3 rounded font-semibold transition flex items-center justify-center gap-1.5 sm:gap-2 text-xs sm:text-base text-white ${
               !amount.trim() || isAdding
                 ? "bg-gray-600 cursor-not-allowed"
                 : "bg-red-600 hover:bg-red-500"
             }`}
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             Expense
           </button>
         </div>
