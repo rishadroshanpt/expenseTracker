@@ -128,14 +128,18 @@ export function useAuth() {
     }));
 
     try {
+      console.log("Attempting signup with email:", data.email);
       const { data: authData, error } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
       });
 
       if (error) {
+        console.error("Signup error from Supabase:", error);
         throw new Error(error.message);
       }
+
+      console.log("Signup successful:", authData.user?.email);
 
       if (authData.user) {
         setState({
@@ -152,6 +156,7 @@ export function useAuth() {
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Signup failed";
+      console.error("Signup catch error:", errorMessage);
       setState((prev) => ({
         ...prev,
         loading: false,
