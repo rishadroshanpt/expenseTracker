@@ -20,6 +20,7 @@ export function useExpenses() {
   // Fetch expenses for current user
   const fetchExpenses = useCallback(async () => {
     if (!user) {
+      console.log("No user logged in, skipping fetch");
       setExpenses([]);
       return;
     }
@@ -28,6 +29,7 @@ export function useExpenses() {
     setError(null);
 
     try {
+      console.log("Fetching expenses for user:", user.id);
       const { data, error: fetchError } = await supabase
         .from("expenses")
         .select("*")
@@ -35,9 +37,11 @@ export function useExpenses() {
         .order("date", { ascending: false });
 
       if (fetchError) {
+        console.error("Supabase fetch error:", fetchError);
         throw new Error(fetchError.message);
       }
 
+      console.log("Expenses fetched:", data?.length || 0);
       setExpenses(
         data?.map((exp) => ({
           ...exp,
