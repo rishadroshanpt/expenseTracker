@@ -1,13 +1,14 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronDown, Plus, Trash2, Calendar, LogOut } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { Expense } from "@shared/api";
+import { useExpenses } from "@/hooks/useExpenses";
 
 export default function ExpenseTracker() {
   const navigate = useNavigate();
-  const { user, logout, token } = useAuth();
-  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const { user, logout } = useAuth();
+  const { expenses, loading, error, addExpense, deleteExpense, setError } =
+    useExpenses();
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [selectedDate, setSelectedDate] = useState(
@@ -16,105 +17,43 @@ export default function ExpenseTracker() {
   const [activeTab, setActiveTab] = useState<"monthly" | "credits" | "debits">(
     "monthly",
   );
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [isAddingTransaction, setIsAddingTransaction] = useState(false);
 
   const today = new Date().toISOString().split("T")[0];
-
-  // Fetch expenses on mount
-  useEffect(() => {
-    fetchExpenses();
-  }, [token]);
-
-  const fetchExpenses = async () => {
-    if (!token) return;
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await fetch("/api/expenses", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch expenses");
-      }
-
-      const data = await response.json();
-      // Convert date strings to Date objects for sorting
-      const processedExpenses = (data.expenses || []).map((exp: any) => ({
-        ...exp,
-        date: new Date(exp.date),
-      }));
-      setExpenses(processedExpenses);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to fetch expenses");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const now = new Date();
+  const [selectedMonth, setSelectedMonth] = useState(now.getMonth());
+  const [selectedYear, setSelectedYear] = useState(now.getFullYear());
 
   const handleAddTransaction = async (type: "credit" | "debit") => {
-    if (!amount.trim() || !token) return;
+    if (!amount.trim()) return;
 
     setError(null);
+    setIsAddingTransaction(true);
 
     try {
-      const response = await fetch("/api/expenses", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          amount: parseFloat(amount),
-          type,
-          date: selectedDate,
-          description: description || undefined,
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to create expense");
-      }
-
-      const newExpense = await response.json();
-      setExpenses([
-        ...expenses,
-        { ...newExpense, date: new Date(newExpense.date) },
-      ]);
+      await addExpense(
+        parseFloat(amount),
+        type,
+        selectedDate,
+        description || undefined,
+      );
       setAmount("");
       setDescription("");
       setSelectedDate(today);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create expense");
+      console.error("Error adding transaction:", err);
+    } finally {
+      setIsAddingTransaction(false);
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!token) return;
-
     setError(null);
 
     try {
-      const response = await fetch(`/api/expenses/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete expense");
-      }
-
-      setExpenses(expenses.filter((exp) => exp.id !== id));
+      await deleteExpense(id);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to delete expense");
+      console.error("Error deleting expense:", err);
     }
   };
 
@@ -129,30 +68,56 @@ export default function ExpenseTracker() {
     navigate("/login");
   };
 
-  // Calculate statistics
-  const stats = useMemo(() => {
-    const totalCredit = expenses
-      .filter((e) => e.type === "credit")
-      .reduce((sum, e) => sum + e.amount, 0);
-    const totalDebit = expenses
-      .filter((e) => e.type === "debit")
-      .reduce((sum, e) => sum + e.amount, 0);
-    const balance = totalCredit - totalDebit;
-
-    return { totalCredit, totalDebit, balance };
-  }, [expenses]);
-
-  // Get current month's expenses
-  const getCurrentMonthExpenses = () => {
-    const now = new Date();
+  // Get expenses for a specific month
+  const getMonthExpenses = (month: number, year: number) => {
     return expenses.filter((exp) => {
       const expDate = new Date(exp.date);
-      return (
-        expDate.getMonth() === now.getMonth() &&
-        expDate.getFullYear() === now.getFullYear()
-      );
+      return expDate.getMonth() === month && expDate.getFullYear() === year;
     });
   };
+
+  // Calculate statistics for current month only
+  const stats = useMemo(() => {
+    const currentMonthExpenses = getMonthExpenses(
+      now.getMonth(),
+      now.getFullYear(),
+    );
+    const totalCredit = currentMonthExpenses
+      .filter((e) => e.type === "credit")
+      .reduce((sum, e) => sum + e.amount, 0);
+    const totalDebit = currentMonthExpenses
+      .filter((e) => e.type === "debit")
+      .reduce((sum, e) => sum + e.amount, 0);
+
+    // Balance is still overall (all months)
+    const allTimeCredit = expenses
+      .filter((e) => e.type === "credit")
+      .reduce((sum, e) => sum + e.amount, 0);
+    const allTimeDebit = expenses
+      .filter((e) => e.type === "debit")
+      .reduce((sum, e) => sum + e.amount, 0);
+    const balance = allTimeCredit - allTimeDebit;
+
+    return { totalCredit, totalDebit, balance };
+  }, [expenses, now]);
+
+  // Get selected month's expenses
+  const getCurrentMonthExpenses = () => {
+    return getMonthExpenses(selectedMonth, selectedYear);
+  };
+
+  // Calculate selected month's totals for the monthly tab
+  const monthlyStats = useMemo(() => {
+    const monthExpenses = getMonthExpenses(selectedMonth, selectedYear);
+    const totalCredit = monthExpenses
+      .filter((e) => e.type === "credit")
+      .reduce((sum, e) => sum + e.amount, 0);
+    const totalDebit = monthExpenses
+      .filter((e) => e.type === "debit")
+      .reduce((sum, e) => sum + e.amount, 0);
+
+    return { totalCredit, totalDebit };
+  }, [expenses, selectedMonth, selectedYear]);
 
   // Filter data based on active tab
   const displayedExpenses = useMemo(() => {
@@ -309,9 +274,9 @@ export default function ExpenseTracker() {
           <div className="flex gap-3">
             <button
               onClick={() => handleAddTransaction("credit")}
-              disabled={!amount.trim() || loading}
+              disabled={!amount.trim() || isAddingTransaction}
               className={`flex-1 py-3 md:py-4 rounded-xl font-semibold transition flex items-center justify-center gap-2 text-base text-white ${
-                !amount.trim() || loading
+                !amount.trim() || isAddingTransaction
                   ? "bg-gray-300 cursor-not-allowed"
                   : "bg-green-500 hover:bg-green-600 active:bg-green-700"
               }`}
@@ -321,9 +286,9 @@ export default function ExpenseTracker() {
             </button>
             <button
               onClick={() => handleAddTransaction("debit")}
-              disabled={!amount.trim() || loading}
+              disabled={!amount.trim() || isAddingTransaction}
               className={`flex-1 py-3 md:py-4 rounded-xl font-semibold transition flex items-center justify-center gap-2 text-base text-white ${
-                !amount.trim() || loading
+                !amount.trim() || isAddingTransaction
                   ? "bg-gray-300 cursor-not-allowed"
                   : "bg-red-500 hover:bg-red-600 active:bg-red-700"
               }`}
@@ -333,6 +298,72 @@ export default function ExpenseTracker() {
             </button>
           </div>
         </div>
+
+        {/* Month Selector for Monthly Tab */}
+        {activeTab === "monthly" && (
+          <div className="bg-white rounded-3xl p-4 sm:p-6 md:p-8 shadow-lg border border-gray-100 mb-6 md:mb-8">
+            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-end justify-between">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-3">
+                  Select Month
+                </label>
+                <div className="flex gap-3">
+                  <select
+                    value={selectedMonth}
+                    onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
+                    className="px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none transition bg-gray-50 text-sm font-medium"
+                  >
+                    {[
+                      "January",
+                      "February",
+                      "March",
+                      "April",
+                      "May",
+                      "June",
+                      "July",
+                      "August",
+                      "September",
+                      "October",
+                      "November",
+                      "December",
+                    ].map((month, idx) => (
+                      <option key={idx} value={idx}>
+                        {month}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    value={selectedYear}
+                    onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+                    className="px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none transition bg-gray-50 text-sm font-medium"
+                  >
+                    {[2024, 2025, 2026, 2027].map((year) => (
+                      <option key={year} value={year}>
+                        {year}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Monthly Totals */}
+              <div className="w-full sm:w-auto grid grid-cols-2 gap-3">
+                <div className="bg-green-50 rounded-xl p-3 border border-green-200">
+                  <p className="text-xs text-gray-600 mb-1">Income</p>
+                  <p className="text-sm sm:text-base font-bold text-green-600">
+                    {formatCurrency(monthlyStats.totalCredit)}
+                  </p>
+                </div>
+                <div className="bg-red-50 rounded-xl p-3 border border-red-200">
+                  <p className="text-xs text-gray-600 mb-1">Expense</p>
+                  <p className="text-sm sm:text-base font-bold text-red-600">
+                    {formatCurrency(monthlyStats.totalDebit)}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Tabs */}
         <div className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden">
