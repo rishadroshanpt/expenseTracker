@@ -38,23 +38,45 @@ export function useAuth() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
+        if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+          console.error(
+            "Supabase credentials missing:",
+            { SUPABASE_URL, SUPABASE_ANON_KEY }
+          );
+          setState({
+            user: null,
+            loading: false,
+            error:
+              "Supabase not configured. Check environment variables.",
+          });
+          return;
+        }
+
         const {
           data: { session },
           error,
         } = await supabase.auth.getSession();
 
-        if (error || !session) {
+        if (error) {
+          console.error("Session check error:", error);
           setState({
             user: null,
             loading: false,
             error: null,
           });
-        } else {
+        } else if (session) {
+          console.log("User session found:", session.user.email);
           setState({
             user: {
               id: session.user.id,
               email: session.user.email || "",
             },
+            loading: false,
+            error: null,
+          });
+        } else {
+          setState({
+            user: null,
             loading: false,
             error: null,
           });
