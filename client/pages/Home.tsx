@@ -126,7 +126,7 @@ export default function Home() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4 mb-6 md:mb-8">
-          <div className="bg-gradient-to-br from-violet-900/40 to-violet-800/20 rounded-2xl p-3 sm:p-4 md:p-6 shadow-lg border border-violet-500/20">
+          <div className="bg-gray-800/50 rounded-2xl p-3 sm:p-4 md:p-6 shadow-lg border border-gray-700">
             <p className="text-xs sm:text-sm text-gray-400 mb-1 md:mb-2">
               Income
             </p>
@@ -134,7 +134,7 @@ export default function Home() {
               {formatCurrency(stats.totalCredit)}
             </p>
           </div>
-          <div className="bg-gradient-to-br from-violet-900/40 to-violet-800/20 rounded-2xl p-3 sm:p-4 md:p-6 shadow-lg border border-violet-500/20">
+          <div className="bg-gray-800/50 rounded-2xl p-3 sm:p-4 md:p-6 shadow-lg border border-gray-700">
             <p className="text-xs sm:text-sm text-gray-400 mb-1 md:mb-2">
               Expense
             </p>
@@ -142,7 +142,7 @@ export default function Home() {
               {formatCurrency(stats.totalDebit)}
             </p>
           </div>
-          <div className="bg-gradient-to-br from-violet-900/40 to-violet-800/20 rounded-2xl p-3 sm:p-4 md:p-6 shadow-lg border border-violet-500/20">
+          <div className="bg-gray-800/50 rounded-2xl p-3 sm:p-4 md:p-6 shadow-lg border border-gray-700">
             <p className="text-xs sm:text-sm text-gray-400 mb-1 md:mb-2">
               Balance
             </p>
