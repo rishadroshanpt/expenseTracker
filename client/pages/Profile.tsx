@@ -25,7 +25,7 @@ export default function Profile() {
   };
 
   const formatCurrency = (amount: number) => {
-    return `$${amount.toFixed(2)}`;
+    return `₹${amount.toFixed(2)}`;
   };
 
   const formatDate = (dateString: string) => {
