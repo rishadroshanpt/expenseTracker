@@ -25,12 +25,12 @@ export default function Index() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-900 pb-24">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-900 pb-24">
       {/* Main Content */}
       <Outlet />
 
       {/* Bottom Navigation Bar */}
-      <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-violet-950 to-violet-900/80 border-t border-violet-500/20 backdrop-blur-lg">
+      <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-emerald-950 to-emerald-900/80 border-t border-emerald-500/20 backdrop-blur-lg">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             {/* Left Tabs */}
