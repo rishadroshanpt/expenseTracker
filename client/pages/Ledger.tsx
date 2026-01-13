@@ -187,16 +187,16 @@ export default function Ledger() {
                 <p className="text-gray-400 text-lg">No transactions found</p>
               </div>
             ) : (
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 {filteredExpenses.map((expense) => (
                   <div
                     key={expense.id}
-                    className="flex items-center justify-between p-4 bg-slate-700 rounded-lg border border-slate-600 hover:bg-slate-600 transition"
+                    className="flex items-stretch justify-between p-3 sm:p-4 bg-slate-700 rounded-lg border border-slate-600 hover:bg-slate-600 transition gap-2 sm:gap-3"
                   >
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2 sm:gap-3">
                         <div
-                          className={`w-8 h-8 rounded flex items-center justify-center font-bold text-sm flex-shrink-0 ${
+                          className={`w-7 h-7 sm:w-8 sm:h-8 rounded flex items-center justify-center font-bold text-xs sm:text-sm flex-shrink-0 ${
                             expense.type === "credit"
                               ? "bg-green-600 text-white"
                               : "bg-red-600 text-white"
@@ -205,27 +205,31 @@ export default function Ledger() {
                           {expense.type === "credit" ? "+" : "−"}
                         </div>
                         <div className="min-w-0">
-                          <p className="font-semibold text-white text-sm">
+                          <p className="font-semibold text-white text-xs sm:text-sm truncate">
                             {expense.description ||
                               (expense.type === "credit"
                                 ? "Income"
                                 : "Expense")}
                           </p>
-                          <div className="flex items-center gap-2 text-xs text-gray-400 mt-1">
-                            <span>{formatDate(expense.date, expense.time)}</span>
+                          <div className="flex items-center gap-1 sm:gap-2 text-xs text-gray-400 mt-0.5 overflow-hidden">
+                            <span className="truncate">
+                              {formatDate(expense.date, expense.time)}
+                            </span>
                             {expense.transaction_type && (
                               <>
-                                <span>•</span>
-                                <span>{expense.transaction_type}</span>
+                                <span className="flex-shrink-0">•</span>
+                                <span className="truncate">
+                                  {expense.transaction_type}
+                                </span>
                               </>
                             )}
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="text-right ml-4 flex-shrink-0">
+                    <div className="text-right ml-2 sm:ml-4 flex-shrink-0 flex flex-col justify-between">
                       <p
-                        className={`text-base font-bold whitespace-nowrap ${
+                        className={`text-xs sm:text-base font-bold whitespace-nowrap ${
                           expense.type === "credit"
                             ? "text-green-400"
                             : "text-red-400"
@@ -235,7 +239,7 @@ export default function Ledger() {
                         {formatCurrency(expense.amount)}
                       </p>
                       <p className="text-xs text-gray-400 mt-1">
-                        Balance: {formatCurrency(expense.runningBalance)}
+                        Bal: {formatCurrency(expense.runningBalance)}
                       </p>
                     </div>
                   </div>
