@@ -84,7 +84,7 @@ export default function Ledger() {
         </div>
 
         {/* Filters */}
-        <div className="bg-gradient-to-br from-violet-900/30 to-violet-800/10 rounded-2xl p-4 sm:p-6 shadow-lg border border-violet-500/20 mb-6">
+        <div className="bg-gray-800/50 rounded-2xl p-4 sm:p-6 shadow-lg border border-gray-700 mb-6">
           <div className="grid grid-cols-2 gap-3 sm:gap-4">
             <div>
               <label className="block text-xs sm:text-sm font-semibold text-gray-300 mb-2">
@@ -93,7 +93,7 @@ export default function Ledger() {
               <select
                 value={filterType}
                 onChange={(e) => setFilterType(e.target.value as any)}
-                className="w-full px-3 py-2 border-2 border-violet-500/30 rounded-lg focus:border-violet-400 focus:outline-none transition bg-violet-900/20 text-gray-100 text-sm"
+                className="w-full px-3 py-2 border-2 border-gray-600 rounded-lg focus:border-blue-400 focus:outline-none transition bg-gray-700 text-gray-100 text-sm"
               >
                 <option value="all">All Transactions</option>
                 <option value="credit">Income Only</option>
@@ -108,7 +108,7 @@ export default function Ledger() {
               <select
                 value={filterPaymentMethod}
                 onChange={(e) => setFilterPaymentMethod(e.target.value)}
-                className="w-full px-3 py-2 border-2 border-violet-500/30 rounded-lg focus:border-violet-400 focus:outline-none transition bg-violet-900/20 text-gray-100 text-sm"
+                className="w-full px-3 py-2 border-2 border-gray-600 rounded-lg focus:border-blue-400 focus:outline-none transition bg-gray-700 text-gray-100 text-sm"
               >
                 <option value="all">All Methods</option>
                 {paymentMethods.map((method) => (
