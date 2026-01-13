@@ -50,11 +50,14 @@ export default function AddTransactionModal({
         selectedDate,
         description || undefined,
         transactionType || undefined,
+        selectedTime || undefined,
       );
       // Reset form
       setAmount("");
       setDescription("");
-      setSelectedDate(today);
+      const freshDateTime = getKolkataDateTime();
+      setSelectedDate(freshDateTime.date);
+      setSelectedTime(freshDateTime.time);
       setTransactionType("");
       onClose();
     } catch (err) {
