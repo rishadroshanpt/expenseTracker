@@ -2,9 +2,18 @@ import { useState, useCallback, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { SignUpRequest, LoginRequest } from "@shared/api";
 
+const SUPABASE_URL = import.meta.env.VITE_PUBLIC_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY;
+
+if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+  console.error(
+    "Missing Supabase environment variables. Make sure VITE_PUBLIC_SUPABASE_URL and VITE_PUBLIC_SUPABASE_ANON_KEY are set."
+  );
+}
+
 const supabase = createClient(
-  import.meta.env.VITE_PUBLIC_SUPABASE_URL || "",
-  import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY || ""
+  SUPABASE_URL || "https://placeholder.supabase.co",
+  SUPABASE_ANON_KEY || "placeholder-key"
 );
 
 interface AuthUser {
