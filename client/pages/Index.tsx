@@ -61,7 +61,7 @@ export default function Index() {
             <div className="flex items-center justify-center px-2">
               <button
                 onClick={handleAddClick}
-                className="w-14 h-14 -mt-8 bg-gradient-to-br from-violet-500 to-violet-600 hover:from-violet-400 hover:to-violet-500 text-white rounded-full flex items-center justify-center shadow-lg transition transform hover:scale-110 border-4 border-violet-950"
+                className="w-14 h-14 -mt-8 bg-gradient-to-br from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white rounded-full flex items-center justify-center shadow-lg transition transform hover:scale-110 border-4 border-emerald-950"
                 aria-label="Add transaction"
               >
                 <Plus className="w-7 h-7" />
