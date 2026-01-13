@@ -34,57 +34,55 @@ export default function Login() {
   const displayError = localError || error;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 mb-2">
-            Expense Tracker
-          </h1>
-          <p className="text-gray-600">Sign in to your account</p>
+          <h1 className="text-4xl font-bold text-white mb-2">Expense Tracker</h1>
+          <p className="text-gray-400">Sign in to your account</p>
         </div>
 
         {/* Form Card */}
-        <div className="bg-white rounded-3xl p-8 shadow-lg border border-gray-100">
+        <div className="bg-slate-800 rounded-lg p-8 border border-slate-700">
           {displayError && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
+            <div className="mb-6 p-4 bg-red-900/30 border border-red-700 rounded text-red-300 text-sm">
               {displayError}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4">
             {/* Email Input */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Email
               </label>
               <div className="relative">
-                <Mail className="absolute left-4 top-3.5 w-5 h-5 text-gray-400" />
+                <Mail className="absolute left-3 top-3 w-5 h-5 text-gray-500" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
                   required
-                  className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:outline-none transition bg-gray-50"
+                  className="w-full pl-10 pr-4 py-2 border border-slate-600 rounded bg-slate-700 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500"
                 />
               </div>
             </div>
 
             {/* Password Input */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-4 top-3.5 w-5 h-5 text-gray-400" />
+                <Lock className="absolute left-3 top-3 w-5 h-5 text-gray-500" />
                 <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   required
-                  className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:outline-none transition bg-gray-50"
+                  className="w-full pl-10 pr-4 py-2 border border-slate-600 rounded bg-slate-700 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500"
                 />
               </div>
             </div>
@@ -93,11 +91,11 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-300 text-white font-semibold rounded-xl transition flex items-center justify-center gap-2"
+              className="w-full py-2 bg-blue-600 hover:bg-blue-500 disabled:bg-gray-600 text-white font-semibold rounded transition flex items-center justify-center gap-2 mt-6"
             >
               {loading ? (
                 <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <Loader2 className="w-4 h-4 animate-spin" />
                   Signing in...
                 </>
               ) : (
@@ -108,11 +106,11 @@ export default function Login() {
 
           {/* Signup Link */}
           <div className="mt-6 text-center">
-            <p className="text-gray-600">
+            <p className="text-gray-400">
               Don't have an account?{" "}
               <Link
                 to="/signup"
-                className="text-indigo-600 hover:text-indigo-700 font-semibold"
+                className="text-blue-400 hover:text-blue-300 font-medium"
               >
                 Sign up
               </Link>
