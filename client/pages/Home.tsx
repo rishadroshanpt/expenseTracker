@@ -86,9 +86,16 @@ export default function Home() {
       filtered = expenses.filter((e) => e.type === "debit");
     }
 
-    return filtered.sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
-    );
+    // Sort by date and time in ascending order (oldest first)
+    return filtered.sort((a, b) => {
+      const dateA = new Date(a.date).getTime();
+      const dateB = new Date(b.date).getTime();
+      if (dateA !== dateB) return dateA - dateB;
+      // If same date, sort by time ascending (older times first)
+      const timeA = a.time || "00:00";
+      const timeB = b.time || "00:00";
+      return timeA.localeCompare(timeB);
+    });
   }, [expenses, activeTab]);
 
   const formatDate = (date: Date | string, time?: string) => {
