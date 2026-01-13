@@ -151,17 +151,17 @@ export default function Home() {
 
         {/* Month Selector for Monthly Tab */}
         {activeTab === "monthly" && (
-          <div className="bg-gray-800/50 rounded-3xl p-4 sm:p-6 md:p-8 shadow-lg border border-gray-700 mb-6 md:mb-8">
+          <div className="bg-slate-800 rounded-lg p-4 border border-slate-700 mb-6 md:mb-8">
             <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-end justify-between">
               <div>
-                <label className="block text-sm font-semibold text-gray-300 mb-3">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Select Month
                 </label>
-                <div className="flex gap-3">
+                <div className="flex gap-2">
                   <select
                     value={selectedMonth}
                     onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
-                    className="px-3 py-2 border-2 border-gray-600 rounded-lg focus:border-blue-400 focus:outline-none transition bg-gray-700 text-gray-100 text-sm font-medium"
+                    className="px-3 py-2 bg-slate-700 border border-slate-600 rounded text-white text-sm focus:outline-none focus:border-blue-500"
                   >
                     {[
                       "January",
@@ -185,7 +185,7 @@ export default function Home() {
                   <select
                     value={selectedYear}
                     onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-                    className="px-3 py-2 border-2 border-gray-600 rounded-lg focus:border-blue-400 focus:outline-none transition bg-gray-700 text-gray-100 text-sm font-medium"
+                    className="px-3 py-2 bg-slate-700 border border-slate-600 rounded text-white text-sm focus:outline-none focus:border-blue-500"
                   >
                     {[2024, 2025, 2026, 2027].map((year) => (
                       <option key={year} value={year}>
@@ -198,15 +198,15 @@ export default function Home() {
 
               {/* Monthly Totals */}
               <div className="w-full sm:w-auto grid grid-cols-2 gap-3">
-                <div className="bg-green-900/40 rounded-xl p-3 border border-green-700">
+                <div className="bg-slate-700 rounded-lg p-3 border border-slate-600">
                   <p className="text-xs text-gray-400 mb-1">Income</p>
-                  <p className="text-sm sm:text-base font-bold text-green-400">
+                  <p className="text-base font-bold text-green-400">
                     {formatCurrency(monthlyStats.totalCredit)}
                   </p>
                 </div>
-                <div className="bg-red-900/40 rounded-xl p-3 border border-red-700">
+                <div className="bg-slate-700 rounded-lg p-3 border border-slate-600">
                   <p className="text-xs text-gray-400 mb-1">Expense</p>
-                  <p className="text-sm sm:text-base font-bold text-red-400">
+                  <p className="text-base font-bold text-red-400">
                     {formatCurrency(monthlyStats.totalDebit)}
                   </p>
                 </div>
