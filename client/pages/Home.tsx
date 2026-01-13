@@ -5,15 +5,6 @@ import { useExpenses } from "@/hooks/useExpenses";
 import { useAddTransactionModal } from "@/context/AddTransactionContext";
 import AddTransactionModal from "@/components/AddTransactionModal";
 
-interface EditingExpense {
-  id: string;
-  amount: number;
-  type: "credit" | "debit";
-  date: string;
-  description?: string;
-  transaction_type?: string;
-}
-
 export default function Home() {
   const { user } = useAuth();
   const { expenses, loading, error, deleteExpense, editExpense, setError } =
@@ -22,22 +13,10 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<"monthly" | "credits" | "debits">(
     "monthly",
   );
-  const [editingExpense, setEditingExpense] = useState<EditingExpense | null>(null);
 
   const now = new Date();
   const [selectedMonth, setSelectedMonth] = useState(now.getMonth());
   const [selectedYear, setSelectedYear] = useState(now.getFullYear());
-
-  const handleEdit = (expense: any) => {
-    setEditingExpense({
-      id: expense.id,
-      amount: expense.amount,
-      type: expense.type,
-      date: expense.date,
-      description: expense.description,
-      transaction_type: expense.transaction_type,
-    });
-  };
 
   const handleDelete = async (id: string) => {
     setError(null);
@@ -177,138 +156,8 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Input Section */}
-        <div data-form="add-transaction" className="bg-gradient-to-br from-violet-900/30 to-violet-800/10 rounded-3xl p-4 sm:p-6 md:p-8 shadow-lg border border-violet-500/20 mb-6 md:mb-8">
-          <h2 className="text-lg sm:text-xl font-bold text-gray-100 mb-4 md:mb-6">
-            {editingExpense ? "Edit Transaction" : "Add Transaction"}
-          </h2>
-
-          <div className="space-y-4 md:space-y-4 mb-5 md:mb-6">
-            {/* Amount Input */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-300 mb-2">
-                Amount
-              </label>
-              <input
-                type="number"
-                placeholder="Enter amount"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                onKeyPress={handleKeyPress}
-                className="w-full px-4 py-3 border-2 border-violet-500/30 rounded-xl focus:border-violet-400 focus:outline-none transition bg-violet-900/20 text-gray-100 placeholder-gray-500 text-base"
-                step="0.01"
-                min="0"
-                autoFocus
-              />
-            </div>
-
-            {/* Description */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-300 mb-2">
-                Description (Optional)
-              </label>
-              <input
-                type="text"
-                placeholder="What is this for?"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                onKeyPress={handleKeyPress}
-                className="w-full px-4 py-3 border-2 border-violet-500/30 rounded-xl focus:border-violet-400 focus:outline-none transition bg-violet-900/20 text-gray-100 placeholder-gray-500 text-base"
-              />
-            </div>
-
-            {/* Transaction Type */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-300 mb-2">
-                Payment Method
-              </label>
-              <div className="flex gap-2 mb-2">
-                {["Cash", "GPay", "Card", "Bank"].map((type) => (
-                  <button
-                    key={type}
-                    onClick={() => setTransactionType(transactionType === type ? "" : type)}
-                    className={`px-3 py-2 rounded-lg text-xs font-semibold transition ${
-                      transactionType === type
-                        ? "bg-violet-600 text-white border border-violet-400"
-                        : "bg-violet-900/20 text-gray-300 border border-violet-500/20 hover:border-violet-400"
-                    }`}
-                  >
-                    {type}
-                  </button>
-                ))}
-              </div>
-              {availableTransactionTypes.length > 4 && (
-                <select
-                  value={transactionType}
-                  onChange={(e) => setTransactionType(e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-violet-500/30 rounded-xl focus:border-violet-400 focus:outline-none transition bg-violet-900/20 text-gray-100 text-base"
-                >
-                  <option value="">Select or type payment method...</option>
-                  {availableTransactionTypes.map((type) => (
-                    <option key={type} value={type}>
-                      {type}
-                    </option>
-                  ))}
-                </select>
-              )}
-            </div>
-
-            {/* Date Picker */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-300 mb-2">
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4" />
-                  Date
-                </div>
-              </label>
-              <input
-                type="date"
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
-                className="w-full px-4 py-3 border-2 border-violet-500/30 rounded-xl focus:border-violet-400 focus:outline-none transition bg-violet-900/20 text-gray-100 text-base"
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                Defaults to today's date
-              </p>
-            </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex gap-3">
-            <button
-              onClick={() => handleAddTransaction("credit")}
-              disabled={!amount.trim() || isAddingTransaction}
-              className={`flex-1 py-3 md:py-4 rounded-xl font-semibold transition flex items-center justify-center gap-2 text-base text-white ${
-                !amount.trim() || isAddingTransaction
-                  ? "bg-gray-600 cursor-not-allowed"
-                  : "bg-green-600 hover:bg-green-500 active:bg-green-700"
-              }`}
-            >
-              <Plus className="w-5 h-5" />
-              Income
-            </button>
-            <button
-              onClick={() => handleAddTransaction("debit")}
-              disabled={!amount.trim() || isAddingTransaction}
-              className={`flex-1 py-3 md:py-4 rounded-xl font-semibold transition flex items-center justify-center gap-2 text-base text-white ${
-                !amount.trim() || isAddingTransaction
-                  ? "bg-gray-600 cursor-not-allowed"
-                  : "bg-red-600 hover:bg-red-500 active:bg-red-700"
-              }`}
-            >
-              <Plus className="w-5 h-5" />
-              Expense
-            </button>
-            {editingExpense && (
-              <button
-                onClick={handleCancel}
-                className="px-4 py-3 md:py-4 rounded-xl font-semibold transition text-gray-300 border border-gray-500/30 hover:border-gray-400 bg-gray-900/20"
-              >
-                Cancel
-              </button>
-            )}
-          </div>
-        </div>
+        {/* Add Transaction Modal */}
+        <AddTransactionModal isOpen={isOpen} onClose={closeModal} />
 
         {/* Month Selector for Monthly Tab */}
         {activeTab === "monthly" && (
@@ -416,7 +265,7 @@ export default function Home() {
                   No transactions yet
                 </p>
                 <p className="text-gray-500 text-xs sm:text-sm mt-1">
-                  Add your first transaction above to get started
+                  Add your first transaction using the + button below
                 </p>
               </div>
             ) : (
@@ -462,13 +311,6 @@ export default function Home() {
                         {expense.type === "credit" ? "+" : "−"}
                         {formatCurrency(expense.amount)}
                       </p>
-                      <button
-                        onClick={() => handleEdit(expense)}
-                        className="p-1.5 sm:p-2 hover:bg-violet-600/40 rounded-lg transition text-violet-400 hover:text-violet-300 flex-shrink-0"
-                        aria-label="Edit expense"
-                      >
-                        <Edit2 className="w-4 h-4 sm:w-5 sm:h-5" />
-                      </button>
                       <button
                         onClick={() => handleDelete(expense.id)}
                         className="p-1.5 sm:p-2 hover:bg-red-900/40 rounded-lg transition text-red-400 hover:text-red-300 flex-shrink-0"
