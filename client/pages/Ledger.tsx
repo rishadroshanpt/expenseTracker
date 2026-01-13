@@ -1,14 +1,12 @@
 import { useState, useMemo } from "react";
-import { Edit2, Trash2 } from "lucide-react";
 import { useExpenses } from "@/hooks/useExpenses";
 
 export default function Ledger() {
-  const { expenses, loading, deleteExpense, editExpense } = useExpenses();
+  const { expenses, loading } = useExpenses();
   const [filterType, setFilterType] = useState<"all" | "credit" | "debit">(
     "all",
   );
   const [filterPaymentMethod, setFilterPaymentMethod] = useState<string>("all");
-  const [editingId, setEditingId] = useState<string | null>(null);
 
   // Get unique payment methods
   const paymentMethods = useMemo(() => {
