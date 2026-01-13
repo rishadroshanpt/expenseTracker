@@ -12,51 +12,57 @@
    * A different format will require also updating the theme in tailwind.config.ts.
   */
   :root {
-    --background: 15 10% 6%;
-    --foreground: 250 10% 95%;
+    color-scheme: dark;
+    --background: 0 0% 10%;
+    --foreground: 0 0% 90%;
 
-    --card: 20 10% 10%;
-    --card-foreground: 250 10% 95%;
+    --card: 0 0% 15%;
+    --card-foreground: 0 0% 90%;
 
-    --popover: 20 10% 10%;
-    --popover-foreground: 250 10% 95%;
+    --popover: 0 0% 15%;
+    --popover-foreground: 0 0% 90%;
 
-    --primary: 270 80% 60%;
-    --primary-foreground: 15 10% 6%;
+    --primary: 220 90% 60%;
+    --primary-foreground: 0 0% 10%;
 
-    --secondary: 270 40% 30%;
-    --secondary-foreground: 250 10% 95%;
+    --secondary: 220 50% 40%;
+    --secondary-foreground: 0 0% 90%;
 
-    --muted: 270 20% 25%;
-    --muted-foreground: 250 10% 65%;
+    --muted: 0 0% 40%;
+    --muted-foreground: 0 0% 60%;
 
-    --accent: 270 80% 60%;
-    --accent-foreground: 15 10% 6%;
+    --accent: 220 90% 60%;
+    --accent-foreground: 0 0% 10%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 15 10% 6%;
+    --destructive-foreground: 0 0% 10%;
 
-    --border: 270 20% 20%;
-    --input: 270 20% 15%;
-    --ring: 270 80% 60%;
+    --border: 0 0% 25%;
+    --input: 0 0% 20%;
+    --ring: 220 90% 60%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 15 10% 10%;
+    --sidebar-background: 0 0% 15%;
 
-    --sidebar-foreground: 250 10% 95%;
+    --sidebar-foreground: 0 0% 90%;
 
-    --sidebar-primary: 270 80% 60%;
+    --sidebar-primary: 220 90% 60%;
 
-    --sidebar-primary-foreground: 15 10% 6%;
+    --sidebar-primary-foreground: 0 0% 10%;
 
-    --sidebar-accent: 270 40% 30%;
+    --sidebar-accent: 220 50% 40%;
 
-    --sidebar-accent-foreground: 250 10% 95%;
+    --sidebar-accent-foreground: 0 0% 90%;
 
-    --sidebar-border: 270 20% 20%;
+    --sidebar-border: 0 0% 25%;
 
-    --sidebar-ring: 270 80% 60%;
+    --sidebar-ring: 220 90% 60%;
+  }
+
+  html {
+    background-color: hsl(0 0% 10%);
+    color: hsl(0 0% 90%);
   }
 }
 

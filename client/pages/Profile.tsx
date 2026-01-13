@@ -41,36 +41,30 @@ export default function Profile() {
       <div className="max-w-2xl mx-auto px-4 sm:px-6 md:px-8 py-6 md:py-8">
         {/* Header */}
         <div className="mb-8 md:mb-10">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-violet-600 mb-2">
-            Profile
-          </h1>
-          <p className="text-sm sm:text-base text-gray-400">
-            Manage your account
-          </p>
+          <h1 className="text-4xl font-bold text-white mb-2">Profile</h1>
+          <p className="text-base text-gray-400">Manage your account</p>
         </div>
 
         {/* User Info Card */}
-        <div className="bg-gradient-to-br from-violet-900/40 to-violet-800/20 rounded-3xl p-6 sm:p-8 shadow-lg border border-violet-500/20 mb-6">
+        <div className="bg-slate-800 rounded-lg p-6 sm:p-8 border border-slate-700 mb-6">
           <div className="flex items-center gap-4 sm:gap-6 mb-6">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-violet-500 to-violet-600 rounded-full flex items-center justify-center flex-shrink-0">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
               <span className="text-2xl sm:text-3xl font-bold text-white">
                 {user?.email?.[0].toUpperCase()}
               </span>
             </div>
             <div>
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-100 mb-1">
+              <h2 className="text-xl sm:text-2xl font-bold text-white mb-1">
                 {user?.email?.split("@")[0] || "User"}
               </h2>
-              <p className="text-sm sm:text-base text-gray-400">
-                Premium Member
-              </p>
+              <p className="text-sm sm:text-base text-gray-400">User Account</p>
             </div>
           </div>
 
           {/* Account Details */}
-          <div className="space-y-4 border-t border-violet-500/20 pt-6">
+          <div className="space-y-4 border-t border-slate-700 pt-6">
             <div className="flex items-start gap-3">
-              <Mail className="w-5 h-5 text-violet-400 mt-1 flex-shrink-0" />
+              <Mail className="w-5 h-5 text-blue-400 mt-1 flex-shrink-0" />
               <div>
                 <p className="text-xs sm:text-sm text-gray-500 mb-1">Email</p>
                 <p className="text-sm sm:text-base text-gray-100 break-all">
@@ -80,7 +74,7 @@ export default function Profile() {
             </div>
 
             <div className="flex items-start gap-3">
-              <Calendar className="w-5 h-5 text-violet-400 mt-1 flex-shrink-0" />
+              <Calendar className="w-5 h-5 text-blue-400 mt-1 flex-shrink-0" />
               <div>
                 <p className="text-xs sm:text-sm text-gray-500 mb-1">
                   Member Since
@@ -95,7 +89,7 @@ export default function Profile() {
 
         {/* Statistics */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6">
-          <div className="bg-gradient-to-br from-blue-900/40 to-blue-800/20 rounded-2xl p-4 sm:p-6 shadow-lg border border-blue-500/20">
+          <div className="bg-slate-800 rounded-lg p-4 sm:p-6 border border-slate-700">
             <p className="text-xs sm:text-sm text-gray-400 mb-2">
               Total Transactions
             </p>
@@ -104,7 +98,7 @@ export default function Profile() {
             </p>
           </div>
 
-          <div className="bg-gradient-to-br from-green-900/40 to-green-800/20 rounded-2xl p-4 sm:p-6 shadow-lg border border-green-500/20">
+          <div className="bg-slate-800 rounded-lg p-4 sm:p-6 border border-slate-700">
             <p className="text-xs sm:text-sm text-gray-400 mb-2">
               Total Income
             </p>
@@ -113,7 +107,7 @@ export default function Profile() {
             </p>
           </div>
 
-          <div className="bg-gradient-to-br from-red-900/40 to-red-800/20 rounded-2xl p-4 sm:p-6 shadow-lg border border-red-500/20">
+          <div className="bg-slate-800 rounded-lg p-4 sm:p-6 border border-slate-700">
             <p className="text-xs sm:text-sm text-gray-400 mb-2">
               Total Expenses
             </p>
@@ -124,12 +118,12 @@ export default function Profile() {
         </div>
 
         {/* Settings Section */}
-        <div className="bg-gradient-to-br from-violet-900/30 to-violet-800/10 rounded-3xl p-6 sm:p-8 shadow-lg border border-violet-500/20 mb-6">
-          <h3 className="text-lg sm:text-xl font-bold text-gray-100 mb-4">
+        <div className="bg-slate-800 rounded-lg p-6 sm:p-8 border border-slate-700 mb-6">
+          <h3 className="text-lg sm:text-xl font-bold text-white mb-4">
             Settings
           </h3>
           <div className="space-y-3">
-            <div className="flex items-center justify-between p-4 bg-violet-900/20 rounded-xl border border-violet-500/20 hover:border-violet-400 transition">
+            <div className="flex items-center justify-between p-4 bg-slate-700 rounded border border-slate-600 hover:border-slate-500 transition">
               <div>
                 <p className="text-sm sm:text-base font-semibold text-gray-200">
                   Dark Theme
@@ -138,12 +132,12 @@ export default function Profile() {
                   Currently enabled
                 </p>
               </div>
-              <div className="w-12 h-6 bg-violet-600 rounded-full relative">
+              <div className="w-12 h-6 bg-blue-600 rounded-full relative">
                 <div className="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5"></div>
               </div>
             </div>
 
-            <div className="flex items-center justify-between p-4 bg-violet-900/20 rounded-xl border border-violet-500/20 hover:border-violet-400 transition">
+            <div className="flex items-center justify-between p-4 bg-slate-700 rounded border border-slate-600 hover:border-slate-500 transition">
               <div>
                 <p className="text-sm sm:text-base font-semibold text-gray-200">
                   Notifications
@@ -152,7 +146,7 @@ export default function Profile() {
                   Get alerts for transactions
                 </p>
               </div>
-              <div className="w-12 h-6 bg-violet-600 rounded-full relative">
+              <div className="w-12 h-6 bg-blue-600 rounded-full relative">
                 <div className="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5"></div>
               </div>
             </div>
@@ -162,14 +156,14 @@ export default function Profile() {
         {/* Logout Button */}
         <button
           onClick={handleLogout}
-          className="w-full py-4 px-6 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white rounded-xl font-semibold transition flex items-center justify-center gap-2 text-base shadow-lg"
+          className="w-full py-2 px-6 bg-red-600 hover:bg-red-500 text-white rounded font-semibold transition flex items-center justify-center gap-2 text-base"
         >
-          <LogOut className="w-5 h-5" />
+          <LogOut className="w-4 h-4" />
           Logout
         </button>
 
         {/* Privacy Info */}
-        <div className="mt-8 p-4 bg-violet-900/20 rounded-xl border border-violet-500/20">
+        <div className="mt-8 p-4 bg-slate-800 rounded border border-slate-700">
           <p className="text-xs sm:text-sm text-gray-400">
             <span className="font-semibold text-gray-300">Privacy Notice:</span>{" "}
             Your data is encrypted and stored securely. We never share your
