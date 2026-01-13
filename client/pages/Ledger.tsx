@@ -148,12 +148,12 @@ export default function Ledger() {
         </div>
 
         {/* Transactions List */}
-        <div className="bg-gradient-to-br from-violet-900/30 to-violet-800/10 rounded-2xl shadow-lg border border-violet-500/20 overflow-hidden">
+        <div className="bg-gray-800/50 rounded-2xl shadow-lg border border-gray-700 overflow-hidden">
           <div className="p-4 sm:p-6">
             {loading ? (
               <div className="text-center py-8">
-                <div className="w-8 h-8 bg-violet-600/30 rounded-full flex items-center justify-center mx-auto mb-3 animate-pulse">
-                  <div className="w-6 h-6 bg-violet-500 rounded-full"></div>
+                <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-3 animate-pulse">
+                  <div className="w-6 h-6 bg-gray-600 rounded-full"></div>
                 </div>
                 <p className="text-gray-400">Loading transactions...</p>
               </div>
@@ -166,7 +166,7 @@ export default function Ledger() {
                 {filteredExpenses.map((expense) => (
                   <div
                     key={expense.id}
-                    className="flex items-center justify-between p-3 sm:p-4 bg-violet-900/20 rounded-xl hover:bg-violet-900/30 transition border border-violet-500/20 gap-3"
+                    className="flex items-center justify-between p-3 sm:p-4 bg-gray-800/30 rounded-xl hover:bg-gray-800/50 transition border border-gray-700 gap-3"
                   >
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 sm:gap-3">
