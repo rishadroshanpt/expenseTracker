@@ -198,7 +198,7 @@ export default function Ledger() {
                                 : "Expense")}
                           </p>
                           <div className="flex items-center gap-2 text-xs text-gray-400 mt-1">
-                            <span>{formatDate(expense.date)}</span>
+                            <span>{formatDate(expense.date, expense.time)}</span>
                             {expense.transaction_type && (
                               <>
                                 <span>•</span>
