@@ -249,7 +249,7 @@ export default function Home() {
         </div>
 
         {/* Input Section */}
-        <div className="bg-gradient-to-br from-violet-900/30 to-violet-800/10 rounded-3xl p-4 sm:p-6 md:p-8 shadow-lg border border-violet-500/20 mb-6 md:mb-8">
+        <div data-form="add-transaction" className="bg-gradient-to-br from-violet-900/30 to-violet-800/10 rounded-3xl p-4 sm:p-6 md:p-8 shadow-lg border border-violet-500/20 mb-6 md:mb-8">
           <h2 className="text-lg sm:text-xl font-bold text-gray-100 mb-4 md:mb-6">
             {editingExpense ? "Edit Transaction" : "Add Transaction"}
           </h2>
