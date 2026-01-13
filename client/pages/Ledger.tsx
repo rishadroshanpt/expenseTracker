@@ -75,25 +75,21 @@ export default function Ledger() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8 py-6 md:py-8">
         {/* Header */}
         <div className="mb-6 md:mb-8">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-blue-400 mb-2">
-            Ledger
-          </h1>
-          <p className="text-sm sm:text-base text-gray-400">
-            Complete transaction history
-          </p>
+          <h1 className="text-4xl font-bold text-white mb-2">Ledger</h1>
+          <p className="text-base text-gray-400">Complete transaction history</p>
         </div>
 
         {/* Filters */}
-        <div className="bg-gray-800/50 rounded-2xl p-4 sm:p-6 shadow-lg border border-gray-700 mb-6">
-          <div className="grid grid-cols-2 gap-3 sm:gap-4">
+        <div className="bg-slate-800 rounded-lg p-4 mb-6 border border-slate-700">
+          <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs sm:text-sm font-semibold text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Transaction Type
               </label>
               <select
                 value={filterType}
                 onChange={(e) => setFilterType(e.target.value as any)}
-                className="w-full px-3 py-2 border-2 border-gray-600 rounded-lg focus:border-blue-400 focus:outline-none transition bg-gray-700 text-gray-100 text-sm"
+                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded text-white text-sm focus:outline-none focus:border-blue-500"
               >
                 <option value="all">All Transactions</option>
                 <option value="credit">Income Only</option>
@@ -102,15 +98,15 @@ export default function Ledger() {
             </div>
 
             <div>
-              <label className="block text-xs sm:text-sm font-semibold text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Payment Method
               </label>
               <select
                 value={filterPaymentMethod}
                 onChange={(e) => setFilterPaymentMethod(e.target.value)}
-                className="w-full px-3 py-2 border-2 border-gray-600 rounded-lg focus:border-blue-400 focus:outline-none transition bg-gray-700 text-gray-100 text-sm"
+                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded text-white text-sm focus:outline-none focus:border-blue-500"
               >
-                <option value="all">All Methods</option>
+                <option value="all">Select a method...</option>
                 {paymentMethods.map((method) => (
                   <option key={method} value={method}>
                     {method}
@@ -122,23 +118,23 @@ export default function Ledger() {
         </div>
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4 mb-6">
-          <div className="bg-green-900/40 rounded-2xl p-3 sm:p-4 shadow-lg border border-green-700">
-            <p className="text-xs sm:text-sm text-gray-400 mb-1">Income</p>
-            <p className="text-lg sm:text-xl font-bold text-green-400">
+        <div className="grid grid-cols-3 gap-3 mb-6">
+          <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
+            <p className="text-xs text-gray-400 mb-1">Income</p>
+            <p className="text-xl font-bold text-green-400">
               {formatCurrency(summary.credits)}
             </p>
           </div>
-          <div className="bg-red-900/40 rounded-2xl p-3 sm:p-4 shadow-lg border border-red-700">
-            <p className="text-xs sm:text-sm text-gray-400 mb-1">Expenses</p>
-            <p className="text-lg sm:text-xl font-bold text-red-400">
+          <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
+            <p className="text-xs text-gray-400 mb-1">Expenses</p>
+            <p className="text-xl font-bold text-red-400">
               {formatCurrency(summary.debits)}
             </p>
           </div>
-          <div className="bg-gray-800/50 rounded-2xl p-3 sm:p-4 shadow-lg border border-gray-700">
-            <p className="text-xs sm:text-sm text-gray-400 mb-1">Balance</p>
+          <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
+            <p className="text-xs text-gray-400 mb-1">Balance</p>
             <p
-              className={`text-lg sm:text-xl font-bold ${
+              className={`text-xl font-bold ${
                 summary.balance >= 0 ? "text-green-400" : "text-red-400"
               }`}
             >
@@ -148,74 +144,66 @@ export default function Ledger() {
         </div>
 
         {/* Transactions List */}
-        <div className="bg-gray-800/50 rounded-2xl shadow-lg border border-gray-700 overflow-hidden">
-          <div className="p-4 sm:p-6">
+        <div className="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden">
+          <div className="p-4">
             {loading ? (
               <div className="text-center py-8">
-                <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-3 animate-pulse">
-                  <div className="w-6 h-6 bg-gray-600 rounded-full"></div>
-                </div>
-                <p className="text-gray-400">Loading transactions...</p>
+                <div className="inline-block w-8 h-8 bg-slate-700 rounded-full animate-pulse"></div>
+                <p className="text-gray-400 mt-3">Loading transactions...</p>
               </div>
             ) : filteredExpenses.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-gray-400 text-lg">No transactions found</p>
               </div>
             ) : (
-              <div className="space-y-2 sm:space-y-3">
+              <div className="space-y-3">
                 {filteredExpenses.map((expense) => (
                   <div
                     key={expense.id}
-                    className="flex items-center justify-between p-3 sm:p-4 bg-gray-800/30 rounded-xl hover:bg-gray-800/50 transition border border-gray-700 gap-3"
+                    className="flex items-center justify-between p-4 bg-slate-700 rounded-lg border border-slate-600 hover:bg-slate-600 transition"
                   >
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 sm:gap-3">
+                      <div className="flex items-center gap-3">
                         <div
-                          className={`w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center font-bold text-white flex-shrink-0 text-sm sm:text-base ${
+                          className={`w-8 h-8 rounded flex items-center justify-center font-bold text-sm flex-shrink-0 ${
                             expense.type === "credit"
-                              ? "bg-green-600"
-                              : "bg-red-600"
+                              ? "bg-green-600 text-white"
+                              : "bg-red-600 text-white"
                           }`}
                         >
                           {expense.type === "credit" ? "+" : "−"}
                         </div>
                         <div className="min-w-0">
-                          <p className="font-semibold text-gray-100 text-sm sm:text-base">
+                          <p className="font-semibold text-white text-sm">
                             {expense.description ||
-                              (expense.type === "credit"
-                                ? "Income"
-                                : "Expense")}
+                              (expense.type === "credit" ? "Income" : "Expense")}
                           </p>
-                          <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-500 flex-wrap">
+                          <div className="flex items-center gap-2 text-xs text-gray-400 mt-1">
                             <span>{formatDate(expense.date)}</span>
                             {expense.transaction_type && (
                               <>
                                 <span>•</span>
-                                <span className="text-violet-400">
-                                  {expense.transaction_type}
-                                </span>
+                                <span>{expense.transaction_type}</span>
                               </>
                             )}
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
-                      <div className="text-right">
-                        <p
-                          className={`text-base sm:text-lg font-bold whitespace-nowrap ${
-                            expense.type === "credit"
-                              ? "text-green-400"
-                              : "text-red-400"
-                          }`}
-                        >
-                          {expense.type === "credit" ? "+" : "−"}
-                          {formatCurrency(expense.amount)}
-                        </p>
-                        <p className="text-xs sm:text-sm text-gray-400 mt-1">
-                          Balance: {formatCurrency(expense.runningBalance)}
-                        </p>
-                      </div>
+                    <div className="text-right ml-4 flex-shrink-0">
+                      <p
+                        className={`text-base font-bold whitespace-nowrap ${
+                          expense.type === "credit"
+                            ? "text-green-400"
+                            : "text-red-400"
+                        }`}
+                      >
+                        {expense.type === "credit" ? "+" : "−"}
+                        {formatCurrency(expense.amount)}
+                      </p>
+                      <p className="text-xs text-gray-400 mt-1">
+                        Balance: {formatCurrency(expense.runningBalance)}
+                      </p>
                     </div>
                   </div>
                 ))}
