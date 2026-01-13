@@ -287,7 +287,7 @@ export default function Home() {
                                 : "Expense")}
                           </p>
                           <p className="text-xs text-gray-400 mt-1">
-                            {formatDate(expense.date)}
+                            {formatDate(expense.date, expense.time)}
                             {expense.transaction_type &&
                               ` • ${expense.transaction_type}`}
                           </p>
