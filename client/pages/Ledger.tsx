@@ -101,24 +101,26 @@ export default function Ledger() {
     <div className="pb-32">
       <div className="max-w-4xl mx-auto px-3 sm:px-6 md:px-8 py-4 sm:py-6 md:py-8">
         {/* Header */}
-        <div className="mb-6 md:mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">Ledger</h1>
-          <p className="text-base text-gray-400">
+        <div className="mb-4 sm:mb-6 md:mb-8">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-1 sm:mb-2">
+            Ledger
+          </h1>
+          <p className="text-xs sm:text-sm md:text-base text-gray-400">
             Complete transaction history
           </p>
         </div>
 
         {/* Filters */}
-        <div className="bg-slate-800 rounded-lg p-4 mb-6 border border-slate-700">
-          <div className="grid grid-cols-2 gap-4">
+        <div className="bg-slate-800 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6 border border-slate-700">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                 Transaction Type
               </label>
               <select
                 value={filterType}
                 onChange={(e) => setFilterType(e.target.value as any)}
-                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded text-white text-sm focus:outline-none focus:border-blue-500"
+                className="w-full px-2 sm:px-3 py-2 bg-slate-700 border border-slate-600 rounded text-white text-xs sm:text-sm focus:outline-none focus:border-blue-500"
               >
                 <option value="all">All Transactions</option>
                 <option value="credit">Income Only</option>
@@ -127,13 +129,13 @@ export default function Ledger() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                 Payment Method
               </label>
               <select
                 value={filterPaymentMethod}
                 onChange={(e) => setFilterPaymentMethod(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded text-white text-sm focus:outline-none focus:border-blue-500"
+                className="w-full px-2 sm:px-3 py-2 bg-slate-700 border border-slate-600 rounded text-white text-xs sm:text-sm focus:outline-none focus:border-blue-500"
               >
                 <option value="all">Select a method...</option>
                 {paymentMethods.map((method) => (
@@ -147,23 +149,23 @@ export default function Ledger() {
         </div>
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-3 gap-3 mb-6">
-          <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
+        <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-4 sm:mb-6">
+          <div className="bg-slate-800 rounded-lg p-3 sm:p-4 border border-slate-700">
             <p className="text-xs text-gray-400 mb-1">Income</p>
-            <p className="text-xl font-bold text-green-400">
+            <p className="text-base sm:text-xl font-bold text-green-400 truncate">
               {formatCurrency(summary.credits)}
             </p>
           </div>
-          <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
+          <div className="bg-slate-800 rounded-lg p-3 sm:p-4 border border-slate-700">
             <p className="text-xs text-gray-400 mb-1">Expenses</p>
-            <p className="text-xl font-bold text-red-400">
+            <p className="text-base sm:text-xl font-bold text-red-400 truncate">
               {formatCurrency(summary.debits)}
             </p>
           </div>
-          <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
+          <div className="bg-slate-800 rounded-lg p-3 sm:p-4 border border-slate-700">
             <p className="text-xs text-gray-400 mb-1">Balance</p>
             <p
-              className={`text-xl font-bold ${
+              className={`text-base sm:text-xl font-bold truncate ${
                 summary.balance >= 0 ? "text-green-400" : "text-red-400"
               }`}
             >
