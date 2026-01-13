@@ -38,11 +38,15 @@ export default function Profile() {
 
   return (
     <div className="pb-32">
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 md:px-8 py-6 md:py-8">
+      <div className="max-w-2xl mx-auto px-3 sm:px-6 md:px-8 py-4 sm:py-6 md:py-8">
         {/* Header */}
-        <div className="mb-8 md:mb-10">
-          <h1 className="text-4xl font-bold text-white mb-2">Profile</h1>
-          <p className="text-base text-gray-400">Manage your account</p>
+        <div className="mb-6 sm:mb-8 md:mb-10">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-1 sm:mb-2">
+            Profile
+          </h1>
+          <p className="text-xs sm:text-sm md:text-base text-gray-400">
+            Manage your account
+          </p>
         </div>
 
         {/* User Info Card */}
