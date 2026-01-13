@@ -24,58 +24,9 @@ export default function Home() {
   );
   const [editingExpense, setEditingExpense] = useState<EditingExpense | null>(null);
 
-  const today = new Date().toISOString().split("T")[0];
   const now = new Date();
   const [selectedMonth, setSelectedMonth] = useState(now.getMonth());
   const [selectedYear, setSelectedYear] = useState(now.getFullYear());
-
-  // Get unique transaction types from expenses
-  const availableTransactionTypes = useMemo(() => {
-    const types = new Set<string>();
-    expenses.forEach((exp) => {
-      if (exp.transaction_type) {
-        types.add(exp.transaction_type);
-      }
-    });
-    return Array.from(types).sort();
-  }, [expenses]);
-
-  const handleAddTransaction = async (type: "credit" | "debit") => {
-    if (!amount.trim()) return;
-
-    setError(null);
-    setIsAddingTransaction(true);
-
-    try {
-      if (editingExpense) {
-        await editExpense(
-          editingExpense.id,
-          parseFloat(amount),
-          type,
-          selectedDate,
-          description || undefined,
-          transactionType || undefined,
-        );
-        setEditingExpense(null);
-      } else {
-        await addExpense(
-          parseFloat(amount),
-          type,
-          selectedDate,
-          description || undefined,
-          transactionType || undefined,
-        );
-      }
-      setAmount("");
-      setDescription("");
-      setSelectedDate(today);
-      setTransactionType("");
-    } catch (err) {
-      console.error("Error adding/updating transaction:", err);
-    } finally {
-      setIsAddingTransaction(false);
-    }
-  };
 
   const handleEdit = (expense: any) => {
     setEditingExpense({
@@ -86,10 +37,6 @@ export default function Home() {
       description: expense.description,
       transaction_type: expense.transaction_type,
     });
-    setAmount(expense.amount.toString());
-    setDescription(expense.description || "");
-    setSelectedDate(expense.date);
-    setTransactionType(expense.transaction_type || "");
   };
 
   const handleDelete = async (id: string) => {
@@ -98,20 +45,6 @@ export default function Home() {
       await deleteExpense(id);
     } catch (err) {
       console.error("Error deleting expense:", err);
-    }
-  };
-
-  const handleCancel = () => {
-    setEditingExpense(null);
-    setAmount("");
-    setDescription("");
-    setSelectedDate(today);
-    setTransactionType("");
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && amount.trim()) {
-      handleAddTransaction(editingExpense?.type || "debit");
     }
   };
 
