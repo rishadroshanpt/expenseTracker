@@ -1,13 +1,14 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronDown, Plus, Trash2, Calendar, LogOut } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { Expense } from "@shared/api";
+import { useExpenses } from "@/hooks/useExpenses";
 
 export default function ExpenseTracker() {
   const navigate = useNavigate();
-  const { user, logout, token } = useAuth();
-  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const { user, logout } = useAuth();
+  const { expenses, loading, error, addExpense, deleteExpense, setError } =
+    useExpenses();
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [selectedDate, setSelectedDate] = useState(
@@ -16,105 +17,40 @@ export default function ExpenseTracker() {
   const [activeTab, setActiveTab] = useState<"monthly" | "credits" | "debits">(
     "monthly",
   );
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [isAddingTransaction, setIsAddingTransaction] = useState(false);
 
   const today = new Date().toISOString().split("T")[0];
 
-  // Fetch expenses on mount
-  useEffect(() => {
-    fetchExpenses();
-  }, [token]);
-
-  const fetchExpenses = async () => {
-    if (!token) return;
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await fetch("/api/expenses", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch expenses");
-      }
-
-      const data = await response.json();
-      // Convert date strings to Date objects for sorting
-      const processedExpenses = (data.expenses || []).map((exp: any) => ({
-        ...exp,
-        date: new Date(exp.date),
-      }));
-      setExpenses(processedExpenses);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to fetch expenses");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleAddTransaction = async (type: "credit" | "debit") => {
-    if (!amount.trim() || !token) return;
+    if (!amount.trim()) return;
 
     setError(null);
+    setIsAddingTransaction(true);
 
     try {
-      const response = await fetch("/api/expenses", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          amount: parseFloat(amount),
-          type,
-          date: selectedDate,
-          description: description || undefined,
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to create expense");
-      }
-
-      const newExpense = await response.json();
-      setExpenses([
-        ...expenses,
-        { ...newExpense, date: new Date(newExpense.date) },
-      ]);
+      await addExpense(
+        parseFloat(amount),
+        type,
+        selectedDate,
+        description || undefined
+      );
       setAmount("");
       setDescription("");
       setSelectedDate(today);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create expense");
+      console.error("Error adding transaction:", err);
+    } finally {
+      setIsAddingTransaction(false);
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!token) return;
-
     setError(null);
 
     try {
-      const response = await fetch(`/api/expenses/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete expense");
-      }
-
-      setExpenses(expenses.filter((exp) => exp.id !== id));
+      await deleteExpense(id);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to delete expense");
+      console.error("Error deleting expense:", err);
     }
   };
 
