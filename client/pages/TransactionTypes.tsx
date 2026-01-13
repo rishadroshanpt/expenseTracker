@@ -110,8 +110,8 @@ export default function TransactionTypes() {
         </div>
 
         {/* Payment Methods Selection */}
-        <div className="mb-8">
-          <h2 className="text-lg font-semibold text-white mb-4">
+        <div className="mb-6 sm:mb-8">
+          <h2 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">
             Select a Payment Method
           </h2>
           <div className="flex flex-wrap gap-2">
@@ -121,7 +121,7 @@ export default function TransactionTypes() {
                 onClick={() =>
                   setSelectedMethod(selectedMethod === method ? null : method)
                 }
-                className={`px-4 py-2 rounded-lg font-medium transition ${
+                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition ${
                   selectedMethod === method
                     ? "bg-blue-600 text-white border border-blue-500"
                     : "bg-slate-700 text-gray-300 border border-slate-600 hover:border-slate-500"
@@ -135,16 +135,20 @@ export default function TransactionTypes() {
 
         {/* Selected Method Stats */}
         {selectedMethod && selectedMethodStats && (
-          <div className="grid grid-cols-2 gap-4 mb-8">
-            <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
-              <p className="text-sm text-gray-400 mb-2">Income</p>
-              <p className="text-2xl font-bold text-green-400">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8">
+            <div className="bg-slate-800 rounded-lg p-3 sm:p-4 border border-slate-700">
+              <p className="text-xs sm:text-sm text-gray-400 mb-1 sm:mb-2">
+                Income
+              </p>
+              <p className="text-lg sm:text-2xl font-bold text-green-400 truncate">
                 {formatCurrency(selectedMethodStats.income)}
               </p>
             </div>
-            <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
-              <p className="text-sm text-gray-400 mb-2">Expense</p>
-              <p className="text-2xl font-bold text-red-400">
+            <div className="bg-slate-800 rounded-lg p-3 sm:p-4 border border-slate-700">
+              <p className="text-xs sm:text-sm text-gray-400 mb-1 sm:mb-2">
+                Expense
+              </p>
+              <p className="text-lg sm:text-2xl font-bold text-red-400 truncate">
                 {formatCurrency(selectedMethodStats.expense)}
               </p>
             </div>
