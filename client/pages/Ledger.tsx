@@ -50,15 +50,6 @@ export default function Ledger() {
     return { credits, debits, balance: credits - debits };
   }, [filteredExpenses]);
 
-  const handleDelete = async (id: string) => {
-    if (confirm("Are you sure you want to delete this transaction?")) {
-      try {
-        await deleteExpense(id);
-      } catch (err) {
-        console.error("Error deleting:", err);
-      }
-    }
-  };
 
   const formatDate = (date: string) => {
     return new Date(date).toLocaleDateString("en-US", {
