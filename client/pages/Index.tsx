@@ -299,6 +299,58 @@ export default function ExpenseTracker() {
           </div>
         </div>
 
+        {/* Month Selector for Monthly Tab */}
+        {activeTab === "monthly" && (
+          <div className="bg-white rounded-3xl p-4 sm:p-6 md:p-8 shadow-lg border border-gray-100 mb-6 md:mb-8">
+            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-end justify-between">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-3">
+                  Select Month
+                </label>
+                <div className="flex gap-3">
+                  <select
+                    value={selectedMonth}
+                    onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
+                    className="px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none transition bg-gray-50 text-sm font-medium"
+                  >
+                    {[
+                      "January", "February", "March", "April", "May", "June",
+                      "July", "August", "September", "October", "November", "December"
+                    ].map((month, idx) => (
+                      <option key={idx} value={idx}>{month}</option>
+                    ))}
+                  </select>
+                  <select
+                    value={selectedYear}
+                    onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+                    className="px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none transition bg-gray-50 text-sm font-medium"
+                  >
+                    {[2024, 2025, 2026, 2027].map((year) => (
+                      <option key={year} value={year}>{year}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Monthly Totals */}
+              <div className="w-full sm:w-auto grid grid-cols-2 gap-3">
+                <div className="bg-green-50 rounded-xl p-3 border border-green-200">
+                  <p className="text-xs text-gray-600 mb-1">Income</p>
+                  <p className="text-sm sm:text-base font-bold text-green-600">
+                    {formatCurrency(monthlyStats.totalCredit)}
+                  </p>
+                </div>
+                <div className="bg-red-50 rounded-xl p-3 border border-red-200">
+                  <p className="text-xs text-gray-600 mb-1">Expense</p>
+                  <p className="text-sm sm:text-base font-bold text-red-600">
+                    {formatCurrency(monthlyStats.totalDebit)}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Tabs */}
         <div className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden">
           <div className="flex border-b border-gray-200 overflow-x-auto">
