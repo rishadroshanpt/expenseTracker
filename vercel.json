@@ -1,0 +1,18 @@
+{
+  "buildCommand": "pnpm build",
+  "outputDirectory": "dist",
+  "devCommand": "pnpm dev",
+  "cleanUrls": true,
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "env": [
+    "VITE_PUBLIC_SUPABASE_URL",
+    "VITE_PUBLIC_SUPABASE_ANON_KEY",
+    "VITE_PUBLIC_BUILDER_KEY"
+  ]
+}
