@@ -68,9 +68,9 @@ export default function AddTransactionModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent className="bg-gradient-to-br from-violet-900/30 to-violet-800/10 border border-violet-500/20 max-w-md">
+      <DialogContent className="bg-slate-800 border border-slate-700 max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-gray-100">
+          <DialogTitle className="text-2xl font-bold text-white">
             Add Transaction
           </DialogTitle>
         </DialogHeader>
@@ -78,7 +78,7 @@ export default function AddTransactionModal({
         <div className="space-y-4 py-4">
           {/* Amount Input */}
           <div>
-            <label className="block text-sm font-semibold text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2">
               Amount
             </label>
             <input
@@ -87,7 +87,7 @@ export default function AddTransactionModal({
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               onKeyPress={handleKeyPress}
-              className="w-full px-4 py-3 border-2 border-violet-500/30 rounded-xl focus:border-violet-400 focus:outline-none transition bg-violet-900/20 text-gray-100 placeholder-gray-500 text-base"
+              className="w-full px-4 py-2 border border-slate-600 rounded bg-slate-700 text-white placeholder-gray-400 text-base focus:outline-none focus:border-blue-500"
               step="0.01"
               min="0"
               autoFocus
@@ -96,7 +96,7 @@ export default function AddTransactionModal({
 
           {/* Description */}
           <div>
-            <label className="block text-sm font-semibold text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2">
               Description (Optional)
             </label>
             <input
@@ -105,13 +105,13 @@ export default function AddTransactionModal({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               onKeyPress={handleKeyPress}
-              className="w-full px-4 py-3 border-2 border-violet-500/30 rounded-xl focus:border-violet-400 focus:outline-none transition bg-violet-900/20 text-gray-100 placeholder-gray-500 text-base"
+              className="w-full px-4 py-2 border border-slate-600 rounded bg-slate-700 text-white placeholder-gray-400 text-base focus:outline-none focus:border-blue-500"
             />
           </div>
 
           {/* Transaction Type */}
           <div>
-            <label className="block text-sm font-semibold text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2">
               Payment Method
             </label>
             <div className="flex gap-2 flex-wrap">
@@ -121,10 +121,10 @@ export default function AddTransactionModal({
                   onClick={() =>
                     setTransactionType(transactionType === type ? "" : type)
                   }
-                  className={`px-3 py-2 rounded-lg text-xs font-semibold transition ${
+                  className={`px-3 py-2 rounded text-xs font-semibold transition ${
                     transactionType === type
-                      ? "bg-violet-600 text-white border border-violet-400"
-                      : "bg-violet-900/20 text-gray-300 border border-violet-500/20 hover:border-violet-400"
+                      ? "bg-blue-600 text-white border border-blue-500"
+                      : "bg-slate-700 text-gray-300 border border-slate-600 hover:border-slate-500"
                   }`}
                 >
                   {type}
@@ -135,7 +135,7 @@ export default function AddTransactionModal({
 
           {/* Date Picker */}
           <div>
-            <label className="block text-sm font-semibold text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2">
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
                 Date
@@ -145,7 +145,7 @@ export default function AddTransactionModal({
               type="date"
               value={selectedDate}
               onChange={(e) => setSelectedDate(e.target.value)}
-              className="w-full px-4 py-3 border-2 border-violet-500/30 rounded-xl focus:border-violet-400 focus:outline-none transition bg-violet-900/20 text-gray-100 text-base"
+              className="w-full px-4 py-2 border border-slate-600 rounded bg-slate-700 text-white text-base focus:outline-none focus:border-blue-500"
             />
             <p className="text-xs text-gray-500 mt-1">
               Defaults to today's date
@@ -158,25 +158,25 @@ export default function AddTransactionModal({
           <button
             onClick={() => handleAddTransaction("credit")}
             disabled={!amount.trim() || isAdding}
-            className={`flex-1 py-3 rounded-xl font-semibold transition flex items-center justify-center gap-2 text-base text-white ${
+            className={`flex-1 py-2 rounded font-semibold transition flex items-center justify-center gap-2 text-base text-white ${
               !amount.trim() || isAdding
                 ? "bg-gray-600 cursor-not-allowed"
-                : "bg-green-600 hover:bg-green-500 active:bg-green-700"
+                : "bg-green-600 hover:bg-green-500"
             }`}
           >
-            <Plus className="w-5 h-5" />
+            <Plus className="w-4 h-4" />
             Income
           </button>
           <button
             onClick={() => handleAddTransaction("debit")}
             disabled={!amount.trim() || isAdding}
-            className={`flex-1 py-3 rounded-xl font-semibold transition flex items-center justify-center gap-2 text-base text-white ${
+            className={`flex-1 py-2 rounded font-semibold transition flex items-center justify-center gap-2 text-base text-white ${
               !amount.trim() || isAdding
                 ? "bg-gray-600 cursor-not-allowed"
-                : "bg-red-600 hover:bg-red-500 active:bg-red-700"
+                : "bg-red-600 hover:bg-red-500"
             }`}
           >
-            <Plus className="w-5 h-5" />
+            <Plus className="w-4 h-4" />
             Expense
           </button>
         </div>
