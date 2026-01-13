@@ -216,8 +216,8 @@ export default function Home() {
         )}
 
         {/* Tabs */}
-        <div className="bg-gray-800/50 rounded-3xl shadow-lg border border-gray-700 overflow-hidden">
-          <div className="flex border-b border-gray-700 overflow-x-auto">
+        <div className="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden">
+          <div className="flex border-b border-slate-700 overflow-x-auto">
             {[
               { id: "monthly", label: "Monthly" },
               { id: "credits", label: "Income" },
@@ -226,7 +226,7 @@ export default function Home() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex-1 px-3 sm:px-4 md:px-6 py-3 md:py-4 font-semibold transition text-xs sm:text-sm md:text-base whitespace-nowrap ${
+                className={`flex-1 px-4 py-3 font-medium transition text-sm whitespace-nowrap ${
                   activeTab === tab.id
                     ? "text-blue-400 border-b-2 border-blue-400"
                     : "text-gray-400 hover:text-gray-300"
