@@ -161,7 +161,26 @@ export default function AddTransactionModal({
               className="w-full px-4 py-2 border border-slate-600 rounded bg-slate-700 text-white text-base focus:outline-none focus:border-blue-500"
             />
             <p className="text-xs text-gray-500 mt-1">
-              Defaults to today's date
+              Defaults to today's date (Kolkata timezone)
+            </p>
+          </div>
+
+          {/* Time Picker */}
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              <div className="flex items-center gap-2">
+                <Clock className="w-4 h-4" />
+                Time
+              </div>
+            </label>
+            <input
+              type="time"
+              value={selectedTime}
+              onChange={(e) => setSelectedTime(e.target.value)}
+              className="w-full px-4 py-2 border border-slate-600 rounded bg-slate-700 text-white text-base focus:outline-none focus:border-blue-500"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Kolkata timezone (Asia/Kolkata)
             </p>
           </div>
         </div>
