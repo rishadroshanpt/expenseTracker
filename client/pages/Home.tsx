@@ -295,7 +295,8 @@ export default function Home() {
                           </p>
                           <p className="text-xs sm:text-sm text-gray-500">
                             {formatDate(expense.date)}
-                            {expense.transaction_type && ` • ${expense.transaction_type}`}
+                            {expense.transaction_type &&
+                              ` • ${expense.transaction_type}`}
                           </p>
                         </div>
                       </div>

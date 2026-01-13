@@ -7,7 +7,9 @@ export default function TransactionTypes() {
 
   // Get all payment methods and their usage count
   const paymentMethods = useMemo(() => {
-    const methods: { [key: string]: { count: number; total: number; lastUsed: string } } = {};
+    const methods: {
+      [key: string]: { count: number; total: number; lastUsed: string };
+    } = {};
 
     expenses.forEach((exp) => {
       const method = exp.transaction_type || "Not Specified";
@@ -150,13 +152,15 @@ export default function TransactionTypes() {
           </h3>
           <ul className="text-xs sm:text-sm text-gray-400 space-y-1">
             <li>
-              • Payment methods are created automatically when you add a transaction
+              • Payment methods are created automatically when you add a
+              transaction
             </li>
             <li>
               • Track spending patterns by payment method in the Ledger view
             </li>
             <li>
-              • Common methods include: Cash, GPay, Card (Credit/Debit), Bank Transfer
+              • Common methods include: Cash, GPay, Card (Credit/Debit), Bank
+              Transfer
             </li>
           </ul>
         </div>

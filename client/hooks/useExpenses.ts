@@ -8,7 +8,7 @@ const SUPABASE_ANON_KEY = import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY;
 
 const supabase = createClient(
   SUPABASE_URL || "https://placeholder.supabase.co",
-  SUPABASE_ANON_KEY || "placeholder-key"
+  SUPABASE_ANON_KEY || "placeholder-key",
 );
 
 export function useExpenses() {
@@ -46,7 +46,7 @@ export function useExpenses() {
         data?.map((exp) => ({
           ...exp,
           date: new Date(exp.date),
-        })) || []
+        })) || [],
       );
     } catch (err) {
       const errorMessage =
@@ -77,7 +77,7 @@ export function useExpenses() {
         () => {
           // Refetch when changes occur
           fetchExpenses();
-        }
+        },
       )
       .subscribe();
 
@@ -93,7 +93,7 @@ export function useExpenses() {
       type: "credit" | "debit",
       date: string,
       description?: string,
-      transaction_type?: string
+      transaction_type?: string,
     ) => {
       if (!user) {
         throw new Error("Not authenticated");
@@ -135,17 +135,14 @@ export function useExpenses() {
           });
           throw new Error(
             insertError.message ||
-            "Failed to add expense. Please check if all required fields are valid."
+              "Failed to add expense. Please check if all required fields are valid.",
           );
         }
 
         console.log("Expense added successfully:", data);
 
         if (data) {
-          setExpenses([
-            { ...data, date: new Date(data.date) },
-            ...expenses,
-          ]);
+          setExpenses([{ ...data, date: new Date(data.date) }, ...expenses]);
         }
 
         return data;
@@ -157,7 +154,7 @@ export function useExpenses() {
         throw err;
       }
     },
-    [user, expenses]
+    [user, expenses],
   );
 
   // Delete expense
@@ -188,7 +185,7 @@ export function useExpenses() {
         throw err;
       }
     },
-    [user, expenses]
+    [user, expenses],
   );
 
   // Edit expense
@@ -199,7 +196,7 @@ export function useExpenses() {
       type: "credit" | "debit",
       date: string,
       description?: string,
-      transaction_type?: string
+      transaction_type?: string,
     ) => {
       if (!user) {
         throw new Error("Not authenticated");
@@ -228,8 +225,8 @@ export function useExpenses() {
 
         setExpenses(
           expenses.map((exp) =>
-            exp.id === id ? { ...data, date: new Date(data.date) } : exp
-          )
+            exp.id === id ? { ...data, date: new Date(data.date) } : exp,
+          ),
         );
 
         return data;
@@ -240,7 +237,7 @@ export function useExpenses() {
         throw err;
       }
     },
-    [user, expenses]
+    [user, expenses],
   );
 
   return {

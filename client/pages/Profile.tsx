@@ -86,9 +86,7 @@ export default function Profile() {
                   Member Since
                 </p>
                 <p className="text-sm sm:text-base text-gray-100">
-                  {user?.created_at
-                    ? formatDate(user.created_at)
-                    : "Recently"}
+                  {user?.created_at ? formatDate(user.created_at) : "Recently"}
                 </p>
               </div>
             </div>
@@ -173,9 +171,9 @@ export default function Profile() {
         {/* Privacy Info */}
         <div className="mt-8 p-4 bg-violet-900/20 rounded-xl border border-violet-500/20">
           <p className="text-xs sm:text-sm text-gray-400">
-            <span className="font-semibold text-gray-300">Privacy Notice:</span> Your
-            data is encrypted and stored securely. We never share your information with
-            third parties.
+            <span className="font-semibold text-gray-300">Privacy Notice:</span>{" "}
+            Your data is encrypted and stored securely. We never share your
+            information with third parties.
           </p>
         </div>
       </div>

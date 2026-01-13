@@ -6,11 +6,15 @@ interface AddTransactionContextType {
   closeModal: () => void;
 }
 
-const AddTransactionContext = createContext<AddTransactionContextType | undefined>(
-  undefined,
-);
+const AddTransactionContext = createContext<
+  AddTransactionContextType | undefined
+>(undefined);
 
-export function AddTransactionProvider({ children }: { children: React.ReactNode }) {
+export function AddTransactionProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = () => setIsOpen(true);

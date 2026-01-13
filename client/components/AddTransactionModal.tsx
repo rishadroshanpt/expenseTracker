@@ -1,6 +1,11 @@
 import { useState, useMemo } from "react";
 import { Plus, Calendar } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useExpenses } from "@/hooks/useExpenses";
 
 interface AddTransactionModalProps {
@@ -8,7 +13,10 @@ interface AddTransactionModalProps {
   onClose: () => void;
 }
 
-export default function AddTransactionModal({ isOpen, onClose }: AddTransactionModalProps) {
+export default function AddTransactionModal({
+  isOpen,
+  onClose,
+}: AddTransactionModalProps) {
   const { addExpense, editExpense } = useExpenses();
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
@@ -110,7 +118,9 @@ export default function AddTransactionModal({ isOpen, onClose }: AddTransactionM
               {["Cash", "GPay", "Card", "Bank"].map((type) => (
                 <button
                   key={type}
-                  onClick={() => setTransactionType(transactionType === type ? "" : type)}
+                  onClick={() =>
+                    setTransactionType(transactionType === type ? "" : type)
+                  }
                   className={`px-3 py-2 rounded-lg text-xs font-semibold transition ${
                     transactionType === type
                       ? "bg-violet-600 text-white border border-violet-400"

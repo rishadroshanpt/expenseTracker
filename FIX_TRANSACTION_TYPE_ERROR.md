@@ -1,13 +1,16 @@
 # Fix: Supabase Insert Error - Missing transaction_type Column
 
 ## Problem
+
 You're getting this error when trying to add a transaction:
+
 ```
 Supabase insert error: [object Object]
 Add expense error
 ```
 
 ## Root Cause
+
 The `expenses` table in Supabase is missing the `transaction_type` column that the app is trying to insert.
 
 ## Solution
@@ -40,6 +43,7 @@ The `expenses` table in Supabase is missing the `transaction_type` column that t
 
 1. **Delete existing tables** (if comfortable doing so)
    - In Supabase SQL Editor, run:
+
    ```sql
    DROP TABLE IF EXISTS expenses CASCADE;
    DROP TABLE IF EXISTS profiles CASCADE;
@@ -70,6 +74,7 @@ After running the migration:
 ## What Changed
 
 We added a new column to track payment methods:
+
 - **Column Name**: `transaction_type`
 - **Type**: TEXT (accepts values like "Cash", "GPay", "Card", "Bank")
 - **Nullable**: Yes (old transactions won't have a value)

@@ -4,7 +4,9 @@ import { useExpenses } from "@/hooks/useExpenses";
 
 export default function Ledger() {
   const { expenses, loading, deleteExpense, editExpense } = useExpenses();
-  const [filterType, setFilterType] = useState<"all" | "credit" | "debit">("all");
+  const [filterType, setFilterType] = useState<"all" | "credit" | "debit">(
+    "all",
+  );
   const [filterPaymentMethod, setFilterPaymentMethod] = useState<string>("all");
   const [editingId, setEditingId] = useState<string | null>(null);
 
@@ -28,7 +30,9 @@ export default function Ledger() {
     }
 
     if (filterPaymentMethod !== "all") {
-      filtered = filtered.filter((e) => e.transaction_type === filterPaymentMethod);
+      filtered = filtered.filter(
+        (e) => e.transaction_type === filterPaymentMethod,
+      );
     }
 
     return filtered.sort(
@@ -181,7 +185,10 @@ export default function Ledger() {
                         </div>
                         <div className="min-w-0">
                           <p className="font-semibold text-gray-100 text-sm sm:text-base">
-                            {expense.description || (expense.type === "credit" ? "Income" : "Expense")}
+                            {expense.description ||
+                              (expense.type === "credit"
+                                ? "Income"
+                                : "Expense")}
                           </p>
                           <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-500 flex-wrap">
                             <span>{formatDate(expense.date)}</span>
@@ -209,7 +216,11 @@ export default function Ledger() {
                         {formatCurrency(expense.amount)}
                       </p>
                       <button
-                        onClick={() => setEditingId(editingId === expense.id ? null : expense.id)}
+                        onClick={() =>
+                          setEditingId(
+                            editingId === expense.id ? null : expense.id,
+                          )
+                        }
                         className="p-1.5 sm:p-2 hover:bg-violet-600/40 rounded-lg transition text-violet-400 hover:text-violet-300 flex-shrink-0"
                         aria-label="Edit transaction"
                       >

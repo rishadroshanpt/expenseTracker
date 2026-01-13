@@ -23,29 +23,29 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <AddTransactionProvider>
         <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute>
-                  <Index />
-                </ProtectedRoute>
-              }
-            >
-              <Route path="/" element={<Home />} index />
-              <Route path="/ledger" element={<Ledger />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/types" element={<TransactionTypes />} />
-            </Route>
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute>
+                    <Index />
+                  </ProtectedRoute>
+                }
+              >
+                <Route path="/" element={<Home />} index />
+                <Route path="/ledger" element={<Ledger />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/types" element={<TransactionTypes />} />
+              </Route>
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
         </TooltipProvider>
       </AddTransactionProvider>
     </QueryClientProvider>
