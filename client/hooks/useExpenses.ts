@@ -3,9 +3,12 @@ import { createClient } from "@supabase/supabase-js";
 import { Expense } from "@shared/api";
 import { useAuth } from "./useAuth";
 
+const SUPABASE_URL = import.meta.env.VITE_PUBLIC_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY;
+
 const supabase = createClient(
-  import.meta.env.VITE_PUBLIC_SUPABASE_URL || "",
-  import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY || ""
+  SUPABASE_URL || "https://placeholder.supabase.co",
+  SUPABASE_ANON_KEY || "placeholder-key"
 );
 
 export function useExpenses() {
