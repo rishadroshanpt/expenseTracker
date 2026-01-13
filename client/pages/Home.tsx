@@ -273,7 +273,7 @@ export default function Home() {
                 {displayedExpenses.map((expense) => (
                   <div
                     key={expense.id}
-                    className="flex items-center justify-between p-3 sm:p-4 bg-violet-900/20 rounded-xl hover:bg-violet-900/30 transition border border-violet-500/20 gap-3"
+                    className="flex items-center justify-between p-3 sm:p-4 bg-gray-800/30 rounded-xl hover:bg-gray-800/50 transition border border-gray-700 gap-3"
                   >
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 sm:gap-3">
