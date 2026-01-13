@@ -88,10 +88,10 @@ export default function AddTransactionModal({
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-4 py-4">
+        <div className="space-y-3 sm:space-y-4 py-3 sm:py-4">
           {/* Amount Input */}
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
               Amount
             </label>
             <input
@@ -100,7 +100,7 @@ export default function AddTransactionModal({
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               onKeyPress={handleKeyPress}
-              className="w-full px-4 py-2 border border-slate-600 rounded bg-slate-700 text-white placeholder-gray-400 text-base focus:outline-none focus:border-blue-500"
+              className="w-full px-3 sm:px-4 py-2 border border-slate-600 rounded bg-slate-700 text-white placeholder-gray-400 text-sm sm:text-base focus:outline-none focus:border-blue-500"
               step="0.01"
               min="0"
               autoFocus
@@ -109,7 +109,7 @@ export default function AddTransactionModal({
 
           {/* Description */}
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
               Description (Optional)
             </label>
             <input
@@ -118,7 +118,7 @@ export default function AddTransactionModal({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               onKeyPress={handleKeyPress}
-              className="w-full px-4 py-2 border border-slate-600 rounded bg-slate-700 text-white placeholder-gray-400 text-base focus:outline-none focus:border-blue-500"
+              className="w-full px-3 sm:px-4 py-2 border border-slate-600 rounded bg-slate-700 text-white placeholder-gray-400 text-sm sm:text-base focus:outline-none focus:border-blue-500"
             />
           </div>
 
