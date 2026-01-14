@@ -134,13 +134,22 @@ export default function Accounts() {
     }
   };
 
-  const handleDeleteEntry = async (id: string) => {
+  const handleDeleteEntryClick = (id: string, name: string) => {
+    setDeleteConfirmation({
+      isOpen: true,
+      entryId: id,
+      entryName: name,
+    });
+  };
+
+  const handleDeleteEntry = async () => {
     try {
-      await deleteLoanAccount(id);
+      await deleteLoanAccount(deleteConfirmation.entryId);
       toast({
         title: "Success",
         description: "Entry deleted",
       });
+      setDeleteConfirmation((prev) => ({ ...prev, isOpen: false }));
     } catch (err) {
       toast({
         title: "Error",
