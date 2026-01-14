@@ -521,27 +521,13 @@ function CategoryCard({
                   {/* Quick action buttons */}
                   <div className="grid grid-cols-2 gap-2 mt-3">
                     <button
-                      onClick={() => {
-                        const amount = prompt("Amount received:");
-                        if (amount && !isNaN(parseFloat(amount))) {
-                          onUpdateAmount(
-                            entry.id,
-                            "received",
-                            parseFloat(amount),
-                          );
-                        }
-                      }}
+                      onClick={() => onOpenModal?.(entry.id, "received")}
                       className="bg-green-600 hover:bg-green-700 text-white text-xs py-1 rounded transition"
                     >
                       + Received
                     </button>
                     <button
-                      onClick={() => {
-                        const amount = prompt("Amount paid:");
-                        if (amount && !isNaN(parseFloat(amount))) {
-                          onUpdateAmount(entry.id, "paid", parseFloat(amount));
-                        }
-                      }}
+                      onClick={() => onOpenModal?.(entry.id, "paid")}
                       className="bg-blue-600 hover:bg-blue-700 text-white text-xs py-1 rounded transition"
                     >
                       + Paid
