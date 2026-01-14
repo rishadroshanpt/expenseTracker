@@ -124,17 +124,17 @@ export default function AddTransactionModal({
 
           {/* Transaction Type */}
           <div>
-            <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
+            <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1.5">
               Payment Method
             </label>
-            <div className="flex gap-1.5 sm:gap-2 flex-wrap">
+            <div className="flex gap-1 sm:gap-2 flex-wrap">
               {["Cash", "GPay", "Card", "Bank"].map((type) => (
                 <button
                   key={type}
                   onClick={() =>
                     setTransactionType(transactionType === type ? "" : type)
                   }
-                  className={`px-2 sm:px-3 py-1.5 sm:py-2 rounded text-xs font-semibold transition ${
+                  className={`px-1.5 sm:px-3 py-1 sm:py-2 rounded text-xs font-semibold transition ${
                     transactionType === type
                       ? "bg-blue-600 text-white border border-blue-500"
                       : "bg-slate-700 text-gray-300 border border-slate-600 hover:border-slate-500"
