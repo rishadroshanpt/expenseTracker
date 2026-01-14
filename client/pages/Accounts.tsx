@@ -14,6 +14,16 @@ interface LoanEntry {
   description: string;
 }
 
+interface FormDataState {
+  [key: string]: {
+    name: string;
+    initialAmount: string;
+    amountReceived: string;
+    amountPaid: string;
+    description: string;
+  };
+}
+
 export default function Accounts() {
   const { expenses } = useExpenses();
   const { toast } = useToast();
@@ -21,13 +31,42 @@ export default function Accounts() {
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const [loanEntries, setLoanEntries] = useState<LoanEntry[]>([]);
   const [showAddForm, setShowAddForm] = useState<string | null>(null);
-  const [formData, setFormData] = useState({
-    name: "",
-    initialAmount: "",
-    amountReceived: "",
-    amountPaid: "",
-    description: "",
-  });
+  const [formDataByType, setFormDataByType] = useState<FormDataState>({});
+
+  // Get or create form data for a specific type
+  const getFormData = (type: string) => {
+    if (!formDataByType[type]) {
+      setFormDataByType((prev) => ({
+        ...prev,
+        [type]: {
+          name: "",
+          initialAmount: "",
+          amountReceived: "",
+          amountPaid: "",
+          description: "",
+        },
+      }));
+    }
+    return (
+      formDataByType[type] || {
+        name: "",
+        initialAmount: "",
+        amountReceived: "",
+        amountPaid: "",
+        description: "",
+      }
+    );
+  };
+
+  const updateFormData = (type: string, field: string, value: string) => {
+    setFormDataByType((prev) => ({
+      ...prev,
+      [type]: {
+        ...getFormData(type),
+        [field]: value,
+      },
+    }));
+  };
 
   // Calculate account totals from expenses
   const accountTotals = useMemo(() => {
@@ -54,11 +93,19 @@ export default function Accounts() {
     return `₹${amount.toFixed(2)}`;
   };
 
-  const calculateBalance = (entry: LoanEntry) => {
-    return entry.initialAmount - entry.amountReceived - entry.amountPaid;
+  const calculateBalance = (entry: LoanEntry, accountType: string) => {
+    // For Loans Given: initialAmount - received (what I still have to receive)
+    // For Loans Taken: initialAmount - paid (what I still have to pay)
+    if (accountType === "loan-given") {
+      return entry.initialAmount - entry.amountReceived;
+    } else {
+      // loan-taken
+      return entry.initialAmount - entry.amountPaid;
+    }
   };
 
   const handleAddEntry = (accountType: string) => {
+    const formData = getFormData(accountType);
     if (!formData.name || !formData.initialAmount) {
       toast({
         title: "Error",
@@ -80,13 +127,16 @@ export default function Accounts() {
     };
 
     setLoanEntries([...loanEntries, newEntry]);
-    setFormData({
-      name: "",
-      initialAmount: "",
-      amountReceived: "",
-      amountPaid: "",
-      description: "",
-    });
+    setFormDataByType((prev) => ({
+      ...prev,
+      [accountType]: {
+        name: "",
+        initialAmount: "",
+        amountReceived: "",
+        amountPaid: "",
+        description: "",
+      },
+    }));
     setShowAddForm(null);
 
     toast({
@@ -137,43 +187,33 @@ export default function Accounts() {
 
       {expandedSection === "assets" && (
         <div className="border-t border-slate-700 p-4 space-y-4">
-          {/* Cash Category */}
-          <CategoryCard
-            title="Cash"
-            type="cash"
-            total={accountTotals.cash}
-            loanEntries={loanEntries.filter((e) => e.accountType === "cash")}
-            expandedCategory={expandedCategory}
-            setExpandedCategory={setExpandedCategory}
-            showAddForm={showAddForm}
-            setShowAddForm={setShowAddForm}
-            formData={formData}
-            setFormData={setFormData}
-            onAddEntry={handleAddEntry}
-            onDeleteEntry={handleDeleteEntry}
-            onUpdateAmount={handleUpdateAmount}
-            formatCurrency={formatCurrency}
-            calculateBalance={calculateBalance}
-          />
+          {/* Cash Category - No Add Entry */}
+          <div className="bg-slate-700 rounded-lg border border-slate-600 overflow-hidden">
+            <div className="w-full flex items-center justify-between p-3 sm:p-4">
+              <div className="text-left">
+                <h3 className="text-base sm:text-lg font-semibold text-white">
+                  Cash
+                </h3>
+                <p className="text-sm text-gray-400">
+                  {formatCurrency(accountTotals.cash)}
+                </p>
+              </div>
+            </div>
+          </div>
 
-          {/* Account Category */}
-          <CategoryCard
-            title="Bank Account"
-            type="account"
-            total={accountTotals.account}
-            loanEntries={loanEntries.filter((e) => e.accountType === "account")}
-            expandedCategory={expandedCategory}
-            setExpandedCategory={setExpandedCategory}
-            showAddForm={showAddForm}
-            setShowAddForm={setShowAddForm}
-            formData={formData}
-            setFormData={setFormData}
-            onAddEntry={handleAddEntry}
-            onDeleteEntry={handleDeleteEntry}
-            onUpdateAmount={handleUpdateAmount}
-            formatCurrency={formatCurrency}
-            calculateBalance={calculateBalance}
-          />
+          {/* Bank Account Category - No Add Entry */}
+          <div className="bg-slate-700 rounded-lg border border-slate-600 overflow-hidden">
+            <div className="w-full flex items-center justify-between p-3 sm:p-4">
+              <div className="text-left">
+                <h3 className="text-base sm:text-lg font-semibold text-white">
+                  Bank Account
+                </h3>
+                <p className="text-sm text-gray-400">
+                  {formatCurrency(accountTotals.account)}
+                </p>
+              </div>
+            </div>
+          </div>
 
           {/* Loan Given Category */}
           <CategoryCard
@@ -184,8 +224,10 @@ export default function Accounts() {
             setExpandedCategory={setExpandedCategory}
             showAddForm={showAddForm}
             setShowAddForm={setShowAddForm}
-            formData={formData}
-            setFormData={setFormData}
+            formData={getFormData("loan-given")}
+            onFormDataChange={(field, value) =>
+              updateFormData("loan-given", field, value)
+            }
             onAddEntry={handleAddEntry}
             onDeleteEntry={handleDeleteEntry}
             onUpdateAmount={handleUpdateAmount}
@@ -227,8 +269,10 @@ export default function Accounts() {
             setExpandedCategory={setExpandedCategory}
             showAddForm={showAddForm}
             setShowAddForm={setShowAddForm}
-            formData={formData}
-            setFormData={setFormData}
+            formData={getFormData("credit-card")}
+            onFormDataChange={(field, value) =>
+              updateFormData("credit-card", field, value)
+            }
             onAddEntry={handleAddEntry}
             onDeleteEntry={handleDeleteEntry}
             onUpdateAmount={handleUpdateAmount}
@@ -245,8 +289,10 @@ export default function Accounts() {
             setExpandedCategory={setExpandedCategory}
             showAddForm={showAddForm}
             setShowAddForm={setShowAddForm}
-            formData={formData}
-            setFormData={setFormData}
+            formData={getFormData("loan-taken")}
+            onFormDataChange={(field, value) =>
+              updateFormData("loan-taken", field, value)
+            }
             onAddEntry={handleAddEntry}
             onDeleteEntry={handleDeleteEntry}
             onUpdateAmount={handleUpdateAmount}
@@ -298,12 +344,12 @@ interface CategoryCardProps {
     amountPaid: string;
     description: string;
   };
-  setFormData: (data: any) => void;
+  onFormDataChange: (field: string, value: string) => void;
   onAddEntry: (type: string) => void;
   onDeleteEntry: (id: string) => void;
   onUpdateAmount: (id: string, type: "received" | "paid", amount: number) => void;
   formatCurrency: (amount: number) => string;
-  calculateBalance: (entry: LoanEntry) => number;
+  calculateBalance: (entry: LoanEntry, accountType: string) => number;
   isLoanType?: boolean;
 }
 
@@ -317,7 +363,7 @@ function CategoryCard({
   showAddForm,
   setShowAddForm,
   formData,
-  setFormData,
+  onFormDataChange,
   onAddEntry,
   onDeleteEntry,
   onUpdateAmount,
@@ -327,7 +373,7 @@ function CategoryCard({
 }: CategoryCardProps) {
   const isExpanded = expandedCategory === type;
   const totalAmount = isLoanType
-    ? loanEntries.reduce((sum, e) => sum + calculateBalance(e), 0)
+    ? loanEntries.reduce((sum, e) => sum + calculateBalance(e, type), 0)
     : total || 0;
 
   return (
@@ -381,13 +427,17 @@ function CategoryCard({
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Received:</span>
+                      <span className="text-gray-400">
+                        {type === "loan-given" ? "Received:" : "Received:"}
+                      </span>
                       <span className="text-green-400 font-semibold">
                         {formatCurrency(entry.amountReceived)}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Paid:</span>
+                      <span className="text-gray-400">
+                        {type === "loan-given" ? "Paid:" : "Paid:"}
+                      </span>
                       <span className="text-blue-400 font-semibold">
                         {formatCurrency(entry.amountPaid)}
                       </span>
@@ -396,12 +446,12 @@ function CategoryCard({
                       <span className="text-gray-300 font-semibold">Balance:</span>
                       <span
                         className={`font-semibold ${
-                          calculateBalance(entry) > 0
+                          calculateBalance(entry, type) > 0
                             ? "text-yellow-400"
                             : "text-green-400"
                         }`}
                       >
-                        {formatCurrency(calculateBalance(entry))}
+                        {formatCurrency(calculateBalance(entry, type))}
                       </span>
                     </div>
                   </div>
@@ -410,7 +460,11 @@ function CategoryCard({
                   <div className="grid grid-cols-2 gap-2 mt-3">
                     <button
                       onClick={() => {
-                        const amount = prompt("Amount received:");
+                        const amount = prompt(
+                          type === "loan-given"
+                            ? "Amount received from borrower:"
+                            : "Amount received from lender:"
+                        );
                         if (amount) {
                           onUpdateAmount(entry.id, "received", parseFloat(amount));
                         }
@@ -421,7 +475,11 @@ function CategoryCard({
                     </button>
                     <button
                       onClick={() => {
-                        const amount = prompt("Amount paid:");
+                        const amount = prompt(
+                          type === "loan-given"
+                            ? "Amount paid to borrower:"
+                            : "Amount paid to lender:"
+                        );
                         if (amount) {
                           onUpdateAmount(entry.id, "paid", parseFloat(amount));
                         }
@@ -445,18 +503,14 @@ function CategoryCard({
                 type="text"
                 placeholder="Person's name"
                 value={formData.name}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
+                onChange={(e) => onFormDataChange("name", e.target.value)}
                 className="w-full px-2 py-1 text-xs bg-slate-700 border border-slate-600 rounded text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500"
               />
               <input
                 type="number"
                 placeholder="Initial amount"
                 value={formData.initialAmount}
-                onChange={(e) =>
-                  setFormData({ ...formData, initialAmount: e.target.value })
-                }
+                onChange={(e) => onFormDataChange("initialAmount", e.target.value)}
                 className="w-full px-2 py-1 text-xs bg-slate-700 border border-slate-600 rounded text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500"
               />
               <input
@@ -464,7 +518,7 @@ function CategoryCard({
                 placeholder="Amount received (optional)"
                 value={formData.amountReceived}
                 onChange={(e) =>
-                  setFormData({ ...formData, amountReceived: e.target.value })
+                  onFormDataChange("amountReceived", e.target.value)
                 }
                 className="w-full px-2 py-1 text-xs bg-slate-700 border border-slate-600 rounded text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500"
               />
@@ -472,9 +526,7 @@ function CategoryCard({
                 type="number"
                 placeholder="Amount paid (optional)"
                 value={formData.amountPaid}
-                onChange={(e) =>
-                  setFormData({ ...formData, amountPaid: e.target.value })
-                }
+                onChange={(e) => onFormDataChange("amountPaid", e.target.value)}
                 className="w-full px-2 py-1 text-xs bg-slate-700 border border-slate-600 rounded text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500"
               />
               <input
@@ -482,7 +534,7 @@ function CategoryCard({
                 placeholder="Description (optional)"
                 value={formData.description}
                 onChange={(e) =>
-                  setFormData({ ...formData, description: e.target.value })
+                  onFormDataChange("description", e.target.value)
                 }
                 className="w-full px-2 py-1 text-xs bg-slate-700 border border-slate-600 rounded text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500"
               />
