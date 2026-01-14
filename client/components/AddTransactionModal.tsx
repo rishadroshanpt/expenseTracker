@@ -16,7 +16,9 @@ interface AddTransactionModalProps {
 // Helper function to get current Kolkata time
 function getKolkataDateTime() {
   const now = new Date();
-  const kolkataTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
+  const kolkataTime = new Date(
+    now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }),
+  );
   return {
     date: kolkataTime.toISOString().split("T")[0],
     time: kolkataTime.toTimeString().slice(0, 5),

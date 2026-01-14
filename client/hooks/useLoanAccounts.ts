@@ -148,11 +148,7 @@ export function useLoanAccounts() {
 
   // Update loan account amounts
   const updateLoanAccount = useCallback(
-    async (
-      id: string,
-      amountReceived: number,
-      amountPaid: number,
-    ) => {
+    async (id: string, amountReceived: number, amountPaid: number) => {
       if (!user) {
         throw new Error("Not authenticated");
       }
@@ -177,9 +173,7 @@ export function useLoanAccounts() {
         }
 
         setLoanAccounts(
-          loanAccounts.map((account) =>
-            account.id === id ? data : account,
-          ),
+          loanAccounts.map((account) => (account.id === id ? data : account)),
         );
         return data;
       } catch (err) {

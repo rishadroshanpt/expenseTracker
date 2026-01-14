@@ -1,12 +1,6 @@
 import { useState, useMemo } from "react";
 import { useExpenses } from "@/hooks/useExpenses";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 
 export default function Transactions() {
   const { expenses, loading } = useExpenses();
@@ -61,8 +55,7 @@ export default function Transactions() {
 
     let runningBalance = 0;
     withBalance.forEach((item) => {
-      runningBalance +=
-        item.type === "credit" ? item.amount : -item.amount;
+      runningBalance += item.type === "credit" ? item.amount : -item.amount;
       item.runningBalance = runningBalance;
     });
 

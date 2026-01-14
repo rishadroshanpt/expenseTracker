@@ -17,9 +17,12 @@ interface LoanEntry {
 
 export default function Accounts() {
   const { expenses } = useExpenses();
-  const { loanAccounts, addLoanAccount, updateLoanAccount, deleteLoanAccount } = useLoanAccounts();
+  const { loanAccounts, addLoanAccount, updateLoanAccount, deleteLoanAccount } =
+    useLoanAccounts();
   const { toast } = useToast();
-  const [expandedSection, setExpandedSection] = useState<string | null>("assets");
+  const [expandedSection, setExpandedSection] = useState<string | null>(
+    "assets",
+  );
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
 
   // Convert loan accounts from Supabase to internal format
@@ -38,7 +41,10 @@ export default function Accounts() {
   const cashBalance = useMemo(() => {
     return expenses
       .filter((exp) => exp.transaction_type === "Cash")
-      .reduce((sum, exp) => sum + (exp.type === "credit" ? exp.amount : -exp.amount), 0);
+      .reduce(
+        (sum, exp) => sum + (exp.type === "credit" ? exp.amount : -exp.amount),
+        0,
+      );
   }, [expenses]);
 
   // Calculate Bank Account balance (everything except Cash and Credit Card)
@@ -47,16 +53,22 @@ export default function Accounts() {
       .filter(
         (exp) =>
           exp.transaction_type !== "Cash" &&
-          exp.transaction_type !== "Credit Card"
+          exp.transaction_type !== "Credit Card",
       )
-      .reduce((sum, exp) => sum + (exp.type === "credit" ? exp.amount : -exp.amount), 0);
+      .reduce(
+        (sum, exp) => sum + (exp.type === "credit" ? exp.amount : -exp.amount),
+        0,
+      );
   }, [expenses]);
 
   // Calculate Credit Card balance
   const creditCardBalance = useMemo(() => {
     return expenses
       .filter((exp) => exp.transaction_type === "Credit Card")
-      .reduce((sum, exp) => sum + (exp.type === "debit" ? exp.amount : -exp.amount), 0);
+      .reduce(
+        (sum, exp) => sum + (exp.type === "debit" ? exp.amount : -exp.amount),
+        0,
+      );
   }, [expenses]);
 
   const formatCurrency = (amount: number) => {
@@ -107,7 +119,8 @@ export default function Accounts() {
     } catch (err) {
       toast({
         title: "Error",
-        description: err instanceof Error ? err.message : "Failed to delete entry",
+        description:
+          err instanceof Error ? err.message : "Failed to delete entry",
         variant: "destructive",
       });
     }
@@ -123,8 +136,11 @@ export default function Accounts() {
 
     try {
       const newReceived =
-        type === "received" ? entry.amountReceived + amount : entry.amountReceived;
-      const newPaid = type === "paid" ? entry.amountPaid + amount : entry.amountPaid;
+        type === "received"
+          ? entry.amountReceived + amount
+          : entry.amountReceived;
+      const newPaid =
+        type === "paid" ? entry.amountPaid + amount : entry.amountPaid;
 
       await updateLoanAccount(id, newReceived, newPaid);
       toast({
@@ -134,7 +150,8 @@ export default function Accounts() {
     } catch (err) {
       toast({
         title: "Error",
-        description: err instanceof Error ? err.message : "Failed to update amount",
+        description:
+          err instanceof Error ? err.message : "Failed to update amount",
         variant: "destructive",
       });
     }
@@ -190,7 +207,9 @@ export default function Accounts() {
           <CategoryCard
             title="Loans Given"
             type="loan-given"
-            loanEntries={loanEntries.filter((e) => e.accountType === "loan-given")}
+            loanEntries={loanEntries.filter(
+              (e) => e.accountType === "loan-given",
+            )}
             expandedCategory={expandedCategory}
             setExpandedCategory={setExpandedCategory}
             onAddEntry={handleAddEntry}
@@ -209,7 +228,9 @@ export default function Accounts() {
     <div className="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden mb-4">
       <button
         onClick={() =>
-          setExpandedSection(expandedSection === "liabilities" ? null : "liabilities")
+          setExpandedSection(
+            expandedSection === "liabilities" ? null : "liabilities",
+          )
         }
         className="w-full flex items-center justify-between p-4 hover:bg-slate-700 transition"
       >
@@ -228,7 +249,9 @@ export default function Accounts() {
             title="Credit Cards"
             type="credit-card"
             total={creditCardBalance}
-            loanEntries={loanEntries.filter((e) => e.accountType === "credit-card")}
+            loanEntries={loanEntries.filter(
+              (e) => e.accountType === "credit-card",
+            )}
             expandedCategory={expandedCategory}
             setExpandedCategory={setExpandedCategory}
             onAddEntry={handleAddEntry}
@@ -242,7 +265,9 @@ export default function Accounts() {
           <CategoryCard
             title="Loans Taken"
             type="loan-taken"
-            loanEntries={loanEntries.filter((e) => e.accountType === "loan-taken")}
+            loanEntries={loanEntries.filter(
+              (e) => e.accountType === "loan-taken",
+            )}
             expandedCategory={expandedCategory}
             setExpandedCategory={setExpandedCategory}
             onAddEntry={handleAddEntry}
@@ -289,7 +314,11 @@ interface CategoryCardProps {
   setExpandedCategory: (category: string | null) => void;
   onAddEntry: (type: string, entry: LoanEntry) => void;
   onDeleteEntry: (id: string) => void;
-  onUpdateAmount: (id: string, type: "received" | "paid", amount: number) => void;
+  onUpdateAmount: (
+    id: string,
+    type: "received" | "paid",
+    amount: number,
+  ) => void;
   formatCurrency: (amount: number) => string;
   calculateBalance: (entry: LoanEntry, accountType: string) => number;
   isLoanType?: boolean;
@@ -358,10 +387,10 @@ function CategoryCard({
         className="w-full flex items-center justify-between p-3 sm:p-4 hover:bg-slate-600 transition"
       >
         <div className="text-left">
-          <h3 className="text-base sm:text-lg font-semibold text-white">{title}</h3>
-          <p className="text-sm text-gray-400">
-            {formatCurrency(totalAmount)}
-          </p>
+          <h3 className="text-base sm:text-lg font-semibold text-white">
+            {title}
+          </h3>
+          <p className="text-sm text-gray-400">{formatCurrency(totalAmount)}</p>
         </div>
         {isExpanded ? (
           <ChevronUp className="w-5 h-5 text-gray-400" />
@@ -376,14 +405,19 @@ function CategoryCard({
           {loanEntries.length > 0 ? (
             <div className="space-y-3">
               {loanEntries.map((entry) => (
-                <div key={entry.id} className="bg-slate-800 rounded p-3 border border-slate-600">
+                <div
+                  key={entry.id}
+                  className="bg-slate-800 rounded p-3 border border-slate-600"
+                >
                   <div className="flex items-start justify-between mb-2">
                     <div>
                       <p className="font-semibold text-white text-sm">
                         {entry.name}
                       </p>
                       {entry.description && (
-                        <p className="text-xs text-gray-400">{entry.description}</p>
+                        <p className="text-xs text-gray-400">
+                          {entry.description}
+                        </p>
                       )}
                     </div>
                     <button
@@ -414,7 +448,9 @@ function CategoryCard({
                       </span>
                     </div>
                     <div className="border-t border-slate-700 pt-2 flex justify-between">
-                      <span className="text-gray-300 font-semibold">Balance:</span>
+                      <span className="text-gray-300 font-semibold">
+                        Balance:
+                      </span>
                       <span
                         className={`font-semibold ${
                           calculateBalance(entry, type) > 0
@@ -433,7 +469,11 @@ function CategoryCard({
                       onClick={() => {
                         const amount = prompt("Amount received:");
                         if (amount && !isNaN(parseFloat(amount))) {
-                          onUpdateAmount(entry.id, "received", parseFloat(amount));
+                          onUpdateAmount(
+                            entry.id,
+                            "received",
+                            parseFloat(amount),
+                          );
                         }
                       }}
                       className="bg-green-600 hover:bg-green-700 text-white text-xs py-1 rounded transition"
