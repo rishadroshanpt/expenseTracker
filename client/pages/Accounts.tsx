@@ -386,7 +386,7 @@ interface CategoryCardProps {
   expandedCategory: string | null;
   setExpandedCategory: (category: string | null) => void;
   onAddEntry: (type: string, entry: LoanEntry) => void;
-  onDeleteEntry: (id: string) => void;
+  onDeleteEntry: (id: string, name: string) => void;
   onUpdateAmount: (
     id: string,
     type: "received" | "paid",
