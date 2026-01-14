@@ -1,12 +1,13 @@
 import { useState, useMemo } from "react";
 import { useExpenses } from "@/hooks/useExpenses";
+import { useLoanAccounts } from "@/hooks/useLoanAccounts";
 import { ChevronDown, ChevronUp, Plus, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface LoanEntry {
   id: string;
-  accountType: string; // "cash" | "account" | "loan-given" | "credit-card" | "loan-taken"
-  name: string; // person's name
+  accountType: string;
+  name: string;
   initialAmount: number;
   amountReceived: number;
   amountPaid: number;
@@ -16,30 +17,46 @@ interface LoanEntry {
 
 export default function Accounts() {
   const { expenses } = useExpenses();
+  const { loanAccounts, addLoanAccount, updateLoanAccount, deleteLoanAccount } = useLoanAccounts();
   const { toast } = useToast();
   const [expandedSection, setExpandedSection] = useState<string | null>("assets");
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
-  const [loanEntries, setLoanEntries] = useState<LoanEntry[]>([]);
 
-  // Calculate account totals from expenses
-  const accountTotals = useMemo(() => {
-    const totals: { [key: string]: number } = {
-      cash: 0,
-      account: 0,
-      "credit-card": 0,
-    };
+  // Convert loan accounts from Supabase to internal format
+  const loanEntries: LoanEntry[] = loanAccounts.map((account) => ({
+    id: account.id,
+    accountType: account.account_type,
+    name: account.name,
+    initialAmount: account.initial_amount,
+    amountReceived: account.amount_received,
+    amountPaid: account.amount_paid,
+    date: account.date,
+    description: account.description || "",
+  }));
 
-    expenses.forEach((exp) => {
-      if (exp.transaction_type === "Cash") {
-        totals.cash += exp.type === "credit" ? exp.amount : -exp.amount;
-      } else if (exp.transaction_type === "Account") {
-        totals.account += exp.type === "credit" ? exp.amount : -exp.amount;
-      } else if (exp.transaction_type === "Credit Card") {
-        totals["credit-card"] += exp.type === "debit" ? exp.amount : -exp.amount;
-      }
-    });
+  // Calculate Cash balance (only Cash transactions)
+  const cashBalance = useMemo(() => {
+    return expenses
+      .filter((exp) => exp.transaction_type === "Cash")
+      .reduce((sum, exp) => sum + (exp.type === "credit" ? exp.amount : -exp.amount), 0);
+  }, [expenses]);
 
-    return totals;
+  // Calculate Bank Account balance (everything except Cash and Credit Card)
+  const bankBalance = useMemo(() => {
+    return expenses
+      .filter(
+        (exp) =>
+          exp.transaction_type !== "Cash" &&
+          exp.transaction_type !== "Credit Card"
+      )
+      .reduce((sum, exp) => sum + (exp.type === "credit" ? exp.amount : -exp.amount), 0);
+  }, [expenses]);
+
+  // Calculate Credit Card balance
+  const creditCardBalance = useMemo(() => {
+    return expenses
+      .filter((exp) => exp.transaction_type === "Credit Card")
+      .reduce((sum, exp) => sum + (exp.type === "debit" ? exp.amount : -exp.amount), 0);
   }, [expenses]);
 
   const formatCurrency = (amount: number) => {
@@ -47,10 +64,6 @@ export default function Accounts() {
   };
 
   const calculateBalance = (entry: LoanEntry, accountType: string) => {
-    // For Loan Taken: initialAmount + received - paid
-    // (received increases what you owe, paid decreases it)
-    // For Loan Given: initialAmount + paid - received
-    // (paid increases what they owe, received decreases it)
     if (accountType === "loan-taken") {
       return entry.initialAmount + entry.amountReceived - entry.amountPaid;
     } else if (accountType === "loan-given") {
@@ -61,40 +74,74 @@ export default function Accounts() {
     return 0;
   };
 
-  const handleAddEntry = (accountType: string, entryData: LoanEntry) => {
-    setLoanEntries([...loanEntries, entryData]);
-    toast({
-      title: "Success",
-      description: "Entry added successfully",
-    });
+  const handleAddEntry = async (accountType: string, entryData: LoanEntry) => {
+    try {
+      await addLoanAccount(
+        accountType as "loan-given" | "loan-taken" | "credit-card",
+        entryData.name,
+        entryData.initialAmount,
+        entryData.amountReceived,
+        entryData.amountPaid,
+        entryData.description,
+      );
+      toast({
+        title: "Success",
+        description: "Entry added successfully",
+      });
+    } catch (err) {
+      toast({
+        title: "Error",
+        description: err instanceof Error ? err.message : "Failed to add entry",
+        variant: "destructive",
+      });
+    }
   };
 
-  const handleDeleteEntry = (id: string) => {
-    setLoanEntries(loanEntries.filter((e) => e.id !== id));
-    toast({
-      title: "Success",
-      description: "Entry deleted",
-    });
+  const handleDeleteEntry = async (id: string) => {
+    try {
+      await deleteLoanAccount(id);
+      toast({
+        title: "Success",
+        description: "Entry deleted",
+      });
+    } catch (err) {
+      toast({
+        title: "Error",
+        description: err instanceof Error ? err.message : "Failed to delete entry",
+        variant: "destructive",
+      });
+    }
   };
 
-  const handleUpdateAmount = (id: string, type: "received" | "paid", amount: number) => {
-    setLoanEntries(
-      loanEntries.map((e) => {
-        if (e.id === id) {
-          if (type === "received") {
-            return { ...e, amountReceived: e.amountReceived + amount };
-          } else {
-            return { ...e, amountPaid: e.amountPaid + amount };
-          }
-        }
-        return e;
-      })
-    );
+  const handleUpdateAmount = async (
+    id: string,
+    type: "received" | "paid",
+    amount: number,
+  ) => {
+    const entry = loanEntries.find((e) => e.id === id);
+    if (!entry) return;
+
+    try {
+      const newReceived =
+        type === "received" ? entry.amountReceived + amount : entry.amountReceived;
+      const newPaid = type === "paid" ? entry.amountPaid + amount : entry.amountPaid;
+
+      await updateLoanAccount(id, newReceived, newPaid);
+      toast({
+        title: "Success",
+        description: "Amount updated successfully",
+      });
+    } catch (err) {
+      toast({
+        title: "Error",
+        description: err instanceof Error ? err.message : "Failed to update amount",
+        variant: "destructive",
+      });
+    }
   };
 
   const AssetSection = () => (
     <div className="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden mb-4">
-      {/* Header */}
       <button
         onClick={() =>
           setExpandedSection(expandedSection === "assets" ? null : "assets")
@@ -111,7 +158,7 @@ export default function Accounts() {
 
       {expandedSection === "assets" && (
         <div className="border-t border-slate-700 p-4 space-y-4">
-          {/* Cash Category - No Add Entry */}
+          {/* Cash Category */}
           <div className="bg-slate-700 rounded-lg border border-slate-600 overflow-hidden">
             <div className="w-full flex items-center justify-between p-3 sm:p-4">
               <div className="text-left">
@@ -119,13 +166,13 @@ export default function Accounts() {
                   Cash
                 </h3>
                 <p className="text-sm text-gray-400">
-                  {formatCurrency(accountTotals.cash)}
+                  {formatCurrency(cashBalance)}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Bank Account Category - No Add Entry */}
+          {/* Bank Account Category */}
           <div className="bg-slate-700 rounded-lg border border-slate-600 overflow-hidden">
             <div className="w-full flex items-center justify-between p-3 sm:p-4">
               <div className="text-left">
@@ -133,7 +180,7 @@ export default function Accounts() {
                   Bank Account
                 </h3>
                 <p className="text-sm text-gray-400">
-                  {formatCurrency(accountTotals.account)}
+                  {formatCurrency(bankBalance)}
                 </p>
               </div>
             </div>
@@ -160,7 +207,6 @@ export default function Accounts() {
 
   const LiabilitySection = () => (
     <div className="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden mb-4">
-      {/* Header */}
       <button
         onClick={() =>
           setExpandedSection(expandedSection === "liabilities" ? null : "liabilities")
@@ -181,7 +227,7 @@ export default function Accounts() {
           <CategoryCard
             title="Credit Cards"
             type="credit-card"
-            total={accountTotals["credit-card"]}
+            total={creditCardBalance}
             loanEntries={loanEntries.filter((e) => e.accountType === "credit-card")}
             expandedCategory={expandedCategory}
             setExpandedCategory={setExpandedCategory}
