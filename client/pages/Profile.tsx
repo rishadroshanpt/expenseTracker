@@ -10,10 +10,47 @@ export default function Profile() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const { expenses } = useExpenses();
+  const { toast } = useToast();
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate("/login");
+  };
+
+  const handleDeleteAccount = async () => {
+    setIsDeleting(true);
+    try {
+      const response = await fetch("/api/auth/delete-account", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete account");
+      }
+
+      toast({
+        title: "Account Deleted",
+        description: "Your account and all associated data have been deleted.",
+      });
+
+      logout();
+      navigate("/login");
+    } catch (error) {
+      toast({
+        title: "Error",
+        description:
+          error instanceof Error ? error.message : "Failed to delete account",
+        variant: "destructive",
+      });
+    } finally {
+      setIsDeleting(false);
+      setShowDeleteConfirmation(false);
+    }
   };
 
   // Calculate overall statistics
