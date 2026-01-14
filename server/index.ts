@@ -32,6 +32,7 @@ export function createServer() {
 
   // Auth routes (protected)
   app.get("/api/auth/me", verifyToken, handleGetCurrentUser);
+  app.post("/api/auth/delete-account", verifyToken, handleDeleteAccount);
 
   // Expense routes (protected)
   app.get("/api/expenses", verifyToken, handleGetExpenses);
