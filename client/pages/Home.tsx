@@ -159,9 +159,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Add Transaction Modal */}
-        <AddTransactionModal isOpen={isOpen} onClose={closeModal} />
-
         {/* Month Selector for Monthly Tab */}
         {activeTab === "monthly" && (
           <div className="bg-slate-800 rounded-lg p-3 sm:p-4 border border-slate-700 mb-4 sm:mb-6 md:mb-8">
