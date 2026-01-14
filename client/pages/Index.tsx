@@ -34,9 +34,9 @@ export default function Index() {
       <AddTransactionModal isOpen={isOpen} onClose={closeModal} />
 
       {/* Bottom Navigation Bar */}
-      <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-emerald-950 to-emerald-900/80 border-t border-emerald-500/20 backdrop-blur-lg">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="flex items-center justify-between h-20">
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-emerald-950 to-emerald-900/80 border-t border-emerald-500/20 backdrop-blur-lg" style={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
+        <div className="max-w-4xl mx-auto px-4" style={{ width: '100%' }}>
+          <div className="flex items-center justify-between h-20" style={{ touchAction: 'manipulation' }}>
             {/* Left Tabs */}
             <div className="flex gap-1 flex-1">
               {tabs.slice(0, 2).map((tab) => {
