@@ -6,7 +6,7 @@ import AddTransactionModal from "@/components/AddTransactionModal";
 export default function Index() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { openModal } = useAddTransactionModal();
+  const { openModal, isOpen, closeModal } = useAddTransactionModal();
 
   const getTabs = () => {
     return [
