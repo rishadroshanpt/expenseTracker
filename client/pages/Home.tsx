@@ -329,7 +329,15 @@ export default function Home() {
                         {formatCurrency(expense.amount)}
                       </p>
                       <button
-                        onClick={() => handleDelete(expense.id)}
+                        onClick={() =>
+                          handleDeleteClick(
+                            expense.id,
+                            expense.description ||
+                              (expense.type === "credit"
+                                ? "Income"
+                                : "Expense"),
+                          )
+                        }
                         className="p-1.5 sm:p-2 hover:bg-red-600/30 rounded text-red-400 hover:text-red-300 flex-shrink-0"
                         aria-label="Delete expense"
                       >
