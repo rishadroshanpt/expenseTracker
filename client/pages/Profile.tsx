@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LogOut, Mail, Calendar } from "lucide-react";
+import { LogOut, Mail, Calendar, Trash2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useExpenses } from "@/hooks/useExpenses";
+import ConfirmationDialog from "@/components/ConfirmationDialog";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Profile() {
   const navigate = useNavigate();
