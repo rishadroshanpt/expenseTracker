@@ -7,9 +7,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Home from "./pages/Home";
-import Ledger from "./pages/Ledger";
+import Transactions from "./pages/Transactions";
 import Profile from "./pages/Profile";
-import TransactionTypes from "./pages/TransactionTypes";
+import Accounts from "./pages/Accounts";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
@@ -36,9 +36,9 @@ export default function App() {
                 }
               >
                 <Route path="/" element={<Home />} index />
-                <Route path="/ledger" element={<Ledger />} />
+                <Route path="/transactions" element={<Transactions />} />
                 <Route path="/profile" element={<Profile />} />
-                <Route path="/types" element={<TransactionTypes />} />
+                <Route path="/accounts" element={<Accounts />} />
               </Route>
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
