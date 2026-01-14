@@ -93,7 +93,7 @@ export default function Home() {
       const timeB = a.time || "00:00";
       return timeA.localeCompare(timeB);
     });
-  }, [expenses, activeTab]);
+  }, [expenses, activeTab, selectedMonth, selectedYear]);
 
   const formatDate = (date: Date | string, time?: string) => {
     const dateObj = typeof date === "string" ? new Date(date) : date;
