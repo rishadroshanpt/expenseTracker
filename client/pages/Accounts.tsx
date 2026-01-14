@@ -33,20 +33,8 @@ export default function Accounts() {
   const [showAddForm, setShowAddForm] = useState<string | null>(null);
   const [formDataByType, setFormDataByType] = useState<FormDataState>({});
 
-  // Get or create form data for a specific type
+  // Get form data for a specific type - returns default if not yet initialized
   const getFormData = (type: string) => {
-    if (!formDataByType[type]) {
-      setFormDataByType((prev) => ({
-        ...prev,
-        [type]: {
-          name: "",
-          initialAmount: "",
-          amountReceived: "",
-          amountPaid: "",
-          description: "",
-        },
-      }));
-    }
     return (
       formDataByType[type] || {
         name: "",
