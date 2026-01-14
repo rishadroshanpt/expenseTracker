@@ -187,14 +187,24 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* Logout Button */}
-        <button
-          onClick={handleLogout}
-          className="w-full py-2 px-4 sm:px-6 bg-red-600 hover:bg-red-500 text-white rounded font-semibold transition flex items-center justify-center gap-2 text-sm sm:text-base"
-        >
-          <LogOut className="w-4 h-4" />
-          Logout
-        </button>
+        {/* Action Buttons */}
+        <div className="space-y-3 sm:space-y-4">
+          <button
+            onClick={handleLogout}
+            className="w-full py-2 px-4 sm:px-6 bg-blue-600 hover:bg-blue-500 text-white rounded font-semibold transition flex items-center justify-center gap-2 text-sm sm:text-base"
+          >
+            <LogOut className="w-4 h-4" />
+            Logout
+          </button>
+
+          <button
+            onClick={() => setShowDeleteConfirmation(true)}
+            className="w-full py-2 px-4 sm:px-6 bg-red-600 hover:bg-red-500 text-white rounded font-semibold transition flex items-center justify-center gap-2 text-sm sm:text-base"
+          >
+            <Trash2 className="w-4 h-4" />
+            Delete Account
+          </button>
+        </div>
 
         {/* Privacy Info */}
         <div className="mt-6 sm:mt-8 p-3 sm:p-4 bg-slate-800 rounded border border-slate-700">
