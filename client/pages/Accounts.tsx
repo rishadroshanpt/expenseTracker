@@ -496,7 +496,7 @@ function CategoryCard({
                       )}
                     </div>
                     <button
-                      onClick={() => onDeleteEntry(entry.id)}
+                      onClick={() => onDeleteEntry(entry.id, entry.name)}
                       className="text-red-400 hover:text-red-300"
                     >
                       <Trash2 className="w-4 h-4" />
