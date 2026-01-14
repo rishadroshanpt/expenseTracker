@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { Trash2, Plus } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useExpenses } from "@/hooks/useExpenses";
+import ConfirmationDialog from "@/components/ConfirmationDialog";
 
 export default function Home() {
   const { user } = useAuth();
