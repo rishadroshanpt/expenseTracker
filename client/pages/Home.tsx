@@ -351,6 +351,20 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmationDialog
+        isOpen={deleteConfirmation.isOpen}
+        title="Delete Transaction"
+        message={`Are you sure you want to delete this transaction? "${deleteConfirmation.description}" will be permanently removed.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        isDangerous
+        onConfirm={handleDelete}
+        onCancel={() =>
+          setDeleteConfirmation((prev) => ({ ...prev, isOpen: false }))
+        }
+      />
     </div>
   );
 }
