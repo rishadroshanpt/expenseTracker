@@ -47,13 +47,22 @@ export default function Accounts() {
   };
 
   const updateFormData = (type: string, field: string, value: string) => {
-    setFormDataByType((prev) => ({
-      ...prev,
-      [type]: {
-        ...getFormData(type),
-        [field]: value,
-      },
-    }));
+    setFormDataByType((prev) => {
+      const currentFormData = prev[type] || {
+        name: "",
+        initialAmount: "",
+        amountReceived: "",
+        amountPaid: "",
+        description: "",
+      };
+      return {
+        ...prev,
+        [type]: {
+          ...currentFormData,
+          [field]: value,
+        },
+      };
+    });
   };
 
   // Calculate account totals from expenses
