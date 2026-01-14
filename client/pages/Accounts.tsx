@@ -391,6 +391,7 @@ function CategoryCard({
   formatCurrency,
   calculateBalance,
   isLoanType = false,
+  onOpenModal,
 }: CategoryCardProps) {
   const [showAddForm, setShowAddForm] = useState(false);
   const [formData, setFormData] = useState({
