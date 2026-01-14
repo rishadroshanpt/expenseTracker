@@ -1,6 +1,7 @@
 import { useLocation, useNavigate, Outlet } from "react-router-dom";
 import { Home, BarChart3, User, CreditCard, Plus } from "lucide-react";
 import { useAddTransactionModal } from "@/context/AddTransactionContext";
+import AddTransactionModal from "@/components/AddTransactionModal";
 
 export default function Index() {
   const location = useLocation();
