@@ -146,40 +146,39 @@ export default function AddTransactionModal({
             </div>
           </div>
 
-          {/* Date Picker */}
-          <div>
-            <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
-              <div className="flex items-center gap-2">
-                <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                Date
-              </div>
-            </label>
-            <input
-              type="date"
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-              className="w-full px-3 sm:px-4 py-2 border border-slate-600 rounded bg-slate-700 text-white text-sm sm:text-base focus:outline-none focus:border-blue-500"
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              Today (Kolkata timezone)
-            </p>
-          </div>
+          {/* Date & Time Pickers in Grid */}
+          <div className="grid grid-cols-2 gap-2 sm:gap-3">
+            {/* Date Picker */}
+            <div>
+              <label className="block text-xs font-medium text-gray-300 mb-1.5">
+                <div className="flex items-center gap-1">
+                  <Calendar className="w-3 h-3" />
+                  <span>Date</span>
+                </div>
+              </label>
+              <input
+                type="date"
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+                className="w-full px-2 py-1.5 sm:px-3 sm:py-2 border border-slate-600 rounded bg-slate-700 text-white text-xs sm:text-sm focus:outline-none focus:border-blue-500"
+              />
+            </div>
 
-          {/* Time Picker */}
-          <div>
-            <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
-              <div className="flex items-center gap-2">
-                <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                Time
-              </div>
-            </label>
-            <input
-              type="time"
-              value={selectedTime}
-              onChange={(e) => setSelectedTime(e.target.value)}
-              className="w-full px-3 sm:px-4 py-2 border border-slate-600 rounded bg-slate-700 text-white text-sm sm:text-base focus:outline-none focus:border-blue-500"
-            />
-            <p className="text-xs text-gray-500 mt-1">Asia/Kolkata</p>
+            {/* Time Picker */}
+            <div>
+              <label className="block text-xs font-medium text-gray-300 mb-1.5">
+                <div className="flex items-center gap-1">
+                  <Clock className="w-3 h-3" />
+                  <span>Time</span>
+                </div>
+              </label>
+              <input
+                type="time"
+                value={selectedTime}
+                onChange={(e) => setSelectedTime(e.target.value)}
+                className="w-full px-2 py-1.5 sm:px-3 sm:py-2 border border-slate-600 rounded bg-slate-700 text-white text-xs sm:text-sm focus:outline-none focus:border-blue-500"
+              />
+            </div>
           </div>
         </div>
 
