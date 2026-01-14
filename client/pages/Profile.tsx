@@ -214,6 +214,22 @@ export default function Profile() {
           </p>
         </div>
       </div>
+
+      {/* Delete Account Confirmation Dialog */}
+      <ConfirmationDialog
+        isOpen={showDeleteConfirmation}
+        title="Delete Account"
+        message="Are you sure you want to delete your account? This action cannot be undone. All your data including transactions, accounts, and profile information will be permanently deleted."
+        confirmText={isDeleting ? "Deleting..." : "Delete Account"}
+        cancelText="Cancel"
+        isDangerous
+        onConfirm={handleDeleteAccount}
+        onCancel={() => {
+          if (!isDeleting) {
+            setShowDeleteConfirmation(false);
+          }
+        }}
+      />
     </div>
   );
 }
