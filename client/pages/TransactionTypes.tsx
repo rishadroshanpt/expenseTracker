@@ -253,15 +253,13 @@ export default function TransactionTypes() {
                       ))}
                     </Pie>
                     <Tooltip
-                      formatter={(value) => {
-                        const formatted = formatCurrency(value as number);
-                        return `<span style="color: #ef4444; font-weight: bold;">${formatted}</span>`;
-                      }}
+                      formatter={(value) => formatCurrency(value as number)}
                       contentStyle={{
                         backgroundColor: "#1e293b",
                         border: "1px solid #475569",
                         borderRadius: "8px",
-                        color: "#f1f5f9",
+                        color: "#ffffff",
+                        fontWeight: "bold",
                       }}
                     />
                   </PieChart>
