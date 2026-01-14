@@ -40,6 +40,16 @@ export default function Accounts() {
     label: "",
   });
 
+  const [deleteConfirmation, setDeleteConfirmation] = useState<{
+    isOpen: boolean;
+    entryId: string;
+    entryName: string;
+  }>({
+    isOpen: false,
+    entryId: "",
+    entryName: "",
+  });
+
   // Convert loan accounts from Supabase to internal format
   const loanEntries: LoanEntry[] = loanAccounts.map((account) => ({
     id: account.id,
