@@ -9,6 +9,20 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+// Custom tooltip to ensure white text color
+const CustomTooltip = ({ active, payload }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-slate-900 border border-slate-600 rounded-lg p-2 shadow-lg">
+        <p className="text-white font-bold text-sm">
+          {payload[0].payload.name}: ₹{payload[0].value.toFixed(2)}
+        </p>
+      </div>
+    );
+  }
+  return null;
+};
+
 export default function TransactionTypes() {
   const { expenses } = useExpenses();
   const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
