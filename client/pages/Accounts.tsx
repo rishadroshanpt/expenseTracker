@@ -323,7 +323,7 @@ export default function Accounts() {
             expandedCategory={expandedCategory}
             setExpandedCategory={setExpandedCategory}
             onAddEntry={handleAddEntry}
-            onDeleteEntry={handleDeleteEntry}
+            onDeleteEntry={handleDeleteEntryClick}
             onUpdateAmount={handleUpdateAmount}
             formatCurrency={formatCurrency}
             calculateBalance={calculateBalance}
