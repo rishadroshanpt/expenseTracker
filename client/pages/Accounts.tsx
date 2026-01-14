@@ -282,6 +282,15 @@ export default function Accounts() {
             onUpdateAmount={handleUpdateAmount}
             formatCurrency={formatCurrency}
             calculateBalance={calculateBalance}
+            onOpenModal={(entryId, type) => {
+              setModalState({
+                isOpen: true,
+                entryId,
+                type,
+                title: `Amount ${type === "received" ? "Received" : "Paid"}`,
+                label: `Enter amount ${type === "received" ? "received" : "paid"}:`,
+              });
+            }}
           />
 
           {/* Loan Taken Category */}
