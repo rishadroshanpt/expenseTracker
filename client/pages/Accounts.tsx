@@ -315,6 +315,18 @@ export default function Accounts() {
         {/* Liabilities Section */}
         <LiabilitySection />
       </div>
+
+      {/* Amount Modal */}
+      <AmountModal
+        isOpen={modalState.isOpen}
+        title={modalState.title}
+        label={modalState.label}
+        onConfirm={(amount) => {
+          handleUpdateAmount(modalState.entryId, modalState.type, amount);
+          setModalState((prev) => ({ ...prev, isOpen: false }));
+        }}
+        onCancel={() => setModalState((prev) => ({ ...prev, isOpen: false }))}
+      />
     </div>
   );
 }
