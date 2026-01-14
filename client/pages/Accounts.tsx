@@ -232,6 +232,15 @@ export default function Accounts() {
             formatCurrency={formatCurrency}
             calculateBalance={calculateBalance}
             isLoanType={true}
+            onOpenModal={(entryId, type) => {
+              setModalState({
+                isOpen: true,
+                entryId,
+                type,
+                title: `Amount ${type === "received" ? "Received" : "Paid"}`,
+                label: `Enter amount ${type === "received" ? "received" : "paid"}:`,
+              });
+            }}
           />
         </div>
       )}
