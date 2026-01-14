@@ -11,8 +11,8 @@ export default function Index() {
   const getTabs = () => {
     return [
       { path: "/", label: "Home", icon: Home },
-      { path: "/ledger", label: "Ledger", icon: BarChart3 },
-      { path: "/types", label: "Types", icon: CreditCard },
+      { path: "/transactions", label: "Transactions", icon: BarChart3 },
+      { path: "/accounts", label: "Accounts", icon: CreditCard },
       { path: "/profile", label: "Profile", icon: User },
     ];
   };
