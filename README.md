@@ -21,37 +21,32 @@ A simple expense tracker web application built to help you manage personal finan
 - 🧩 Full-stack architecture (client + server)  
 - 🛠 Built with TypeScript and modern tooling  
 
----
 
-## 📁 Project Structure
+## 📁 Project Structure.
+```
 
-client/        # Frontend application (React + Vite)
-
-server/        # Backend API (Node.js + Express)
-
-shared/        # Shared types and utilities
-
-public/        # Static assets
-
-.env.example   # Environment variable template
-
-README.md      # Project documentation
+├── client/                 # Frontend application (React/Vite)
+├── server/                 # Backend API (Node.js/Express or similar)
+├── shared/                 # Shared type definitions / utilities
+├── public/                 # Static assets
+├── .env.example            # Environment variable template
+├── README.md               # This file
+├── package.json
+└── ...
+```
 
 
-🧰 Tech Stack
-Layer	Technology
+##🧰 Tech Stack
 
-Frontend	React, TypeScript, Vite
+| Layer      | Technology                   |
+| ---------- | ---------------------------- |
+| Frontend   | React, TypeScript, Vite      |
+| Backend    | Node.js, TypeScript, Express |
+| Database   | (Configured via Server)      |
+| Styling    | Tailwind CSS (likely)        |
+| Deployment | Vercel (frontend)            |
+| Scripts    | pnpm / npm                   |
 
-Backend	Node.js, TypeScript, Express
-
-Database	(Configured via Server)
-
-Styling	Tailwind CSS (likely)
-
-Deployment	Vercel (frontend)
-
-Scripts	pnpm / npm
 
 
 🚀 Getting Started
