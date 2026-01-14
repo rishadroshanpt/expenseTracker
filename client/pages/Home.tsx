@@ -16,10 +16,29 @@ export default function Home() {
   const [selectedMonth, setSelectedMonth] = useState(now.getMonth());
   const [selectedYear, setSelectedYear] = useState(now.getFullYear());
 
-  const handleDelete = async (id: string) => {
+  const [deleteConfirmation, setDeleteConfirmation] = useState<{
+    isOpen: boolean;
+    expenseId: string;
+    description: string;
+  }>({
+    isOpen: false,
+    expenseId: "",
+    description: "",
+  });
+
+  const handleDeleteClick = (id: string, description: string) => {
+    setDeleteConfirmation({
+      isOpen: true,
+      expenseId: id,
+      description,
+    });
+  };
+
+  const handleDelete = async () => {
     setError(null);
     try {
-      await deleteExpense(id);
+      await deleteExpense(deleteConfirmation.expenseId);
+      setDeleteConfirmation((prev) => ({ ...prev, isOpen: false }));
     } catch (err) {
       console.error("Error deleting expense:", err);
     }
