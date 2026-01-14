@@ -2,7 +2,12 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
-import { handleSignUp, handleLogin, handleGetCurrentUser, handleDeleteAccount } from "./routes/auth";
+import {
+  handleSignUp,
+  handleLogin,
+  handleGetCurrentUser,
+  handleDeleteAccount,
+} from "./routes/auth";
 import {
   handleGetExpenses,
   handleCreateExpense,
