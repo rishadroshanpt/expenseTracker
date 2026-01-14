@@ -166,3 +166,43 @@ export const handleGetCurrentUser: RequestHandler = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+// Delete account handler
+export const handleDeleteAccount: RequestHandler = async (req, res) => {
+  try {
+    if (!supabase) {
+      return res.status(500).json({
+        error:
+          "Database not configured. Please set SUPABASE_URL and SUPABASE_ANON_KEY environment variables.",
+      });
+    }
+
+    if (!req.user) {
+      return res.status(401).json({ error: "Not authenticated" });
+    }
+
+    const userId = req.user.id;
+
+    // Delete all expenses for this user
+    await supabase.from("expenses").delete().eq("user_id", userId);
+
+    // Delete all loan accounts for this user
+    await supabase.from("loan_accounts").delete().eq("user_id", userId);
+
+    // Delete the user
+    const { error: deleteError } = await supabase
+      .from("users")
+      .delete()
+      .eq("id", userId);
+
+    if (deleteError) {
+      console.error("Delete user error:", deleteError);
+      return res.status(500).json({ error: "Failed to delete account" });
+    }
+
+    res.json({ message: "Account deleted successfully" });
+  } catch (error) {
+    console.error("Delete account error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};

@@ -2,6 +2,20 @@ import { useState, useMemo } from "react";
 import { useExpenses } from "@/hooks/useExpenses";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 
+// Custom tooltip to ensure white text color
+const CustomTooltip = ({ active, payload }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-slate-900 border border-slate-600 rounded-lg p-2 shadow-lg">
+        <p className="text-white font-bold text-sm">
+          {payload[0].payload.name}: ₹{payload[0].value.toFixed(2)}
+        </p>
+      </div>
+    );
+  }
+  return null;
+};
+
 export default function Transactions() {
   const { expenses, loading } = useExpenses();
   const [filterType, setFilterType] = useState<"all" | "credit" | "debit">(
@@ -180,6 +194,7 @@ export default function Transactions() {
                       labelLine={false}
                       label={(entry) => `${entry.name}`}
                       outerRadius={80}
+                      innerRadius={40}
                       fill="#8884d8"
                       dataKey="value"
                     >
@@ -190,15 +205,7 @@ export default function Transactions() {
                         />
                       ))}
                     </Pie>
-                    <Tooltip
-                      formatter={(value) => formatCurrency(value as number)}
-                      contentStyle={{
-                        backgroundColor: "#1e293b",
-                        border: "1px solid #475569",
-                        borderRadius: "8px",
-                        color: "#f1f5f9",
-                      }}
-                    />
+                    <Tooltip content={<CustomTooltip />} />
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="mt-4 space-y-2">
@@ -246,6 +253,7 @@ export default function Transactions() {
                       labelLine={false}
                       label={(entry) => `${entry.name}`}
                       outerRadius={80}
+                      innerRadius={40}
                       fill="#8884d8"
                       dataKey="value"
                     >
@@ -256,15 +264,7 @@ export default function Transactions() {
                         />
                       ))}
                     </Pie>
-                    <Tooltip
-                      formatter={(value) => formatCurrency(value as number)}
-                      contentStyle={{
-                        backgroundColor: "#1e293b",
-                        border: "1px solid #475569",
-                        borderRadius: "8px",
-                        color: "#f1f5f9",
-                      }}
-                    />
+                    <Tooltip content={<CustomTooltip />} />
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="mt-4 space-y-2">

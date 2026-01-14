@@ -3,6 +3,8 @@ import { useExpenses } from "@/hooks/useExpenses";
 import { useLoanAccounts } from "@/hooks/useLoanAccounts";
 import { ChevronDown, ChevronUp, Plus, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import AmountModal from "@/components/AmountModal";
+import ConfirmationDialog from "@/components/ConfirmationDialog";
 
 interface LoanEntry {
   id: string;
@@ -24,6 +26,29 @@ export default function Accounts() {
     "assets",
   );
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const [modalState, setModalState] = useState<{
+    isOpen: boolean;
+    entryId: string;
+    type: "received" | "paid";
+    title: string;
+    label: string;
+  }>({
+    isOpen: false,
+    entryId: "",
+    type: "received",
+    title: "",
+    label: "",
+  });
+
+  const [deleteConfirmation, setDeleteConfirmation] = useState<{
+    isOpen: boolean;
+    entryId: string;
+    entryName: string;
+  }>({
+    isOpen: false,
+    entryId: "",
+    entryName: "",
+  });
 
   // Convert loan accounts from Supabase to internal format
   const loanEntries: LoanEntry[] = loanAccounts.map((account) => ({
@@ -109,13 +134,22 @@ export default function Accounts() {
     }
   };
 
-  const handleDeleteEntry = async (id: string) => {
+  const handleDeleteEntryClick = (id: string, name: string) => {
+    setDeleteConfirmation({
+      isOpen: true,
+      entryId: id,
+      entryName: name,
+    });
+  };
+
+  const handleDeleteEntry = async () => {
     try {
-      await deleteLoanAccount(id);
+      await deleteLoanAccount(deleteConfirmation.entryId);
       toast({
         title: "Success",
         description: "Entry deleted",
       });
+      setDeleteConfirmation((prev) => ({ ...prev, isOpen: false }));
     } catch (err) {
       toast({
         title: "Error",
@@ -213,11 +247,20 @@ export default function Accounts() {
             expandedCategory={expandedCategory}
             setExpandedCategory={setExpandedCategory}
             onAddEntry={handleAddEntry}
-            onDeleteEntry={handleDeleteEntry}
+            onDeleteEntry={handleDeleteEntryClick}
             onUpdateAmount={handleUpdateAmount}
             formatCurrency={formatCurrency}
             calculateBalance={calculateBalance}
             isLoanType={true}
+            onOpenModal={(entryId, type) => {
+              setModalState({
+                isOpen: true,
+                entryId,
+                type,
+                title: `Amount ${type === "received" ? "Received" : "Paid"}`,
+                label: `Enter amount ${type === "received" ? "received" : "paid"}:`,
+              });
+            }}
           />
         </div>
       )}
@@ -255,10 +298,19 @@ export default function Accounts() {
             expandedCategory={expandedCategory}
             setExpandedCategory={setExpandedCategory}
             onAddEntry={handleAddEntry}
-            onDeleteEntry={handleDeleteEntry}
+            onDeleteEntry={handleDeleteEntryClick}
             onUpdateAmount={handleUpdateAmount}
             formatCurrency={formatCurrency}
             calculateBalance={calculateBalance}
+            onOpenModal={(entryId, type) => {
+              setModalState({
+                isOpen: true,
+                entryId,
+                type,
+                title: `Amount ${type === "received" ? "Received" : "Paid"}`,
+                label: `Enter amount ${type === "received" ? "received" : "paid"}:`,
+              });
+            }}
           />
 
           {/* Loan Taken Category */}
@@ -271,11 +323,20 @@ export default function Accounts() {
             expandedCategory={expandedCategory}
             setExpandedCategory={setExpandedCategory}
             onAddEntry={handleAddEntry}
-            onDeleteEntry={handleDeleteEntry}
+            onDeleteEntry={handleDeleteEntryClick}
             onUpdateAmount={handleUpdateAmount}
             formatCurrency={formatCurrency}
             calculateBalance={calculateBalance}
             isLoanType={true}
+            onOpenModal={(entryId, type) => {
+              setModalState({
+                isOpen: true,
+                entryId,
+                type,
+                title: `Amount ${type === "received" ? "Received" : "Paid"}`,
+                label: `Enter amount ${type === "received" ? "received" : "paid"}:`,
+              });
+            }}
           />
         </div>
       )}
@@ -301,6 +362,32 @@ export default function Accounts() {
         {/* Liabilities Section */}
         <LiabilitySection />
       </div>
+
+      {/* Amount Modal */}
+      <AmountModal
+        isOpen={modalState.isOpen}
+        title={modalState.title}
+        label={modalState.label}
+        onConfirm={(amount) => {
+          handleUpdateAmount(modalState.entryId, modalState.type, amount);
+          setModalState((prev) => ({ ...prev, isOpen: false }));
+        }}
+        onCancel={() => setModalState((prev) => ({ ...prev, isOpen: false }))}
+      />
+
+      {/* Delete Entry Confirmation Dialog */}
+      <ConfirmationDialog
+        isOpen={deleteConfirmation.isOpen}
+        title="Delete Entry"
+        message={`Are you sure you want to delete "${deleteConfirmation.entryName}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        isDangerous
+        onConfirm={handleDeleteEntry}
+        onCancel={() =>
+          setDeleteConfirmation((prev) => ({ ...prev, isOpen: false }))
+        }
+      />
     </div>
   );
 }
@@ -313,7 +400,7 @@ interface CategoryCardProps {
   expandedCategory: string | null;
   setExpandedCategory: (category: string | null) => void;
   onAddEntry: (type: string, entry: LoanEntry) => void;
-  onDeleteEntry: (id: string) => void;
+  onDeleteEntry: (id: string, name: string) => void;
   onUpdateAmount: (
     id: string,
     type: "received" | "paid",
@@ -322,6 +409,7 @@ interface CategoryCardProps {
   formatCurrency: (amount: number) => string;
   calculateBalance: (entry: LoanEntry, accountType: string) => number;
   isLoanType?: boolean;
+  onOpenModal?: (entryId: string, type: "received" | "paid") => void;
 }
 
 function CategoryCard({
@@ -337,6 +425,7 @@ function CategoryCard({
   formatCurrency,
   calculateBalance,
   isLoanType = false,
+  onOpenModal,
 }: CategoryCardProps) {
   const [showAddForm, setShowAddForm] = useState(false);
   const [formData, setFormData] = useState({
@@ -421,7 +510,7 @@ function CategoryCard({
                       )}
                     </div>
                     <button
-                      onClick={() => onDeleteEntry(entry.id)}
+                      onClick={() => onDeleteEntry(entry.id, entry.name)}
                       className="text-red-400 hover:text-red-300"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -466,27 +555,13 @@ function CategoryCard({
                   {/* Quick action buttons */}
                   <div className="grid grid-cols-2 gap-2 mt-3">
                     <button
-                      onClick={() => {
-                        const amount = prompt("Amount received:");
-                        if (amount && !isNaN(parseFloat(amount))) {
-                          onUpdateAmount(
-                            entry.id,
-                            "received",
-                            parseFloat(amount),
-                          );
-                        }
-                      }}
+                      onClick={() => onOpenModal?.(entry.id, "received")}
                       className="bg-green-600 hover:bg-green-700 text-white text-xs py-1 rounded transition"
                     >
                       + Received
                     </button>
                     <button
-                      onClick={() => {
-                        const amount = prompt("Amount paid:");
-                        if (amount && !isNaN(parseFloat(amount))) {
-                          onUpdateAmount(entry.id, "paid", parseFloat(amount));
-                        }
-                      }}
+                      onClick={() => onOpenModal?.(entry.id, "paid")}
                       className="bg-blue-600 hover:bg-blue-700 text-white text-xs py-1 rounded transition"
                     >
                       + Paid

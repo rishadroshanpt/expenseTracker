@@ -2,7 +2,12 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
-import { handleSignUp, handleLogin, handleGetCurrentUser } from "./routes/auth";
+import {
+  handleSignUp,
+  handleLogin,
+  handleGetCurrentUser,
+  handleDeleteAccount,
+} from "./routes/auth";
 import {
   handleGetExpenses,
   handleCreateExpense,
@@ -32,6 +37,7 @@ export function createServer() {
 
   // Auth routes (protected)
   app.get("/api/auth/me", verifyToken, handleGetCurrentUser);
+  app.post("/api/auth/delete-account", verifyToken, handleDeleteAccount);
 
   // Expense routes (protected)
   app.get("/api/expenses", verifyToken, handleGetExpenses);

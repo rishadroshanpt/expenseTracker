@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { Trash2, Plus } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useExpenses } from "@/hooks/useExpenses";
+import ConfirmationDialog from "@/components/ConfirmationDialog";
 
 export default function Home() {
   const { user } = useAuth();
@@ -15,10 +16,29 @@ export default function Home() {
   const [selectedMonth, setSelectedMonth] = useState(now.getMonth());
   const [selectedYear, setSelectedYear] = useState(now.getFullYear());
 
-  const handleDelete = async (id: string) => {
+  const [deleteConfirmation, setDeleteConfirmation] = useState<{
+    isOpen: boolean;
+    expenseId: string;
+    description: string;
+  }>({
+    isOpen: false,
+    expenseId: "",
+    description: "",
+  });
+
+  const handleDeleteClick = (id: string, description: string) => {
+    setDeleteConfirmation({
+      isOpen: true,
+      expenseId: id,
+      description,
+    });
+  };
+
+  const handleDelete = async () => {
     setError(null);
     try {
-      await deleteExpense(id);
+      await deleteExpense(deleteConfirmation.expenseId);
+      setDeleteConfirmation((prev) => ({ ...prev, isOpen: false }));
     } catch (err) {
       console.error("Error deleting expense:", err);
     }
@@ -309,7 +329,15 @@ export default function Home() {
                         {formatCurrency(expense.amount)}
                       </p>
                       <button
-                        onClick={() => handleDelete(expense.id)}
+                        onClick={() =>
+                          handleDeleteClick(
+                            expense.id,
+                            expense.description ||
+                              (expense.type === "credit"
+                                ? "Income"
+                                : "Expense"),
+                          )
+                        }
                         className="p-1.5 sm:p-2 hover:bg-red-600/30 rounded text-red-400 hover:text-red-300 flex-shrink-0"
                         aria-label="Delete expense"
                       >
@@ -323,6 +351,20 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmationDialog
+        isOpen={deleteConfirmation.isOpen}
+        title="Delete Transaction"
+        message={`Are you sure you want to delete this transaction? "${deleteConfirmation.description}" will be permanently removed.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        isDangerous
+        onConfirm={handleDelete}
+        onCancel={() =>
+          setDeleteConfirmation((prev) => ({ ...prev, isOpen: false }))
+        }
+      />
     </div>
   );
 }

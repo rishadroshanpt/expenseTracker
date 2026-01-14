@@ -1,16 +1,56 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LogOut, Mail, Calendar } from "lucide-react";
+import { LogOut, Mail, Calendar, Trash2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useExpenses } from "@/hooks/useExpenses";
+import ConfirmationDialog from "@/components/ConfirmationDialog";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Profile() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const { expenses } = useExpenses();
+  const { toast } = useToast();
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate("/login");
+  };
+
+  const handleDeleteAccount = async () => {
+    setIsDeleting(true);
+    try {
+      const response = await fetch("/api/auth/delete-account", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete account");
+      }
+
+      toast({
+        title: "Account Deleted",
+        description: "Your account and all associated data have been deleted.",
+      });
+
+      logout();
+      navigate("/login");
+    } catch (error) {
+      toast({
+        title: "Error",
+        description:
+          error instanceof Error ? error.message : "Failed to delete account",
+        variant: "destructive",
+      });
+    } finally {
+      setIsDeleting(false);
+      setShowDeleteConfirmation(false);
+    }
   };
 
   // Calculate overall statistics
@@ -147,14 +187,24 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* Logout Button */}
-        <button
-          onClick={handleLogout}
-          className="w-full py-2 px-4 sm:px-6 bg-red-600 hover:bg-red-500 text-white rounded font-semibold transition flex items-center justify-center gap-2 text-sm sm:text-base"
-        >
-          <LogOut className="w-4 h-4" />
-          Logout
-        </button>
+        {/* Action Buttons */}
+        <div className="space-y-3 sm:space-y-4">
+          <button
+            onClick={handleLogout}
+            className="w-full py-2 px-4 sm:px-6 bg-blue-600 hover:bg-blue-500 text-white rounded font-semibold transition flex items-center justify-center gap-2 text-sm sm:text-base"
+          >
+            <LogOut className="w-4 h-4" />
+            Logout
+          </button>
+
+          <button
+            onClick={() => setShowDeleteConfirmation(true)}
+            className="w-full py-2 px-4 sm:px-6 bg-red-600 hover:bg-red-500 text-white rounded font-semibold transition flex items-center justify-center gap-2 text-sm sm:text-base"
+          >
+            <Trash2 className="w-4 h-4" />
+            Delete Account
+          </button>
+        </div>
 
         {/* Privacy Info */}
         <div className="mt-6 sm:mt-8 p-3 sm:p-4 bg-slate-800 rounded border border-slate-700">
@@ -164,6 +214,22 @@ export default function Profile() {
           </p>
         </div>
       </div>
+
+      {/* Delete Account Confirmation Dialog */}
+      <ConfirmationDialog
+        isOpen={showDeleteConfirmation}
+        title="Delete Account"
+        message="Are you sure you want to delete your account? This action cannot be undone. All your data including transactions, accounts, and profile information will be permanently deleted."
+        confirmText={isDeleting ? "Deleting..." : "Delete Account"}
+        cancelText="Cancel"
+        isDangerous
+        onConfirm={handleDeleteAccount}
+        onCancel={() => {
+          if (!isDeleting) {
+            setShowDeleteConfirmation(false);
+          }
+        }}
+      />
     </div>
   );
 }
