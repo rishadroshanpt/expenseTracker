@@ -1,9 +1,7 @@
 import { useState, useMemo } from "react";
-import { Plus, Trash2, Edit2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useExpenses } from "@/hooks/useExpenses";
-import { useAddTransactionModal } from "@/context/AddTransactionContext";
-import AddTransactionModal from "@/components/AddTransactionModal";
 
 export default function Home() {
   const { user } = useAuth();
