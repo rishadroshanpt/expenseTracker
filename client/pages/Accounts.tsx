@@ -374,6 +374,20 @@ export default function Accounts() {
         }}
         onCancel={() => setModalState((prev) => ({ ...prev, isOpen: false }))}
       />
+
+      {/* Delete Entry Confirmation Dialog */}
+      <ConfirmationDialog
+        isOpen={deleteConfirmation.isOpen}
+        title="Delete Entry"
+        message={`Are you sure you want to delete "${deleteConfirmation.entryName}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        isDangerous
+        onConfirm={handleDeleteEntry}
+        onCancel={() =>
+          setDeleteConfirmation((prev) => ({ ...prev, isOpen: false }))
+        }
+      />
     </div>
   );
 }
