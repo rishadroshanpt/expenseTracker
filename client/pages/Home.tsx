@@ -138,22 +138,22 @@ export default function Home() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-4 sm:mb-6 md:mb-8">
-          <div className="bg-slate-800 rounded-lg p-3 sm:p-4 border border-slate-700">
-            <p className="text-xs text-gray-400 mb-1">Income</p>
-            <p className="text-lg sm:text-2xl font-bold text-green-400 truncate">
+          <div className="bg-slate-800 rounded-lg p-2 sm:p-4 border border-slate-700">
+            <p className="text-xs text-gray-400 mb-0.5">Income</p>
+            <p className="text-sm sm:text-xl md:text-2xl font-bold text-green-400 truncate">
               {formatCurrency(stats.totalCredit)}
             </p>
           </div>
-          <div className="bg-slate-800 rounded-lg p-3 sm:p-4 border border-slate-700">
-            <p className="text-xs text-gray-400 mb-1">Expense</p>
-            <p className="text-lg sm:text-2xl font-bold text-red-400 truncate">
+          <div className="bg-slate-800 rounded-lg p-2 sm:p-4 border border-slate-700">
+            <p className="text-xs text-gray-400 mb-0.5">Expense</p>
+            <p className="text-sm sm:text-xl md:text-2xl font-bold text-red-400 truncate">
               {formatCurrency(stats.totalDebit)}
             </p>
           </div>
-          <div className="bg-slate-800 rounded-lg p-3 sm:p-4 border border-slate-700">
-            <p className="text-xs text-gray-400 mb-1">Balance</p>
+          <div className="bg-slate-800 rounded-lg p-2 sm:p-4 border border-slate-700">
+            <p className="text-xs text-gray-400 mb-0.5">Balance</p>
             <p
-              className={`text-lg sm:text-2xl font-bold truncate ${
+              className={`text-sm sm:text-xl md:text-2xl font-bold truncate ${
                 stats.balance >= 0 ? "text-green-400" : "text-red-400"
               }`}
             >
