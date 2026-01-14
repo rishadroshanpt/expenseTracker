@@ -71,16 +71,17 @@
     @apply border-border;
   }
 
-  body {
-    @apply bg-background text-foreground;
-    /* Prevent navbar shift on zoom/mobile */
+  html {
+    /* Prevent text zoom on double tap and prevent navbar shift */
     -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
     text-size-adjust: 100%;
   }
 
-  /* Fixed navbar positioning to prevent shift */
-  [class*="fixed"] {
-    position: fixed !important;
+  body {
+    @apply bg-background text-foreground;
+    /* Prevent navbar from shifting on mobile */
+    -webkit-touch-callout: none;
   }
 
   :where(p, span, li, h1, h2, h3, h4, h5, h6, a, button, label, td, th) {
