@@ -30,6 +30,9 @@ export default function Index() {
       {/* Main Content */}
       <Outlet />
 
+      {/* Global Add Transaction Modal */}
+      <AddTransactionModal isOpen={isOpen} onClose={closeModal} />
+
       {/* Bottom Navigation Bar */}
       <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-emerald-950 to-emerald-900/80 border-t border-emerald-500/20 backdrop-blur-lg">
         <div className="max-w-4xl mx-auto px-4">
