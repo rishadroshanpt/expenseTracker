@@ -25,6 +25,19 @@ export default function Accounts() {
     "assets",
   );
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const [modalState, setModalState] = useState<{
+    isOpen: boolean;
+    entryId: string;
+    type: "received" | "paid";
+    title: string;
+    label: string;
+  }>({
+    isOpen: false,
+    entryId: "",
+    type: "received",
+    title: "",
+    label: "",
+  });
 
   // Convert loan accounts from Supabase to internal format
   const loanEntries: LoanEntry[] = loanAccounts.map((account) => ({
