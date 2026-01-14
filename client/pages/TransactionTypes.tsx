@@ -243,6 +243,7 @@ export default function TransactionTypes() {
                       labelLine={false}
                       label={(entry) => `${entry.name}`}
                       outerRadius={80}
+                      innerRadius={40}
                       fill="#8884d8"
                       dataKey="value"
                     >
@@ -254,7 +255,10 @@ export default function TransactionTypes() {
                       ))}
                     </Pie>
                     <Tooltip
-                      formatter={(value) => formatCurrency(value as number)}
+                      formatter={(value) => {
+                        const formatted = formatCurrency(value as number);
+                        return `<span style="color: #ef4444; font-weight: bold;">${formatted}</span>`;
+                      }}
                       contentStyle={{
                         backgroundColor: "#1e293b",
                         border: "1px solid #475569",
