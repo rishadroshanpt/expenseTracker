@@ -348,6 +348,7 @@ interface CategoryCardProps {
   formatCurrency: (amount: number) => string;
   calculateBalance: (entry: LoanEntry, accountType: string) => number;
   isLoanType?: boolean;
+  onOpenModal?: (entryId: string, type: "received" | "paid") => void;
 }
 
 function CategoryCard({
