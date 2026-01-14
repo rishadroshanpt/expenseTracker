@@ -7,7 +7,6 @@ export default function Home() {
   const { user } = useAuth();
   const { expenses, loading, error, deleteExpense, editExpense, setError } =
     useExpenses();
-  const { isOpen, closeModal } = useAddTransactionModal();
   const [activeTab, setActiveTab] = useState<"monthly" | "credits" | "debits">(
     "monthly",
   );
