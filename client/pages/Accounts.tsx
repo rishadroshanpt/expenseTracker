@@ -4,6 +4,7 @@ import { useLoanAccounts } from "@/hooks/useLoanAccounts";
 import { ChevronDown, ChevronUp, Plus, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import AmountModal from "@/components/AmountModal";
+import ConfirmationDialog from "@/components/ConfirmationDialog";
 
 interface LoanEntry {
   id: string;
