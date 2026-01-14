@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS expenses (
   amount DECIMAL(10, 2) NOT NULL CHECK (amount > 0),
   type TEXT NOT NULL CHECK (type IN ('credit', 'debit')),
   date DATE NOT NULL,
+  time TEXT,
   description TEXT,
   transaction_type TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP

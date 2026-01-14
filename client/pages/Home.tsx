@@ -1,15 +1,12 @@
 import { useState, useMemo } from "react";
-import { Plus, Trash2, Edit2 } from "lucide-react";
+import { Trash2, Plus } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useExpenses } from "@/hooks/useExpenses";
-import { useAddTransactionModal } from "@/context/AddTransactionContext";
-import AddTransactionModal from "@/components/AddTransactionModal";
 
 export default function Home() {
   const { user } = useAuth();
   const { expenses, loading, error, deleteExpense, editExpense, setError } =
     useExpenses();
-  const { isOpen, closeModal } = useAddTransactionModal();
   const [activeTab, setActiveTab] = useState<"monthly" | "credits" | "debits">(
     "monthly",
   );
@@ -86,33 +83,47 @@ export default function Home() {
       filtered = expenses.filter((e) => e.type === "debit");
     }
 
-    return filtered.sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
-    );
-  }, [expenses, activeTab]);
+    // Sort by date and time in descending order (newest first)
+    return filtered.sort((a, b) => {
+      const dateA = new Date(b.date).getTime();
+      const dateB = new Date(a.date).getTime();
+      if (dateA !== dateB) return dateA - dateB;
+      // If same date, sort by time descending (newer times first)
+      const timeA = b.time || "00:00";
+      const timeB = a.time || "00:00";
+      return timeA.localeCompare(timeB);
+    });
+  }, [expenses, activeTab, selectedMonth, selectedYear]);
 
-  const formatDate = (date: Date | string) => {
+  const formatDate = (date: Date | string, time?: string) => {
     const dateObj = typeof date === "string" ? new Date(date) : date;
-    return dateObj.toLocaleDateString("en-US", {
+    const dateStr = dateObj.toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
       day: "numeric",
     });
+
+    if (time) {
+      return `${dateStr} • ${time}`;
+    }
+    return dateStr;
   };
 
   const formatCurrency = (amount: number) => {
-    return `$${amount.toFixed(2)}`;
+    return `₹${amount.toFixed(2)}`;
   };
 
   return (
     <div className="pb-32">
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 md:px-8 py-6 md:py-8">
+      <div className="max-w-2xl mx-auto px-3 sm:px-6 md:px-8 py-4 sm:py-6 md:py-8">
         {/* Header */}
-        <div className="mb-6 md:mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">
+        <div className="mb-4 sm:mb-6 md:mb-8">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-1 sm:mb-2">
             Expense Tracker
           </h1>
-          <p className="text-base text-gray-400">Welcome, {user?.email}</p>
+          <p className="text-xs sm:text-sm md:text-base text-gray-400 truncate">
+            Welcome, {user?.email}
+          </p>
         </div>
 
         {/* Error Message */}
@@ -123,23 +134,23 @@ export default function Home() {
         )}
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-3 gap-3 mb-6 md:mb-8">
-          <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
-            <p className="text-xs text-gray-400 mb-2">Income</p>
-            <p className="text-2xl font-bold text-green-400">
+        <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-4 sm:mb-6 md:mb-8">
+          <div className="bg-slate-800 rounded-lg p-2 sm:p-4 border border-slate-700">
+            <p className="text-xs text-gray-400 mb-0.5">Income</p>
+            <p className="text-sm sm:text-xl md:text-2xl font-bold text-green-400 truncate">
               {formatCurrency(stats.totalCredit)}
             </p>
           </div>
-          <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
-            <p className="text-xs text-gray-400 mb-2">Expense</p>
-            <p className="text-2xl font-bold text-red-400">
+          <div className="bg-slate-800 rounded-lg p-2 sm:p-4 border border-slate-700">
+            <p className="text-xs text-gray-400 mb-0.5">Expense</p>
+            <p className="text-sm sm:text-xl md:text-2xl font-bold text-red-400 truncate">
               {formatCurrency(stats.totalDebit)}
             </p>
           </div>
-          <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
-            <p className="text-xs text-gray-400 mb-2">Balance</p>
+          <div className="bg-slate-800 rounded-lg p-2 sm:p-4 border border-slate-700">
+            <p className="text-xs text-gray-400 mb-0.5">Balance</p>
             <p
-              className={`text-2xl font-bold ${
+              className={`text-sm sm:text-xl md:text-2xl font-bold truncate ${
                 stats.balance >= 0 ? "text-green-400" : "text-red-400"
               }`}
             >
@@ -148,22 +159,19 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Add Transaction Modal */}
-        <AddTransactionModal isOpen={isOpen} onClose={closeModal} />
-
         {/* Month Selector for Monthly Tab */}
         {activeTab === "monthly" && (
-          <div className="bg-slate-800 rounded-lg p-4 border border-slate-700 mb-6 md:mb-8">
-            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-end justify-between">
+          <div className="bg-slate-800 rounded-lg p-3 sm:p-4 border border-slate-700 mb-4 sm:mb-6 md:mb-8">
+            <div className="flex flex-col gap-3 sm:gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">
                   Select Month
                 </label>
                 <div className="flex gap-2">
                   <select
                     value={selectedMonth}
                     onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
-                    className="px-3 py-2 bg-slate-700 border border-slate-600 rounded text-white text-sm focus:outline-none focus:border-blue-500"
+                    className="flex-1 px-2 sm:px-3 py-2 bg-slate-700 border border-slate-600 rounded text-white text-xs sm:text-sm focus:outline-none focus:border-blue-500"
                   >
                     {[
                       "January",
@@ -187,7 +195,7 @@ export default function Home() {
                   <select
                     value={selectedYear}
                     onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-                    className="px-3 py-2 bg-slate-700 border border-slate-600 rounded text-white text-sm focus:outline-none focus:border-blue-500"
+                    className="px-2 sm:px-3 py-2 bg-slate-700 border border-slate-600 rounded text-white text-xs sm:text-sm focus:outline-none focus:border-blue-500"
                   >
                     {[2024, 2025, 2026, 2027].map((year) => (
                       <option key={year} value={year}>
@@ -199,16 +207,16 @@ export default function Home() {
               </div>
 
               {/* Monthly Totals */}
-              <div className="w-full sm:w-auto grid grid-cols-2 gap-3">
-                <div className="bg-slate-700 rounded-lg p-3 border border-slate-600">
+              <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                <div className="bg-slate-700 rounded-lg p-2 sm:p-3 border border-slate-600">
                   <p className="text-xs text-gray-400 mb-1">Income</p>
-                  <p className="text-base font-bold text-green-400">
+                  <p className="text-sm sm:text-base font-bold text-green-400 truncate">
                     {formatCurrency(monthlyStats.totalCredit)}
                   </p>
                 </div>
-                <div className="bg-slate-700 rounded-lg p-3 border border-slate-600">
+                <div className="bg-slate-700 rounded-lg p-2 sm:p-3 border border-slate-600">
                   <p className="text-xs text-gray-400 mb-1">Expense</p>
-                  <p className="text-base font-bold text-red-400">
+                  <p className="text-sm sm:text-base font-bold text-red-400 truncate">
                     {formatCurrency(monthlyStats.totalDebit)}
                   </p>
                 </div>
@@ -228,7 +236,7 @@ export default function Home() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex-1 px-4 py-3 font-medium transition text-sm whitespace-nowrap ${
+                className={`flex-1 px-2 sm:px-4 py-2 sm:py-3 font-medium transition text-xs sm:text-sm whitespace-nowrap ${
                   activeTab === tab.id
                     ? "text-blue-400 border-b-2 border-blue-400"
                     : "text-gray-400 hover:text-gray-300"
@@ -257,16 +265,16 @@ export default function Home() {
                 </p>
               </div>
             ) : (
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 {displayedExpenses.map((expense) => (
                   <div
                     key={expense.id}
-                    className="flex items-center justify-between p-4 bg-slate-700 rounded-lg border border-slate-600 hover:bg-slate-600 transition gap-3"
+                    className="flex items-center justify-between p-3 sm:p-4 bg-slate-700 rounded-lg border border-slate-600 hover:bg-slate-600 transition gap-2 sm:gap-3"
                   >
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2 sm:gap-3">
                         <div
-                          className={`w-8 h-8 rounded flex items-center justify-center font-bold text-sm flex-shrink-0 ${
+                          className={`w-7 h-7 sm:w-8 sm:h-8 rounded flex items-center justify-center font-bold text-xs sm:text-sm flex-shrink-0 ${
                             expense.type === "credit"
                               ? "bg-green-600 text-white"
                               : "bg-red-600 text-white"
@@ -275,23 +283,23 @@ export default function Home() {
                           {expense.type === "credit" ? "+" : "−"}
                         </div>
                         <div className="min-w-0">
-                          <p className="font-semibold text-white text-sm truncate">
+                          <p className="font-semibold text-white text-xs sm:text-sm truncate">
                             {expense.description ||
                               (expense.type === "credit"
                                 ? "Income"
                                 : "Expense")}
                           </p>
-                          <p className="text-xs text-gray-400 mt-1">
-                            {formatDate(expense.date)}
+                          <p className="text-xs text-gray-400 mt-0.5">
+                            {formatDate(expense.date, expense.time)}
                             {expense.transaction_type &&
                               ` • ${expense.transaction_type}`}
                           </p>
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-4 flex-shrink-0">
+                    <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
                       <p
-                        className={`text-base font-bold whitespace-nowrap ${
+                        className={`text-sm sm:text-base font-bold whitespace-nowrap ${
                           expense.type === "credit"
                             ? "text-green-400"
                             : "text-red-400"
@@ -302,10 +310,10 @@ export default function Home() {
                       </p>
                       <button
                         onClick={() => handleDelete(expense.id)}
-                        className="p-2 hover:bg-red-600/30 rounded text-red-400 hover:text-red-300 flex-shrink-0"
+                        className="p-1.5 sm:p-2 hover:bg-red-600/30 rounded text-red-400 hover:text-red-300 flex-shrink-0"
                         aria-label="Delete expense"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
                       </button>
                     </div>
                   </div>

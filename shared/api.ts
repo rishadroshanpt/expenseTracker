@@ -33,6 +33,7 @@ export interface Expense {
   amount: number;
   type: "credit" | "debit";
   date: string;
+  time?: string;
   description?: string;
   transaction_type?: string;
   created_at: string;
@@ -42,6 +43,7 @@ export interface CreateExpenseRequest {
   amount: number;
   type: "credit" | "debit";
   date: string;
+  time?: string;
   description?: string;
   transaction_type?: string;
 }

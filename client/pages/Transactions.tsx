@@ -1,12 +1,16 @@
 import { useState, useMemo } from "react";
 import { useExpenses } from "@/hooks/useExpenses";
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 
-export default function Ledger() {
+export default function Transactions() {
   const { expenses, loading } = useExpenses();
   const [filterType, setFilterType] = useState<"all" | "credit" | "debit">(
     "all",
   );
   const [filterPaymentMethod, setFilterPaymentMethod] = useState<string>("all");
+
+  const now = new Date();
+  const currentMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
 
   // Get unique payment methods
   const paymentMethods = useMemo(() => {
@@ -51,8 +55,7 @@ export default function Ledger() {
 
     let runningBalance = 0;
     withBalance.forEach((item) => {
-      runningBalance +=
-        item.type === "credit" ? item.amount : -item.amount;
+      runningBalance += item.type === "credit" ? item.amount : -item.amount;
       item.runningBalance = runningBalance;
     });
 
@@ -80,6 +83,55 @@ export default function Ledger() {
     return { credits, debits, balance: credits - debits };
   }, [filteredExpenses]);
 
+  // Get pie chart data for current month
+  const incomeChartData = useMemo(() => {
+    const currentMonthExpenses = expenses.filter((exp) => {
+      const expDate = new Date(exp.date);
+      return (
+        expDate >= currentMonthStart &&
+        expDate.getMonth() === now.getMonth() &&
+        expDate.getFullYear() === now.getFullYear() &&
+        exp.type === "credit"
+      );
+    });
+
+    const methodData: { [key: string]: number } = {};
+    currentMonthExpenses.forEach((exp) => {
+      const method = exp.transaction_type || "Not Specified";
+      methodData[method] = (methodData[method] || 0) + exp.amount;
+    });
+
+    return Object.entries(methodData).map(([name, value]) => ({
+      name,
+      value: parseFloat(value.toFixed(2)),
+    }));
+  }, [expenses, currentMonthStart, now]);
+
+  const expenseChartData = useMemo(() => {
+    const currentMonthExpenses = expenses.filter((exp) => {
+      const expDate = new Date(exp.date);
+      return (
+        expDate >= currentMonthStart &&
+        expDate.getMonth() === now.getMonth() &&
+        expDate.getFullYear() === now.getFullYear() &&
+        exp.type === "debit"
+      );
+    });
+
+    const methodData: { [key: string]: number } = {};
+    currentMonthExpenses.forEach((exp) => {
+      const method = exp.transaction_type || "Not Specified";
+      methodData[method] = (methodData[method] || 0) + exp.amount;
+    });
+
+    return Object.entries(methodData).map(([name, value]) => ({
+      name,
+      value: parseFloat(value.toFixed(2)),
+    }));
+  }, [expenses, currentMonthStart, now]);
+
+  const COLORS = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6"];
+
   const formatDate = (date: string, time?: string) => {
     const dateStr = new Date(date).toLocaleDateString("en-US", {
       year: "numeric",
@@ -99,15 +151,150 @@ export default function Ledger() {
 
   return (
     <div className="pb-32">
-      <div className="max-w-4xl mx-auto px-3 sm:px-6 md:px-8 py-4 sm:py-6 md:py-8">
+      <div className="max-w-6xl mx-auto px-3 sm:px-6 md:px-8 py-4 sm:py-6 md:py-8">
         {/* Header */}
         <div className="mb-4 sm:mb-6 md:mb-8">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-1 sm:mb-2">
-            Ledger
+            Transactions
           </h1>
           <p className="text-xs sm:text-sm md:text-base text-gray-400">
-            Complete transaction history
+            Complete transaction history and analysis
           </p>
+        </div>
+
+        {/* Charts Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mb-6 sm:mb-8">
+          {/* Income Chart */}
+          <div className="bg-slate-800 rounded-lg p-4 sm:p-6 border border-slate-700">
+            <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">
+              Income by Payment Method (This Month)
+            </h3>
+            {incomeChartData.length > 0 ? (
+              <div>
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Pie
+                      data={incomeChartData}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={(entry) => `${entry.name}`}
+                      outerRadius={80}
+                      fill="#8884d8"
+                      dataKey="value"
+                    >
+                      {incomeChartData.map((entry, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={COLORS[index % COLORS.length]}
+                        />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      formatter={(value) => formatCurrency(value as number)}
+                      contentStyle={{
+                        backgroundColor: "#1e293b",
+                        border: "1px solid #475569",
+                        borderRadius: "8px",
+                        color: "#f1f5f9",
+                      }}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="mt-4 space-y-2">
+                  {incomeChartData.map((data, index) => (
+                    <div
+                      key={data.name}
+                      className="flex items-center justify-between text-sm"
+                    >
+                      <div className="flex items-center gap-2">
+                        <div
+                          className="w-3 h-3 rounded"
+                          style={{
+                            backgroundColor: COLORS[index % COLORS.length],
+                          }}
+                        ></div>
+                        <span className="text-gray-300">{data.name}</span>
+                      </div>
+                      <span className="text-green-400 font-medium">
+                        {formatCurrency(data.value)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="h-64 flex items-center justify-center text-gray-400">
+                No income data for this month
+              </div>
+            )}
+          </div>
+
+          {/* Expense Chart */}
+          <div className="bg-slate-800 rounded-lg p-4 sm:p-6 border border-slate-700">
+            <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">
+              Expenses by Payment Method (This Month)
+            </h3>
+            {expenseChartData.length > 0 ? (
+              <div>
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Pie
+                      data={expenseChartData}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={(entry) => `${entry.name}`}
+                      outerRadius={80}
+                      fill="#8884d8"
+                      dataKey="value"
+                    >
+                      {expenseChartData.map((entry, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={COLORS[index % COLORS.length]}
+                        />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      formatter={(value) => formatCurrency(value as number)}
+                      contentStyle={{
+                        backgroundColor: "#1e293b",
+                        border: "1px solid #475569",
+                        borderRadius: "8px",
+                        color: "#f1f5f9",
+                      }}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="mt-4 space-y-2">
+                  {expenseChartData.map((data, index) => (
+                    <div
+                      key={data.name}
+                      className="flex items-center justify-between text-sm"
+                    >
+                      <div className="flex items-center gap-2">
+                        <div
+                          className="w-3 h-3 rounded"
+                          style={{
+                            backgroundColor: COLORS[index % COLORS.length],
+                          }}
+                        ></div>
+                        <span className="text-gray-300">{data.name}</span>
+                      </div>
+                      <span className="text-red-400 font-medium">
+                        {formatCurrency(data.value)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="h-64 flex items-center justify-center text-gray-400">
+                No expense data for this month
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Filters */}

@@ -25,7 +25,7 @@ export default function Profile() {
   };
 
   const formatCurrency = (amount: number) => {
-    return `$${amount.toFixed(2)}`;
+    return `₹${amount.toFixed(2)}`;
   };
 
   const formatDate = (dateString: string) => {
@@ -38,48 +38,50 @@ export default function Profile() {
 
   return (
     <div className="pb-32">
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 md:px-8 py-6 md:py-8">
+      <div className="max-w-2xl mx-auto px-3 sm:px-6 md:px-8 py-4 sm:py-6 md:py-8">
         {/* Header */}
-        <div className="mb-8 md:mb-10">
-          <h1 className="text-4xl font-bold text-white mb-2">Profile</h1>
-          <p className="text-base text-gray-400">Manage your account</p>
+        <div className="mb-6 sm:mb-8 md:mb-10">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-1 sm:mb-2">
+            Profile
+          </h1>
+          <p className="text-xs sm:text-sm md:text-base text-gray-400">
+            Manage your account
+          </p>
         </div>
 
         {/* User Info Card */}
-        <div className="bg-slate-800 rounded-lg p-6 sm:p-8 border border-slate-700 mb-6">
-          <div className="flex items-center gap-4 sm:gap-6 mb-6">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
-              <span className="text-2xl sm:text-3xl font-bold text-white">
+        <div className="bg-slate-800 rounded-lg p-4 sm:p-6 md:p-8 border border-slate-700 mb-4 sm:mb-6">
+          <div className="flex items-center gap-3 sm:gap-4 md:gap-6 mb-4 sm:mb-6">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+              <span className="text-lg sm:text-2xl md:text-3xl font-bold text-white">
                 {user?.email?.[0].toUpperCase()}
               </span>
             </div>
-            <div>
-              <h2 className="text-xl sm:text-2xl font-bold text-white mb-1">
+            <div className="min-w-0">
+              <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-0.5 sm:mb-1 truncate">
                 {user?.email?.split("@")[0] || "User"}
               </h2>
-              <p className="text-sm sm:text-base text-gray-400">User Account</p>
+              <p className="text-xs sm:text-sm text-gray-400">User Account</p>
             </div>
           </div>
 
           {/* Account Details */}
-          <div className="space-y-4 border-t border-slate-700 pt-6">
-            <div className="flex items-start gap-3">
-              <Mail className="w-5 h-5 text-blue-400 mt-1 flex-shrink-0" />
-              <div>
-                <p className="text-xs sm:text-sm text-gray-500 mb-1">Email</p>
-                <p className="text-sm sm:text-base text-gray-100 break-all">
+          <div className="space-y-3 sm:space-y-4 border-t border-slate-700 pt-4 sm:pt-6">
+            <div className="flex items-start gap-2 sm:gap-3">
+              <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400 mt-1 flex-shrink-0" />
+              <div className="min-w-0">
+                <p className="text-xs text-gray-500 mb-0.5">Email</p>
+                <p className="text-xs sm:text-sm text-gray-100 break-all">
                   {user?.email}
                 </p>
               </div>
             </div>
 
-            <div className="flex items-start gap-3">
-              <Calendar className="w-5 h-5 text-blue-400 mt-1 flex-shrink-0" />
-              <div>
-                <p className="text-xs sm:text-sm text-gray-500 mb-1">
-                  Member Since
-                </p>
-                <p className="text-sm sm:text-base text-gray-100">
+            <div className="flex items-start gap-2 sm:gap-3">
+              <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400 mt-1 flex-shrink-0" />
+              <div className="min-w-0">
+                <p className="text-xs text-gray-500 mb-0.5">Member Since</p>
+                <p className="text-xs sm:text-sm text-gray-100">
                   {user?.created_at ? formatDate(user.created_at) : "Recently"}
                 </p>
               </div>
@@ -88,66 +90,58 @@ export default function Profile() {
         </div>
 
         {/* Statistics */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6">
-          <div className="bg-slate-800 rounded-lg p-4 sm:p-6 border border-slate-700">
-            <p className="text-xs sm:text-sm text-gray-400 mb-2">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6">
+          <div className="bg-slate-800 rounded-lg p-3 sm:p-4 md:p-6 border border-slate-700">
+            <p className="text-xs text-gray-400 mb-1 sm:mb-2">
               Total Transactions
             </p>
-            <p className="text-2xl sm:text-3xl font-bold text-blue-400">
+            <p className="text-xl sm:text-2xl md:text-3xl font-bold text-blue-400">
               {stats.totalTransactions}
             </p>
           </div>
 
-          <div className="bg-slate-800 rounded-lg p-4 sm:p-6 border border-slate-700">
-            <p className="text-xs sm:text-sm text-gray-400 mb-2">
-              Total Income
-            </p>
-            <p className="text-2xl sm:text-3xl font-bold text-green-400">
+          <div className="bg-slate-800 rounded-lg p-3 sm:p-4 md:p-6 border border-slate-700">
+            <p className="text-xs text-gray-400 mb-1 sm:mb-2">Total Income</p>
+            <p className="text-xl sm:text-2xl md:text-3xl font-bold text-green-400 truncate">
               {formatCurrency(stats.totalIncome)}
             </p>
           </div>
 
-          <div className="bg-slate-800 rounded-lg p-4 sm:p-6 border border-slate-700">
-            <p className="text-xs sm:text-sm text-gray-400 mb-2">
-              Total Expenses
-            </p>
-            <p className="text-2xl sm:text-3xl font-bold text-red-400">
+          <div className="bg-slate-800 rounded-lg p-3 sm:p-4 md:p-6 border border-slate-700">
+            <p className="text-xs text-gray-400 mb-1 sm:mb-2">Total Expenses</p>
+            <p className="text-xl sm:text-2xl md:text-3xl font-bold text-red-400 truncate">
               {formatCurrency(stats.totalExpenses)}
             </p>
           </div>
         </div>
 
         {/* Settings Section */}
-        <div className="bg-slate-800 rounded-lg p-6 sm:p-8 border border-slate-700 mb-6">
-          <h3 className="text-lg sm:text-xl font-bold text-white mb-4">
+        <div className="bg-slate-800 rounded-lg p-4 sm:p-6 md:p-8 border border-slate-700 mb-4 sm:mb-6">
+          <h3 className="text-base sm:text-lg md:text-xl font-bold text-white mb-3 sm:mb-4">
             Settings
           </h3>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between p-4 bg-slate-700 rounded border border-slate-600 hover:border-slate-500 transition">
-              <div>
-                <p className="text-sm sm:text-base font-semibold text-gray-200">
+          <div className="space-y-2 sm:space-y-3">
+            <div className="flex items-center justify-between p-3 sm:p-4 bg-slate-700 rounded border border-slate-600 hover:border-slate-500 transition">
+              <div className="min-w-0">
+                <p className="text-xs sm:text-sm font-semibold text-gray-200">
                   Dark Theme
                 </p>
-                <p className="text-xs sm:text-sm text-gray-500">
-                  Currently enabled
-                </p>
+                <p className="text-xs text-gray-500">Currently enabled</p>
               </div>
-              <div className="w-12 h-6 bg-blue-600 rounded-full relative">
-                <div className="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5"></div>
+              <div className="w-10 h-6 bg-blue-600 rounded-full relative flex-shrink-0 ml-2">
+                <div className="w-4 h-4 bg-white rounded-full absolute right-1 top-1"></div>
               </div>
             </div>
 
-            <div className="flex items-center justify-between p-4 bg-slate-700 rounded border border-slate-600 hover:border-slate-500 transition">
-              <div>
-                <p className="text-sm sm:text-base font-semibold text-gray-200">
+            <div className="flex items-center justify-between p-3 sm:p-4 bg-slate-700 rounded border border-slate-600 hover:border-slate-500 transition">
+              <div className="min-w-0">
+                <p className="text-xs sm:text-sm font-semibold text-gray-200">
                   Notifications
                 </p>
-                <p className="text-xs sm:text-sm text-gray-500">
-                  Get alerts for transactions
-                </p>
+                <p className="text-xs text-gray-500">Get alerts</p>
               </div>
-              <div className="w-12 h-6 bg-blue-600 rounded-full relative">
-                <div className="w-5 h-5 bg-white rounded-full absolute right-0.5 top-0.5"></div>
+              <div className="w-10 h-6 bg-blue-600 rounded-full relative flex-shrink-0 ml-2">
+                <div className="w-4 h-4 bg-white rounded-full absolute right-1 top-1"></div>
               </div>
             </div>
           </div>
@@ -156,18 +150,17 @@ export default function Profile() {
         {/* Logout Button */}
         <button
           onClick={handleLogout}
-          className="w-full py-2 px-6 bg-red-600 hover:bg-red-500 text-white rounded font-semibold transition flex items-center justify-center gap-2 text-base"
+          className="w-full py-2 px-4 sm:px-6 bg-red-600 hover:bg-red-500 text-white rounded font-semibold transition flex items-center justify-center gap-2 text-sm sm:text-base"
         >
           <LogOut className="w-4 h-4" />
           Logout
         </button>
 
         {/* Privacy Info */}
-        <div className="mt-8 p-4 bg-slate-800 rounded border border-slate-700">
+        <div className="mt-6 sm:mt-8 p-3 sm:p-4 bg-slate-800 rounded border border-slate-700">
           <p className="text-xs sm:text-sm text-gray-400">
-            <span className="font-semibold text-gray-300">Privacy Notice:</span>{" "}
-            Your data is encrypted and stored securely. We never share your
-            information with third parties.
+            <span className="font-semibold text-gray-300">Privacy:</span> Your
+            data is encrypted and stored securely.
           </p>
         </div>
       </div>

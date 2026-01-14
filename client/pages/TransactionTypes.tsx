@@ -93,23 +93,25 @@ export default function TransactionTypes() {
   const COLORS = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6"];
 
   const formatCurrency = (amount: number) => {
-    return `$${amount.toFixed(2)}`;
+    return `₹${amount.toFixed(2)}`;
   };
 
   return (
     <div className="pb-32">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 py-6 md:py-8">
+      <div className="max-w-6xl mx-auto px-3 sm:px-6 md:px-8 py-4 sm:py-6 md:py-8">
         {/* Header */}
-        <div className="mb-8 md:mb-10">
-          <h1 className="text-4xl font-bold text-white mb-2">
+        <div className="mb-6 sm:mb-8 md:mb-10">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-1 sm:mb-2">
             Payment Methods
           </h1>
-          <p className="text-base text-gray-400">Track by payment method</p>
+          <p className="text-xs sm:text-sm md:text-base text-gray-400">
+            Track by payment method
+          </p>
         </div>
 
         {/* Payment Methods Selection */}
-        <div className="mb-8">
-          <h2 className="text-lg font-semibold text-white mb-4">
+        <div className="mb-6 sm:mb-8">
+          <h2 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">
             Select a Payment Method
           </h2>
           <div className="flex flex-wrap gap-2">
@@ -119,7 +121,7 @@ export default function TransactionTypes() {
                 onClick={() =>
                   setSelectedMethod(selectedMethod === method ? null : method)
                 }
-                className={`px-4 py-2 rounded-lg font-medium transition ${
+                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition ${
                   selectedMethod === method
                     ? "bg-blue-600 text-white border border-blue-500"
                     : "bg-slate-700 text-gray-300 border border-slate-600 hover:border-slate-500"
@@ -133,16 +135,20 @@ export default function TransactionTypes() {
 
         {/* Selected Method Stats */}
         {selectedMethod && selectedMethodStats && (
-          <div className="grid grid-cols-2 gap-4 mb-8">
-            <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
-              <p className="text-sm text-gray-400 mb-2">Income</p>
-              <p className="text-2xl font-bold text-green-400">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8">
+            <div className="bg-slate-800 rounded-lg p-3 sm:p-4 border border-slate-700">
+              <p className="text-xs sm:text-sm text-gray-400 mb-1 sm:mb-2">
+                Income
+              </p>
+              <p className="text-lg sm:text-2xl font-bold text-green-400 truncate">
                 {formatCurrency(selectedMethodStats.income)}
               </p>
             </div>
-            <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
-              <p className="text-sm text-gray-400 mb-2">Expense</p>
-              <p className="text-2xl font-bold text-red-400">
+            <div className="bg-slate-800 rounded-lg p-3 sm:p-4 border border-slate-700">
+              <p className="text-xs sm:text-sm text-gray-400 mb-1 sm:mb-2">
+                Expense
+              </p>
+              <p className="text-lg sm:text-2xl font-bold text-red-400 truncate">
                 {formatCurrency(selectedMethodStats.expense)}
               </p>
             </div>
@@ -150,10 +156,10 @@ export default function TransactionTypes() {
         )}
 
         {/* Charts Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
           {/* Income Chart */}
-          <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
-            <h3 className="text-lg font-semibold text-white mb-4">
+          <div className="bg-slate-800 rounded-lg p-4 sm:p-6 border border-slate-700">
+            <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">
               Income by Payment Method (This Month)
             </h3>
             {incomeChartData.length > 0 ? (
@@ -218,8 +224,8 @@ export default function TransactionTypes() {
           </div>
 
           {/* Expense Chart */}
-          <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
-            <h3 className="text-lg font-semibold text-white mb-4">
+          <div className="bg-slate-800 rounded-lg p-4 sm:p-6 border border-slate-700">
+            <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">
               Expenses by Payment Method (This Month)
             </h3>
             {expenseChartData.length > 0 ? (
